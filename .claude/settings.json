@@ -18,5 +18,18 @@
       "Bash(curl * | bash:*)",
       "Bash(wget * | bash:*)"
     ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/toon.mjs"
+          }
+        ]
+      }
+    ]
   }
 }
