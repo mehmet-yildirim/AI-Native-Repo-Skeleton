@@ -1,0 +1,274 @@
+name: "Project AI Assistant"
+version: "1.0.0"
+
+# =============================================================================
+# MODELS — Configure for your team's setup
+# =============================================================================
+models:
+  # Primary model for complex tasks
+  - name: Claude Sonnet 4.6
+    provider: anthropic
+    model: claude-sonnet-4-6
+    apiKeyVar: ANTHROPIC_API_KEY
+    roles:
+      - chat
+      - edit
+      - apply
+
+  # Fast model for autocomplete
+  - name: Claude Haiku 4.5
+    provider: anthropic
+    model: claude-haiku-4-5-20251001
+    apiKeyVar: ANTHROPIC_API_KEY
+    roles:
+      - autocomplete
+
+  # Alternative: local model via Ollama (no API key needed)
+  # - name: Qwen2.5-Coder 7B (local)
+  #   provider: ollama
+  #   model: qwen2.5-coder:7b
+  #   roles:
+  #     - autocomplete
+
+  # Alternative: OpenAI
+  # - name: GPT-4o
+  #   provider: openai
+  #   model: gpt-4o
+  #   apiKeyVar: OPENAI_API_KEY
+  #   roles:
+  #     - chat
+
+# =============================================================================
+# CONTEXT PROVIDERS — What the AI can see when answering
+# =============================================================================
+contextProviders:
+  # Include open files
+  - name: open-files
+    params: {}
+
+  # Include the codebase (requires indexing)
+  - name: codebase
+    params:
+      nRetrieve: 25
+      nFinal: 5
+
+  # Include git history
+  - name: git-diff
+    params: {}
+
+  # Include docs from URLs
+  - name: url
+    params: {}
+
+  # Include terminal output
+  - name: terminal
+    params: {}
+
+  # Include GitHub issues and PRs
+  # - name: github
+  #   params:
+  #     repoName: "owner/repo"
+  #     githubToken: "$GITHUB_TOKEN"
+
+# =============================================================================
+# RULES — Instructions always included in context
+# =============================================================================
+rules:
+  # --- Base rules (always active) ---
+  - .continue/rules/01-coding-standards.md
+  - .continue/rules/02-architecture.md
+  - .continue/rules/03-testing.md
+  - .continue/rules/04-security.md
+
+  # --- Language skills: uncomment the one(s) for your project ---
+  # - .continue/rules/skills/lang-java.md
+  # - .continue/rules/skills/lang-dotnet.md
+  # - .continue/rules/skills/lang-python.md
+  # - .continue/rules/skills/lang-typescript.md   # (TypeScript covered by base rules too)
+
+  # --- Frontend skills: uncomment the one(s) for your project ---
+  # - .continue/rules/skills/fe-react.md
+  # - .continue/rules/skills/fe-nextjs.md
+  # - .continue/rules/skills/fe-vue.md
+  # - .continue/rules/skills/fe-angular.md
+
+# =============================================================================
+# SLASH COMMANDS — Custom commands available with /
+# =============================================================================
+slashCommands:
+  - name: review
+    description: "Perform a thorough code review of the selected code"
+    prompt: |
+      Review the selected code. For each issue found, specify:
+      1. Severity: Critical / Major / Minor / Suggestion
+      2. Location: File and line number
+      3. Issue: What is wrong or could be improved
+      4. Fix: Concrete suggestion or corrected code
+
+      Check for:
+      - Correctness and logic errors
+      - Security vulnerabilities (OWASP Top 10)
+      - Performance issues
+      - Code style violations per project standards
+      - Missing error handling
+      - Missing tests for new logic
+      - Clear naming and readability
+
+  - name: architect
+    description: "Design the implementation of a feature before coding"
+    prompt: |
+      Design the implementation of the following feature. Do NOT write code yet.
+
+      Provide:
+      1. **Understanding**: Restate the requirement to confirm understanding
+      2. **Approach**: High-level implementation strategy
+      3. **Components affected**: Files, modules, and APIs that will change
+      4. **New components needed**: New files, classes, or services to create
+      5. **Data model changes**: Schema or type changes
+      6. **Edge cases & risks**: What could go wrong, what to watch out for
+      7. **Implementation steps**: Ordered checklist ready to execute
+      8. **Open questions**: Ambiguities that need clarification before starting
+
+      Feature to design:
+
+  - name: debug
+    description: "Systematically diagnose a bug or error"
+    prompt: |
+      Help me debug this issue systematically.
+
+      1. **Restate the problem**: What is expected vs. actual behavior?
+      2. **Hypotheses**: List 3-5 possible root causes, most likely first
+      3. **Investigation steps**: For each hypothesis, what would we check?
+      4. **Diagnosis**: Based on the code/error provided, which hypothesis is most likely?
+      5. **Fix**: Proposed solution with explanation of why it works
+      6. **Prevention**: How to avoid this class of bug in the future?
+
+      Issue:
+
+  - name: docs
+    description: "Generate documentation for the selected code"
+    prompt: |
+      Generate clear, accurate documentation for the selected code.
+
+      Include:
+      - Purpose: What does this do and why does it exist?
+      - Parameters: Name, type, description, and whether required/optional
+      - Returns: Type and description of return value
+      - Throws/Errors: What errors can occur and when
+      - Example: A practical usage example
+      - Notes: Edge cases, performance considerations, or important caveats
+
+      Use the documentation style appropriate for the language (JSDoc, docstrings, GoDoc, etc.).
+
+  - name: test
+    description: "Generate comprehensive tests for the selected code"
+    prompt: |
+      Generate comprehensive tests for the selected code.
+
+      Include:
+      - Happy path: Normal successful execution
+      - Edge cases: Empty inputs, boundary values, max values
+      - Error cases: Invalid input, missing dependencies, failures
+      - Each test should follow Arrange → Act → Assert structure
+      - Test names should describe behavior: 'returns X when Y'
+      - Use the project's testing framework and conventions
+
+  - name: requirements
+    description: "Analyze requirements and produce user stories, tasks, and Definition of Done"
+    prompt: |
+      Analyze the provided requirements and produce a complete, actionable specification.
+
+      Produce:
+      1. **Clarifying questions**: ambiguities to resolve before implementation
+      2. **User stories**: As a [user], I want [action] so that [benefit] — with acceptance criteria
+      3. **Technical requirements**: functional + non-functional (performance, security, accessibility)
+      4. **Out of scope**: what this explicitly does NOT include
+      5. **Architecture impact**: new components, schema changes, API changes, breaking changes
+      6. **Implementation tasks**: ordered, atomic tasks (each fits in one PR), sized XS/S/M/L/XL
+      7. **Testing strategy**: what needs unit, integration, and E2E coverage
+      8. **Definition of Done**: checklist for the feature to be considered complete
+
+      Requirements: $ARGUMENTS
+
+  - name: implement
+    description: "Execute structured implementation with design, code, tests, and self-review"
+    prompt: |
+      Execute a structured implementation of this task.
+
+      Steps:
+      1. **Orient**: Read relevant existing code. State what currently exists and what will change.
+      2. **Design**: If no design exists, produce one (approach, files to change, risks).
+      3. **Implement bottom-up**: types/schemas → domain logic → data access → service → API/UI handler
+      4. **Write tests**: unit tests for logic, integration tests for API/data access
+      5. **Self-review**: correctness, security (no injection, auth checked), code quality, test coverage
+      6. **Summary**: list new/modified files, remaining work
+
+      Task: $ARGUMENTS
+
+  - name: qa
+    description: "Full quality assurance: lint, tests, coverage, security, code quality report"
+    prompt: |
+      Perform a full QA cycle on the specified target.
+
+      Run and report results for:
+      1. **Static analysis**: lint errors, type errors
+      2. **Tests**: run test suite, report failures, identify missing coverage
+      3. **Security**: injection risks, missing auth/authz, secrets in code, dependency vulnerabilities
+      4. **Code quality**: functions > 30 lines, nesting > 3 levels, dead code, duplication
+      5. **API contract**: new endpoints documented, error format consistent, breaking changes flagged
+
+      Produce a QA Report:
+      - Pass/Fail for each category
+      - Issues requiring action (CRITICAL / MAJOR / MINOR)
+      - Ready for PR: YES | NO
+
+      Target: $ARGUMENTS
+
+  - name: deploy
+    description: "Pre-deployment checklist, execution plan, and post-deploy monitoring guide"
+    prompt: |
+      Prepare a deployment to the specified environment.
+
+      Produce:
+      1. **Context**: change type, risk level, rollback plan
+      2. **Pre-deployment checklist**: CI passing, migrations backward compatible, secrets configured, feature flags set
+      3. **Execution steps**: exact commands in order (migration → deploy → verify)
+      4. **Post-deploy monitoring**: metrics to watch, alert thresholds, how long to observe
+      5. **Rollback procedure**: exact commands to revert if something goes wrong
+
+      Environment / target: $ARGUMENTS
+
+  - name: refactor
+    description: "Suggest refactoring improvements for the selected code"
+    prompt: |
+      Analyze the selected code and suggest refactoring improvements.
+
+      For each suggestion:
+      1. **Issue**: What problem does this refactoring solve?
+      2. **Before**: The current code (or describe it)
+      3. **After**: The refactored version
+      4. **Benefit**: Why is this better?
+
+      Focus on:
+      - Eliminating code duplication
+      - Improving readability and clarity
+      - Reducing complexity (simplify nested conditions, long functions)
+      - Better separation of concerns
+      - Improving testability
+      Do NOT change behavior — pure structural improvements only.
+
+# =============================================================================
+# INDEXING — What gets indexed for codebase context
+# =============================================================================
+docs:
+  - name: "Project Architecture"
+    startUrl: "file://./docs/architecture/overview.md"
+    faviconUrl: ""
+
+# =============================================================================
+# EMBEDDING MODEL — For codebase indexing
+# =============================================================================
+embeddingsProvider:
+  provider: anthropic
+  model: voyage-code-3
+  apiKeyVar: ANTHROPIC_API_KEY

@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# =============================================================================
+# AI Configuration Validator
+# Checks that all AI tool config files are present and customized.
+# =============================================================================
+
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+PASS=0
+WARN=0
+FAIL=0
+
+pass() { echo -e "  ${GREEN}PASS${NC} $*"; PASS=$((PASS + 1)); }
+warn() { echo -e "  ${YELLOW}WARN${NC} $*"; WARN=$((WARN + 1)); }
+fail() { echo -e "  ${RED}FAIL${NC} $*"; FAIL=$((FAIL + 1)); }
+
+echo ""
+echo "========================================"
+echo "  AI Configuration Validator"
+echo "========================================"
+
+# ---------------------------------------------------------------------------
+# File existence checks
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- File Presence ---"
+
+check_exists() {
+  local file="$1"
+  if [ -f "$file" ]; then
+    pass "Found: $file"
+    return 0
+  else
+    fail "Missing: $file"
+    return 1
+  fi
+}
+
+check_exists "CLAUDE.md"
+check_exists ".cursor/rules/00-project-overview.mdc"
+check_exists ".cursor/rules/01-coding-standards.mdc"
+check_exists ".cursor/rules/02-architecture.mdc"
+check_exists ".cursor/rules/03-testing.mdc"
+check_exists ".cursor/rules/04-git-workflow.mdc"
+check_exists ".cursor/rules/05-security.mdc"
+check_exists ".cursor/mcp.json"
+check_exists ".continue/config.yaml"
+check_exists ".continue/rules/01-coding-standards.md"
+check_exists ".continue/rules/02-architecture.md"
+check_exists ".continue/rules/03-testing.md"
+check_exists ".continue/rules/04-security.md"
+check_exists ".claude/commands/requirements.md"
+check_exists ".claude/commands/architect.md"
+check_exists ".claude/commands/implement.md"
+check_exists ".claude/commands/review.md"
+check_exists ".claude/commands/qa.md"
+check_exists ".claude/commands/test.md"
+check_exists ".claude/commands/debug.md"
+check_exists ".claude/commands/deploy.md"
+check_exists ".claude/commands/migrate.md"
+check_exists ".claude/commands/sprint.md"
+check_exists ".claude/commands/docs.md"
+
+# --- Skill rules ---
+check_exists ".cursor/rules/skills/lang-java.mdc"
+check_exists ".cursor/rules/skills/lang-dotnet.mdc"
+check_exists ".cursor/rules/skills/lang-python.mdc"
+check_exists ".cursor/rules/skills/lang-typescript.mdc"
+check_exists ".cursor/rules/skills/lang-go.mdc"
+check_exists ".cursor/rules/skills/fe-react.mdc"
+check_exists ".cursor/rules/skills/fe-nextjs.mdc"
+check_exists ".cursor/rules/skills/fe-vue.mdc"
+check_exists ".cursor/rules/skills/fe-angular.mdc"
+check_exists ".cursor/rules/skills/be-microservices.mdc"
+check_exists ".cursor/rules/skills/devops-docker.mdc"
+check_exists ".cursor/rules/skills/devops-cicd.mdc"
+
+# --- Continue skill rules ---
+check_exists ".continue/rules/skills/lang-java.md"
+check_exists ".continue/rules/skills/lang-dotnet.md"
+check_exists ".continue/rules/skills/lang-python.md"
+check_exists ".continue/rules/skills/fe-react.md"
+check_exists ".continue/rules/skills/fe-nextjs.md"
+check_exists ".continue/rules/skills/fe-vue.md"
+check_exists ".continue/rules/skills/fe-angular.md"
+
+# --- Workflow docs ---
+check_exists "docs/workflows/01-requirements-analysis.md"
+check_exists "docs/workflows/02-feature-development.md"
+check_exists "docs/workflows/03-testing-strategy.md"
+check_exists "docs/workflows/04-deployment.md"
+check_exists "skills/README.md"
+
+check_exists "docs/context/project-brief.md"
+check_exists "docs/context/tech-stack.md"
+check_exists "docs/context/domain-glossary.md"
+check_exists "docs/architecture/overview.md"
+
+# ---------------------------------------------------------------------------
+# Customization checks (look for TODO placeholders)
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- Customization (TODO placeholders remaining) ---"
+
+check_customized() {
+  local file="$1"
+  if [ ! -f "$file" ]; then
+    return
+  fi
+  local todo_count
+  todo_count=$(grep -c "^TODO\|: TODO\|TODO:" "$file" 2>/dev/null || true)
+  if [ "$todo_count" -eq 0 ]; then
+    pass "Customized: $file"
+  else
+    warn "$file has $todo_count TODO(s) remaining"
+  fi
+}
+
+check_customized "CLAUDE.md"
+check_customized ".cursor/rules/00-project-overview.mdc"
+check_customized "docs/context/project-brief.md"
+check_customized "docs/context/tech-stack.md"
+check_customized "docs/architecture/overview.md"
+
+# ---------------------------------------------------------------------------
+# Environment check
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- Environment ---"
+
+if [ -f ".env" ]; then
+  pass "Found: .env"
+else
+  warn "Missing .env — copy from .env.example and fill in values"
+fi
+
+if [ -f ".env.example" ]; then
+  pass "Found: .env.example"
+else
+  warn "Missing .env.example — create one to document required variables"
+fi
+
+# ---------------------------------------------------------------------------
+# Git check
+# ---------------------------------------------------------------------------
+echo ""
+echo "--- Git ---"
+
+if [ -d ".git" ]; then
+  pass "Git repository initialized"
+else
+  fail "No git repository — run: git init"
+fi
+
+if git remote get-url origin &>/dev/null 2>&1; then
+  REMOTE=$(git remote get-url origin)
+  pass "Remote origin: $REMOTE"
+else
+  warn "No remote origin set — run: git remote add origin <url>"
+fi
+
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
+echo ""
+echo "========================================"
+echo "  Results"
+echo "========================================"
+echo -e "  ${GREEN}PASS${NC}: $PASS"
+echo -e "  ${YELLOW}WARN${NC}: $WARN"
+echo -e "  ${RED}FAIL${NC}: $FAIL"
+echo ""
+
+if [ "$FAIL" -gt 0 ]; then
+  echo -e "${RED}Action required: fix FAIL items before starting development.${NC}"
+  exit 1
+elif [ "$WARN" -gt 0 ]; then
+  echo -e "${YELLOW}Warnings present: review WARN items and customize as needed.${NC}"
+  exit 0
+else
+  echo -e "${GREEN}All checks passed! You're ready to code.${NC}"
+  exit 0
+fi

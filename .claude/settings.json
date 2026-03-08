@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(bun:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(node:*)",
+      "Bash(python:*)",
+      "Bash(pip:*)",
+      "Bash(go:*)",
+      "Bash(make:*)",
+      "Bash(docker:*)",
+      "Bash(gh:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(curl * | bash:*)",
+      "Bash(wget * | bash:*)"
+    ]
+  }
+}

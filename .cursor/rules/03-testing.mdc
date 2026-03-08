@@ -1,0 +1,141 @@
+---
+description: Testing standards, structure, and patterns. Apply when writing tests or being asked about test coverage.
+globs: ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/__tests__/**"]
+alwaysApply: false
+---
+
+# Testing Standards
+
+## Philosophy
+
+- Tests are first-class code — they are read, maintained, and refactored just like production code
+- Tests document intended behavior; they are the living specification
+- A failing test is always a signal — never silently skip or comment out tests
+- Tests must be **deterministic**: same input → same output, every time, on every machine
+
+## Test Types & Coverage Targets
+
+| Type | What it tests | Speed | Mocking | Coverage target |
+|------|--------------|-------|---------|-----------------|
+| **Unit** | Single function / class in isolation | < 1ms | Mock all I/O | 90%+ of business logic |
+| **Integration** | Multiple components together | 100ms–2s | Real DB, mock HTTP | All API endpoints |
+| **E2E** | Full user journey | 2–30s | None | Critical user paths |
+
+## File Organization
+
+TODO: Choose the convention that matches your project.
+
+### Co-located (preferred for most projects)
+```
+src/
+├── users/
+│   ├── user.service.ts
+│   ├── user.service.test.ts    ← unit test alongside source
+│   └── user.repository.ts
+└── ...
+tests/
+└── e2e/                        ← E2E tests separate
+```
+
+### Centralized (common in Python/Go)
+```
+src/...
+tests/
+├── unit/
+├── integration/
+└── e2e/
+```
+
+## Writing Good Tests
+
+### Test naming
+- Name format: `it('does X when Y')` / `test('returns Z given A')`
+- Describe the behavior, not the implementation: `'returns 404 when user is not found'` not `'calls findById with id'`
+- Group related tests with `describe` blocks named after the unit under test
+
+### Structure: Arrange → Act → Assert
+```typescript
+it('calculates correct total with discount', () => {
+  // Arrange
+  const cart = createCart({ items: [{ price: 100, qty: 2 }] });
+  const discount = createDiscount({ type: 'percent', value: 10 });
+
+  // Act
+  const total = calculateTotal(cart, discount);
+
+  // Assert
+  expect(total).toBe(180);
+});
+```
+
+### One assertion per concept
+- Multiple `expect` calls are fine if they all verify the same concept
+- Split into separate tests if verifying independent behaviors
+
+### Test independence
+- No shared mutable state between tests
+- Each test sets up and tears down its own data
+- Test order must not matter
+
+## Mocking Strategy
+
+- **Unit tests**: Mock all external dependencies (DB, HTTP, file system, time, randomness)
+- **Integration tests**: Real DB in a transaction (rolled back after each test); mock external HTTP
+- **E2E tests**: No mocks — all real services
+
+### What to mock
+- Clock / Date — always mock for time-sensitive logic
+- Random number generation — seed or mock for determinism
+- External HTTP APIs — use interceptors (msw, nock, responses)
+- File system — mock or use temp directories
+
+### What NOT to mock
+- Pure utility functions
+- Domain logic under test
+- The module you're testing
+
+## Test Data
+
+- Use factory functions / builders, not raw object literals
+- Factories provide sensible defaults; tests only override what's relevant
+- Never use production data in tests
+
+```typescript
+// Good: factory with minimal override
+const user = createUser({ role: 'admin' });
+
+// Bad: full object literal repeated everywhere
+const user = { id: '1', name: 'Test', email: 'test@test.com', role: 'admin', ... };
+```
+
+## What Must Be Tested
+
+- All business logic / domain rules
+- All API endpoints (at integration level): happy path + error cases
+- All error handling paths
+- Boundary conditions: empty inputs, max values, invalid types
+- Security-critical code: auth, authorization, input validation
+
+## What Does NOT Need Tests
+
+- Third-party library internals
+- Simple getters/setters with no logic
+- Generated code (ORM models, protobuf, etc.)
+- Framework boilerplate (routing setup, DI wiring)
+
+## Performance
+
+- Unit test suite must complete in < 10 seconds
+- Integration test suite must complete in < 2 minutes
+- Flaky tests must be fixed or deleted — never skipped permanently
+
+## Commands
+
+```bash
+# TODO: Fill in for your project
+bun test                    # Run all tests
+bun test --watch            # Watch mode during development
+bun test --coverage         # With coverage report
+bun test tests/unit/        # Run only unit tests
+bun test user.service       # Run tests matching pattern
+```

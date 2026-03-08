@@ -1,0 +1,100 @@
+# =============================================================================
+# .gitignore — AI-Native Repo Skeleton
+# =============================================================================
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+secrets/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+vendor/
+
+# Build output
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+*.o
+*.a
+*.so
+
+# Test & Coverage
+coverage/
+.coverage
+*.lcov
+htmlcov/
+.pytest_cache/
+.tox/
+
+# IDE & Editor
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
+
+# Language-specific
+# Go
+*.exe
+*.exe~
+
+# Python
+.venv/
+venv/
+env/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Docker
+.docker/
+
+# AI Tool caches and local overrides (keep shared configs, ignore local)
+.continue/.cache/
+.cursor/.cache/
+.claude/settings.local.json
