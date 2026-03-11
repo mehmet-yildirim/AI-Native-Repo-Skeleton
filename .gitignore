@@ -105,3 +105,5 @@ env/
 .agent/escalations/
 .agent/outputs/
 .agent/STOP
+# Deployed copy of webhook receiver (track .agent-templates/ instead)
+.agent/webhook-receiver.mjs
