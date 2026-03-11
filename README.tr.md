@@ -2,6 +2,10 @@
 
 Bu iskelet, yeni veya mevcut projelerde **yapay zeka destekli otonom yazılım geliştirme** için hazır bir başlangıç yapısı sunar. [Cursor](https://cursor.sh), [Continue](https://continue.dev) ve [Claude Code](https://claude.ai/code) araçlarını kutudan çıkar çıkmaz destekler.
 
+İnteraktif, insan destekli geliştirmeden; JIRA backlog'undan iş alıp Pull Request teslim eden **tam otonom ajan moduna** kadar çalışır.
+
+> **English:** See [README.md](README.md) for the English version.
+
 ---
 
 ## İçindekiler
@@ -13,21 +17,24 @@ Bu iskelet, yeni veya mevcut projelerde **yapay zeka destekli otonom yazılım g
 5. [Dil ve Framework Becerileri](#dil-ve-framework-becerileri)
 6. [Slash Komutları Referansı](#slash-komutları-referansı)
 7. [Otonom Ajan Döngüsü](#otonom-ajan-döngüsü)
-8. [Geliştirme İş Akışları](#geliştirme-i̇ş-akışları)
-9. [Yapılandırma Rehberi](#yapılandırma-rehberi)
-10. [Sıkça Sorulan Sorular](#sıkça-sorulan-sorular)
+8. [MCP Sunucuları](#mcp-sunucuları)
+9. [Claude Code Hook'ları](#claude-code-hookları)
+10. [Geliştirme İş Akışları](#geliştirme-i̇ş-akışları)
+11. [Yapılandırma Rehberi](#yapılandırma-rehberi)
+12. [Sıkça Sorulan Sorular](#sıkça-sorulan-sorular)
 
 ---
 
 ## Bu İskelet Ne Sağlar?
 
-| Katman | Ne Sağlar |
-|--------|-----------|
-| **Claude Code** | `CLAUDE.md` proje talimatları + 16 özel slash komutu |
-| **Cursor** | Dosya türüne göre otomatik etkinleşen 18 kural dosyası (`.mdc`) |
-| **Continue** | Çok-model yapılandırması, satır içi slash komutları, kalıcı kurallar |
-| **GitHub** | PR şablonu, issue şablonları, CI iş akışı |
-| **Otonom Ajan** | JIRA/Linear entegrasyonu, domain doğrulama, tam geliştirme döngüsü |
+| Katman | Yapılandırma | Amaç |
+|--------|-------------|------|
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 16 slash komutu, olay hook'ları |
+| **Cursor** | `.cursor/rules/` | Dosya türüne göre otomatik etkinleşen 18 kural dosyası |
+| **Continue** | `.continue/` | Çok-model yapılandırması, satır içi slash komutları, kalıcı kurallar |
+| **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
+| **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
+| **Tüm editörler** | `.editorconfig` | Diller arası tutarlı biçimlendirme |
 
 ---
 
@@ -51,36 +58,41 @@ Bu betik şunları yapar:
 - `.env.example` dosyasından `.env` oluşturur
 - Temel yapılandırma dosyalarının varlığını kontrol eder
 
-### 3. Projenizi Özelleştirin
+### 3. Zorunlu Dosyaları Özelleştirin
 
-Aşağıdaki dosyaları projenize göre doldurun:
+**AI bağlamı için:**
 
 | Dosya | Ne Yazılacak |
 |-------|-------------|
-| `CLAUDE.md` | Proje adı, teknoloji yığını, temel komutlar, kodlama kuralları |
-| `.cursor/rules/00-project-overview.mdc` | Proje bağlamı (Cursor için) |
+| `CLAUDE.md` | Proje adı, teknoloji yığını, temel komutlar, mimari, kodlama kuralları |
+| `.cursor/rules/00-project-overview.mdc` | Cursor'ın her dosyada yükleyeceği proje bağlamı |
 | `.continue/config.yaml` | Model API anahtarları, etkin beceri kuralları |
 | `docs/context/project-brief.md` | Projenin ne yaptığı ve kimler için olduğu |
 | `docs/context/tech-stack.md` | Teknoloji seçimleri ve gerekçeleri |
-| `docs/context/domain-boundaries.md` | Otonom ajan için hangi JIRA işlerinin bu projeye ait olduğu |
-| `docs/architecture/overview.md` | Sistem mimarisi |
-| `agent.config.yaml` | JIRA/Linear bağlantısı, otonom ajan davranışı |
+| `docs/architecture/overview.md` | Üst düzey sistem mimarisi |
+
+**Otonom ajan için:**
+
+| Dosya | Ne Yazılacak |
+|-------|-------------|
+| `agent.config.yaml` | JIRA/Linear bağlantısı, özerklik eşikleri, eskalasyon kanalları |
+| `docs/context/domain-boundaries.md` | Hangi JIRA issue'larının bu projeye ait olduğunun tanımı |
 
 ### 4. Yapılandırmayı Doğrulayın
 
 ```bash
 bash scripts/validate-ai-config.sh
+# Beklenen: 73 PASS, 0 FAIL
+# WARN: Doldurulması gereken TODO alanları (kabul edilebilir)
 ```
 
-73 PASS, 0 FAIL görmelisiniz. WARN mesajları doldurulması gereken TODO alanlarını gösterir.
-
-### 5. AI Kodlamaya Başlayın
+### 5. Geliştirmeye Başlayın
 
 ```bash
-# Claude Code ile başlatın
+# Claude Code'u başlatın
 claude
 
-# İlk komut — projeyi tasarlamadan önce gereksinimleri analiz edin
+# İlk komutunuz — gereksinimleri analiz edin
 /requirements Kullanıcı girişi için JWT tabanlı kimlik doğrulama ekle
 ```
 
@@ -90,78 +102,109 @@ claude
 
 ```
 .
-├── CLAUDE.md                               # ← MUTLAKA DÜZENLE
-├── agent.config.yaml                       # ← MUTLAKA DÜZENLE (otonom ajan için)
+├── CLAUDE.md                                  # ← DÜZENLE — Claude Code talimatları
+├── agent.config.yaml                          # ← DÜZENLE — otonom ajan yapılandırması
 │
 ├── .cursor/
-│   ├── rules/                              # Cursor kural dosyaları
-│   │   ├── 00-project-overview.mdc        # ← MUTLAKA DÜZENLE
-│   │   ├── 01-coding-standards.mdc        # Kodlama standartları
-│   │   ├── 02-architecture.mdc            # Mimari kılavuzlar
-│   │   ├── 03-testing.mdc                 # Test standartları
-│   │   ├── 04-git-workflow.mdc            # Git iş akışı
-│   │   ├── 05-security.mdc               # Güvenlik (OWASP)
-│   │   └── skills/                        # Dil/framework becerileri
-│   │       ├── lang-java.mdc
-│   │       ├── lang-dotnet.mdc
-│   │       ├── lang-python.mdc
-│   │       ├── lang-typescript.mdc
-│   │       ├── lang-go.mdc
-│   │       ├── fe-react.mdc
-│   │       ├── fe-nextjs.mdc
-│   │       ├── fe-vue.mdc
-│   │       ├── fe-angular.mdc
-│   │       ├── be-microservices.mdc
-│   │       ├── devops-docker.mdc
-│   │       └── devops-cicd.mdc
-│   └── mcp.json                            # MCP sunucu yapılandırması
+│   ├── rules/
+│   │   ├── 00-project-overview.mdc           # ← DÜZENLE — her dosyada yüklenir
+│   │   ├── 01-coding-standards.mdc           # Genel kodlama standartları
+│   │   ├── 02-architecture.mdc               # Mimari kılavuzlar ve katman kuralları
+│   │   ├── 03-testing.mdc                    # Test piramidi, mock stratejisi
+│   │   ├── 04-git-workflow.mdc               # Branch adlandırma, commit'ler, PR'lar
+│   │   ├── 05-security.mdc                   # OWASP Top 10 (her zaman yüklü)
+│   │   └── skills/                           # Dosya uzantısına göre otomatik etkinleşir
+│   │       ├── lang-java.mdc                 # Spring Boot, JPA, JUnit 5, Java 21
+│   │       ├── lang-dotnet.mdc               # ASP.NET Core, EF Core, xUnit, C# 12
+│   │       ├── lang-python.mdc               # FastAPI, SQLAlchemy, pytest, tip belirtimi
+│   │       ├── lang-typescript.mdc           # Strict TS, ESM, Bun/Node.js
+│   │       ├── lang-go.mdc                   # Deyimsel Go, stdlib, eşzamanlılık
+│   │       ├── fe-react.mdc                  # Hooks, React Query, RTL, formlar
+│   │       ├── fe-nextjs.mdc                 # App Router, Server Components, Actions
+│   │       ├── fe-vue.mdc                    # Composition API, Pinia, Vue Router
+│   │       ├── fe-angular.mdc                # Standalone, Signals, NgRx, RxJS
+│   │       ├── be-microservices.mdc          # Servis tasarımı, dayanıklılık, gözlemlenebilirlik
+│   │       ├── devops-docker.mdc             # Dockerfile, Compose, güvenlik
+│   │       └── devops-cicd.mdc               # GitHub Actions, kalite kapıları, deployment
+│   └── mcp.json                               # MCP: GitHub, Jira, Linear, Slack, Sentry…
 │
 ├── .continue/
-│   ├── config.yaml                         # ← API anahtarlarını buraya ekle
+│   ├── config.yaml                            # ← API ANAHTARLARI EKLE
 │   └── rules/
 │       ├── 01-coding-standards.md
 │       ├── 02-architecture.md
 │       ├── 03-testing.md
 │       ├── 04-security.md
-│       └── skills/                         # Continue için beceri kuralları
+│       └── skills/                            # config.yaml'da yorumdan çıkararak aktive et
+│           ├── lang-java.md
+│           ├── lang-dotnet.md
+│           ├── lang-python.md
+│           ├── fe-react.md
+│           ├── fe-nextjs.md
+│           ├── fe-vue.md
+│           └── fe-angular.md
 │
 ├── .claude/
-│   ├── settings.json                       # Claude Code izinleri + hook'lar
-│   ├── commands/                           # Özel slash komutları (16 adet)
-│   └── hooks/                              # Olay tetikleyicileri
-│       ├── post-write.mjs                  # Yazma sonrası güvenlik denetimi
-│       ├── audit-log.mjs                   # Komut audit kaydı
-│       └── on-stop.mjs                     # Oturum sonu özeti
+│   ├── settings.json                          # Araç izinleri + olay hook'ları
+│   ├── commands/                              # 16 slash komutu
+│   │   ├── requirements.md                   # /requirements
+│   │   ├── architect.md                      # /architect
+│   │   ├── implement.md                      # /implement
+│   │   ├── review.md                         # /review
+│   │   ├── qa.md                             # /qa
+│   │   ├── test.md                           # /test
+│   │   ├── debug.md                          # /debug
+│   │   ├── deploy.md                         # /deploy
+│   │   ├── migrate.md                        # /migrate
+│   │   ├── sprint.md                         # /sprint
+│   │   ├── docs.md                           # /docs
+│   │   ├── standup.md                        # /standup
+│   │   ├── triage.md                         # /triage    ← otonom ajan
+│   │   ├── groom.md                          # /groom     ← otonom ajan
+│   │   ├── loop.md                           # /loop      ← otonom ajan
+│   │   └── escalate.md                       # /escalate  ← otonom ajan
+│   └── hooks/                                # Olay tetikleyicileri
+│       ├── post-write.mjs                    # Yazma sonrası korunan yol denetimi
+│       ├── audit-log.mjs                     # Bash komutu kaydı + yasak komut tespiti
+│       └── on-stop.mjs                       # Oturum sonu: devam eden görev uyarısı
 │
 ├── .github/
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   ├── ISSUE_TEMPLATE/
-│   └── workflows/ci.yml
+│   └── workflows/ci.yml                       # CI şablonu — stack'inize göre uyarlayın
 │
 ├── docs/
-│   ├── context/                            # ← TÜMÜNÜ DÜZENLE
+│   ├── ai-workflow.md                         # AI geliştirme rehberi
+│   ├── onboarding.md                          # Yeni geliştirici kılavuzu
+│   ├── context/                               # ← TÜMÜNÜ DÜZENLE
 │   │   ├── project-brief.md
 │   │   ├── tech-stack.md
 │   │   ├── domain-glossary.md
-│   │   └── domain-boundaries.md           # Otonom ajan için kapsam tanımı
+│   │   └── domain-boundaries.md              # ← DÜZENLE — ajan triage kapsamı
 │   ├── architecture/
-│   │   ├── overview.md                     # ← DÜZENLE
-│   │   └── decisions/                      # Mimari Karar Kayıtları (ADR)
-│   ├── agent/                              # Otonom ajan belgeleri
-│   │   ├── autonomous-workflow.md          # Tam durum makinesi
-│   │   ├── escalation-protocol.md          # Eskalasyon kılavuzu
-│   │   ├── decision-log-template.md        # Audit izi şeması
-│   │   └── schemas/                        # JSON şemaları
-│   ├── workflows/                          # Geliştirme iş akışları
-│   ├── ai-workflow.md                      # AI geliştirme rehberi
-│   └── onboarding.md                       # Yeni geliştirici rehberi
+│   │   ├── overview.md                        # ← DÜZENLE — sistem mimarisi
+│   │   └── decisions/                         # Mimari Karar Kayıtları (ADR)
+│   ├── agent/                                 # Otonom ajan belgeleri
+│   │   ├── autonomous-workflow.md             # Durum makinesi, fazlar, kapılar
+│   │   ├── escalation-protocol.md            # Tetikleyiciler, önem dereceleri, yanıt komutları
+│   │   ├── decision-log-template.md          # Audit izi şeması ve örnekleri
+│   │   └── schemas/                          # Fazlar arası JSON şemaları
+│   │       ├── task-state.json               # Görev başına kalıcı durum
+│   │       ├── decision.json                 # Yapısal karar kaydı
+│   │       ├── requirement-analysis.json     # /requirements yapısal çıktısı
+│   │       └── qa-report.json                # /qa kapı sonuçları
+│   └── workflows/                             # Geliştirme iş akışı kılavuzları
+│       ├── 01-requirements-analysis.md
+│       ├── 02-feature-development.md
+│       ├── 03-testing-strategy.md
+│       └── 04-deployment.md
 │
 ├── skills/
-│   └── README.md                           # Beceri indeksi ve aktivasyon rehberi
+│   └── README.md                              # Beceri indeksi ve aktivasyon rehberi
 │
 └── scripts/
-    ├── setup.sh                            # Tek seferlik kurulum
-    └── validate-ai-config.sh              # 73 noktalı doğrulama
+    ├── setup.sh                               # Tek seferlik kurulum
+    └── validate-ai-config.sh                  # 73 noktalı doğrulama betiği
 ```
 
 ---
@@ -170,47 +213,43 @@ claude
 
 ### Claude Code
 
-Claude Code, projenizin kök dizininde çalıştırdığınızda `CLAUDE.md` dosyasını otomatik yükler.
+`CLAUDE.md` dosyasını doldurun — Claude Code bunu proje dizininde otomatik olarak yükler.
 
 ```bash
-# Claude Code'u başlatın
-claude
-
-# Tüm özel komutları görüntüleyin
-/help
+claude       # Claude Code'u başlatın
+/help        # Tüm özel komutları görün
 ```
 
 **Otomatik yüklenen bağlam:**
 - `CLAUDE.md` — proje talimatları, mimari, kodlama kuralları
 - `.claude/commands/` — 16 özel slash komutu
-- `.claude/settings.json` — izinler ve hook'lar
+- `.claude/settings.json` — araç izinleri ve hook yapılandırması
 
 ### Cursor
 
-`.cursor/rules/` klasöründeki `.mdc` dosyaları, dosya türüne göre **otomatik olarak** etkinleşir. Hiçbir manuel ayar gerekmez.
+`.cursor/rules/` klasöründeki `.mdc` dosyaları, dosya türüne göre **otomatik olarak** etkinleşir:
 
 ```
-*.java dosyası açıldığında → lang-java.mdc otomatik yüklenir
-*.tsx dosyası açıldığında  → fe-react.mdc ve fe-nextjs.mdc yüklenir
-Dockerfile açıldığında     → devops-docker.mdc yüklenir
+*.java dosyası açıldığında  → lang-java.mdc yüklenir
+*.tsx dosyası açıldığında   → fe-react.mdc + fe-nextjs.mdc yüklenir
+Dockerfile açıldığında      → devops-docker.mdc yüklenir
+*.vue dosyası açıldığında   → fe-vue.mdc yüklenir
 ```
-
-**MCP sunucularını etkinleştirmek için** `.cursor/mcp.json` dosyasında ilgili sunucunun `"disabled": true` satırını kaldırın ve gerekli ortam değişkenlerini `.env` dosyasına ekleyin.
 
 ### Continue
 
-`.continue/config.yaml` dosyasını açıp şu ayarları yapın:
+`.continue/config.yaml` dosyasını iki adımda yapılandırın:
 
-**1. API anahtarı ekleyin:**
+**Adım 1 — API anahtarı ekleyin:**
 ```yaml
 models:
   - name: Claude Sonnet 4.6
     provider: anthropic
     model: claude-sonnet-4-6
-    apiKeyVar: ANTHROPIC_API_KEY   # .env dosyasında bu değişkeni tanımlayın
+    apiKeyVar: ANTHROPIC_API_KEY
 ```
 
-**2. Projenize uygun beceri kurallarını aktif edin:**
+**Adım 2 — Projenize uygun beceri kurallarını aktif edin:**
 ```yaml
 rules:
   # Temel kurallar (her zaman aktif)
@@ -219,45 +258,36 @@ rules:
   - .continue/rules/03-testing.md
   - .continue/rules/04-security.md
 
-  # Projenize uygun dil/framework kuralını yorumdan çıkarın:
-  - .continue/rules/skills/lang-java.md       # Java projesi için
-  # - .continue/rules/skills/lang-dotnet.md   # .NET projesi için
-  # - .continue/rules/skills/fe-react.md      # React projesi için
-  # - .continue/rules/skills/fe-nextjs.md     # Next.js projesi için
+  # Projenize göre birini seçin (yorumdan çıkarın):
+  - .continue/rules/skills/lang-java.md
+  # - .continue/rules/skills/lang-dotnet.md
+  # - .continue/rules/skills/lang-python.md
+  # - .continue/rules/skills/fe-react.md
+  # - .continue/rules/skills/fe-nextjs.md
+  # - .continue/rules/skills/fe-vue.md
+  # - .continue/rules/skills/fe-angular.md
 ```
 
 ---
 
 ## Dil ve Framework Becerileri
 
-Beceriler, AI araçlarına dile özgü derin bağlam sağlar. Cursor'da dosya uzantısına göre **otomatik**, Continue'da `.continue/config.yaml` üzerinden **manuel** olarak etkinleştirilir.
+| Kategori | Beceri | Temel Kapsam |
+|----------|--------|-------------|
+| **Backend** | Java / Spring Boot | Constructor injection (field injection yasak), JPA N+1 önleme, Flyway, JUnit 5, Java 21: record, sealed class, virtual thread |
+| | .NET / C# | Minimal API, Clean Architecture (MediatR CQRS), EF Core, xUnit, NSubstitute, C# 12 |
+| | Python / FastAPI | Pydantic v2, SQLAlchemy 2 async, pytest, strict tip belirtimi, uv paket yöneticisi |
+| | TypeScript / Node.js | Strict mod, discriminated union, Zod, Bun, Vitest |
+| | Go | Deyimsel Go, tüketici tarafında arayüz, hata sarmalama, tablo odaklı testler |
+| **Frontend** | React | Hooks, TanStack Query, React Hook Form + Zod, RTL + MSW |
+| | Next.js App Router | Server Components, Server Actions, ISR önbellekleme, streaming |
+| | Vue 3 | Composition API, Pinia Setup Stores, composable'lar |
+| | Angular 17+ | Standalone bileşenler, Signals, NgRx Signal Store, RxJS disiplini |
+| **Altyapı** | Docker | Çok aşamalı build, root olmayan kullanıcı, Compose healthcheck, güvenlik taraması |
+| | GitHub Actions CI/CD | Kalite kapıları, OIDC kimlik doğrulama, canary/blue-green |
+| | Microservices | Sınırlı bağlamlar, devre kesici, Saga deseni, OpenTelemetry |
 
-### Backend Diller
-
-| Beceri | Kapsam |
-|--------|--------|
-| **Java** | Spring Boot (constructor injection zorunlu), JPA/Hibernate, Flyway, JUnit 5, Java 21 özellikleri (record, sealed class, virtual thread) |
-| **.NET / C#** | ASP.NET Core minimal API, Clean Architecture, EF Core, xUnit, NSubstitute, FluentAssertions, C# 12 |
-| **Python** | FastAPI, Pydantic v2, SQLAlchemy 2.x async, pytest, strict tip belirtimi, uv paket yöneticisi |
-| **TypeScript** | Strict mod, discriminated union, Zod, Bun/Node.js ESM, Vitest |
-| **Go** | Deyimsel Go, arayüzler tüketici tarafında tanımlanır, hata sarmalama, tablo odaklı testler |
-
-### Frontend Framework'ler
-
-| Beceri | Kapsam |
-|--------|--------|
-| **React** | Hooks, TanStack Query, React Hook Form + Zod, RTL + MSW testi |
-| **Next.js** | App Router, Server Components, Server Actions, ISR önbellekleme |
-| **Vue 3** | Composition API, Pinia Setup Stores, composable'lar, Vue Router |
-| **Angular** | Standalone bileşenler, Signals, NgRx Signal Store, RxJS disiplini |
-
-### Altyapı
-
-| Beceri | Kapsam |
-|--------|--------|
-| **Docker** | Çok aşamalı build, root olmayan kullanıcı, Compose healthcheck, güvenlik taraması |
-| **CI/CD** | GitHub Actions pipeline, kalite kapıları, canary/blue-green, OIDC kimlik doğrulama |
-| **Microservices** | Sınırlı bağlamlar, devre kesici, Saga deseni, OpenTelemetry |
+Yeni beceri ekleme için [skills/README.md](skills/README.md) dosyasına bakın.
 
 ---
 
@@ -265,159 +295,162 @@ Beceriler, AI araçlarına dile özgü derin bağlam sağlar. Cursor'da dosya uz
 
 ### İnsan Destekli Komutlar
 
-Bu komutlar sizin yönetiminizde çalışır — her adımda siz kontroldasınız.
+Her adımı siz tetikler ve çıktıyı incelersiniz.
 
-| Komut | Kullanım |
-|-------|---------|
-| `/requirements <konu>` | Gereksinimleri kullanıcı hikayeleri, kabul kriterleri ve görev listesine dönüştürür |
-| `/architect <özellik>` | Kod yazmadan önce tasarım belgesi oluşturur |
-| `/implement <görev>` | Yapılandırılmış alt-üst uygulamayla kod + test yazar |
-| `/qa` | Tam kalite döngüsü: lint, tip kontrolü, test kapsamı, güvenlik |
-| `/review` | Proje standartlarına göre derin kod incelemesi |
-| `/test <dosya>` | Belirtilen dosya için kapsamlı test paketi oluşturur |
-| `/debug <hata>` | Sistematik hata teşhisi (hipotez → araştırma → düzeltme) |
-| `/deploy <ortam>` | Deployment öncesi kontrol listesi + izleme planı |
-| `/migrate <açıklama>` | Güvenli veritabanı migrasyon planlaması (Expand-Contract deseni) |
-| `/sprint <tema>` | Sprint planlaması: kapasite, görev dağılımı, risk kaydı |
-| `/docs <dosya>` | API veya modül belgelendirmesi oluşturur |
-| `/standup` | Git geçmişinden günlük standup özeti üretir |
+| Komut | Amaç | Ne Zaman Kullanılır |
+|-------|------|---------------------|
+| `/requirements` | Ham gereksinimleri → kullanıcı hikayeleri, kabul kriterleri, sıralı görev listesi ve Tamamlanma Tanımına dönüştürür | Her özelliğe başlamadan önce |
+| `/architect` | Tek bir satır kod yazmadan önce tasarım belgesi oluşturur | 50 satırı aşan her görev için |
+| `/implement` | Alt-üst yapılandırılmış uygulama + yerleşik öz-inceleme kontrol listesi | Kodlama sırasında |
+| `/qa` | Tam kalite döngüsü: lint, tip kontrolü, testler, kapsam, güvenlik denetimi | PR açmadan önce |
+| `/review` | Proje standartları ve OWASP'a göre derin kod incelemesi | Uygulamadan sonra |
+| `/test` | Kapsamlı test paketi üretir (mutlu yol, kenar durumlar, hata durumları) | Herhangi bir modül veya fonksiyon için |
+| `/debug` | Sistematik hata teşhisi: hipotezler → araştırma → düzeltme → önleme | Bir hatada takılı kalındığında |
+| `/deploy` | Deployment öncesi kontrol listesi, yürütme adımları, deployment sonrası izleme planı | Her deployment'tan önce |
+| `/migrate` | Güvenli DB migrasyonu: Expand-Contract deseni, toplu strateji, geri alma planı | Şema değişiklikleri için |
+| `/sprint` | Sprint planlaması: kapasite analizi, backlog seçimi, görev dağılımı, risk kaydı | Sprint başlangıcında |
+| `/docs` | Kaynaktan API belgeleri, mimari belgeleri veya kullanıcı kılavuzları oluşturur | Uygulamadan sonra |
+| `/standup` | Git geçmişinden günlük standup özeti üretir | Günün başında |
 
 ### Otonom Ajan Komutları
 
-Bu komutlar insan müdahalesi olmadan çalışmak üzere tasarlanmıştır.
+Her adım için insan müdahalesi olmadan çalışır — ajan karar verir ve harekete geçer.
 
-| Komut | Kullanım |
-|-------|---------|
-| `/triage <issue>` | JIRA/Linear issue'nun bu projeye ait olup olmadığını güven skoru ile değerlendirir |
-| `/groom` | Backlog'dan toplu issue işler: triage + gereksinim analizi |
-| `/loop <görev-id>` | Tek görev için tam otonom geliştirme döngüsünü çalıştırır |
-| `/escalate <önem> <tetikleyici> <görev>` | İnsan müdahalesi gereken durumları iletir |
+| Komut | Amaç | Nasıl Çalışır |
+|-------|------|---------------|
+| `/triage <issue>` | Bir JIRA/Linear/GitHub issue'sunun bu projeye ait olup olmadığını değerlendirir | 4 boyutta güven skoru hesaplar (varlık eşleşmesi, fonksiyonel alan, kod sahipliği, hariç tutma). ≥ 0.80 → otomatik kabul, < 0.30 → otomatik red, 0.30–0.79 → eskalasyon |
+| `/groom` | Bir backlog grubunu triage + gereksinim analizinden geçirir | Yapılandırılmış issue tracker'ı tarar, her adaya `/triage` uygular, kabul edilenlere `/requirements` çalıştırır. `max_concurrent_tasks` sınırına uyar |
+| `/loop <görev-id>` | Tek görev için tam otonom geliştirme döngüsünü çalıştırır | Çalıştırır: tasarım → branch oluşturma → uygulama (yeniden deneme döngüsüyle) → QA → PR oluşturma → CI izleme → deployment → deployment sonrası izleme. Kesintide kaldığı yerden devam eder |
+| `/escalate <önem> <tetikleyici> <görev>` | Ajan ilerleyemediğinde yapısal eskalasyon başlatır | Bağlamı paketler, Slack/GitHub/e-posta bildirimleri gönderir, insan yanıt komutlarını dinler (`AGENT_RESUME`, `AGENT_SKIP_TASK`, `AGENT_ABANDON`, vb.) |
 
 ---
 
 ## Otonom Ajan Döngüsü
 
-İskelet, JIRA/Linear backlog'undan issue alıp eksiksiz Pull Request oluşturana kadar bağımsız çalışabilen bir ajan altyapısı içerir.
-
-### Nasıl Çalışır?
+JIRA issue'sundan üretime kadar tam yaşam döngüsü:
 
 ```
-JIRA / Linear / GitHub Issues
-          │
-          ▼
-    /groom — Backlog tarama
-    (her 15 dakikada bir ya da webhook ile)
-          │
-          ▼
-    /triage — Domain doğrulama
-    ┌───────────────────────────────┐
-    │ Bu issue projeye ait mi?      │
-    │ Güven skoru hesaplanır:       │
-    │   Varlık eşleşmesi    +0.30  │
-    │   Fonksiyonel alan    +0.40  │
-    │   Kod sahipliği       +0.20  │
-    │   Hariç tutma sinyali  -0.30 │
-    └───────────────────────────────┘
-          │
-    ≥0.80 → KABUL   0.30-0.79 → ESKALASYON   <0.30 → RED
-          │
-          ▼
-    /requirements — Gereksinim analizi
-    (kullanıcı hikayeleri + görev listesi JSON olarak kaydedilir)
-          │
-          ▼
-    /architect — Tasarım
-    (risk=yüksek ise insan onayı beklenir)
-          │
-          ▼
-    /loop — Uygulama döngüsü
-    ┌─────────────────────────────────┐
-    │ Her görev için:                 │
-    │   1. Uygula                     │
-    │   2. Testleri çalıştır          │
-    │   3. Başarısızsa → /debug + dene│
-    │   4. Maks. deneme aşıldıysa →   │
-    │      /escalate                  │
-    └─────────────────────────────────┘
-          │
-          ▼
-    /qa — Kalite kapıları
-    (lint + tip + test + kapsam + güvenlik)
-          │
-          ▼
-    Pull Request oluştur
-    CI izle → birleştir
-          │
-          ▼
-    /deploy → Staging otomatik
-    Production → İnsan onayı
-          │
-          ▼
-    30 dk. izleme
-    Metrik düşüşü → Otomatik geri alma
-          │
-          ▼
-    JIRA: Tamamlandı ✓
+Issue Tracker (JIRA / Linear / GitHub)
+         │
+         ▼
+  /groom — zamanlanmış yoklama veya webhook tetikleyicisi
+         │
+         ▼
+  /triage — domain doğrulama
+  ┌──────────────────────────────────────────┐
+  │  Güven skoru hesaplaması:                │
+  │    Varlık eşleşmesi       maks. +0.30   │
+  │    Fonksiyonel alan       maks. +0.40   │
+  │    Kod sahipliği          maks. +0.20   │
+  │    Hariç tutma sinyali    ceza  -0.30   │
+  └──────────────────────────────────────────┘
+         │
+  ≥0.80 KABUL   0.30–0.79 ESKALASYON   <0.30 RED
+         │
+         ▼
+  /requirements — kullanıcı hikayeleri + sıralı görev listesi (JSON + Markdown)
+         │
+  güven kapısı ── düşükse ──▶ /escalate medium requirements_confidence_low
+         │
+         ▼
+  /architect — tasarım belgesi + risk değerlendirmesi
+         │
+  risk = YÜKSEK ──▶ /escalate high design_risk_high ──▶ AGENT_APPROVE_DESIGN bekle
+         │
+         ▼
+  /loop — uygulama döngüsü (görev başına):
+  ┌──────────────────────────────────────────────────────┐
+  │  görevi uygula → testleri çalıştır                  │
+  │  BAŞARISIZ → /debug → düzelt → yeniden test          │
+  │              (max_retries kadar)                     │
+  │  hâlâ BAŞARISIZ → /escalate high implement_max_retries│
+  └──────────────────────────────────────────────────────┘
+         │
+         ▼
+  /qa — lint + tip kontrolü + test kapsamı + güvenlik
+  BAŞARISIZ → otomatik düzeltme girişimi → hâlâ BAŞARISIZ → /escalate high qa_gate_failure
+         │
+         ▼
+  PR oluştur (issue'ya bağlantılı, QA raporu + risk seviyesiyle)
+  CI izle → BAŞARISIZ → /escalate high ci_pipeline_failure
+         │
+         ▼
+  Birleştirmeyi bekle (yapılandırılmışsa otomatik, değilse insan bekle)
+         │
+         ▼
+  /deploy staging (otomatik) → /deploy production (insan onayı kapısı)
+         │
+         ▼
+  Deployment sonrası izleme (30 dakika)
+  Hata oranı yükselişi → otomatik geri alma + /escalate critical post_deploy_error_spike
+         │
+         ▼
+  Issue tracker güncelle → Tamamlandı ✓
+  Audit kaydı yaz
 ```
 
-### Yapılandırma
+### Ajan Güvenlik Mekanizmaları
 
-`agent.config.yaml` dosyasını açın ve şu alanları doldurun:
+| Mekanizma | Nasıl Çalışır |
+|-----------|--------------|
+| **Kalıcı durum** | Her görevin ilerlemesi `.agent/state/<görev-id>.json` dosyasına kaydedilir — ajan kesintide kaldığı yerden devam eder |
+| **Kill switch** | `touch .agent/STOP` — ajan bir sonraki faz geçişinden önce durur |
+| **Audit izi** | Her karar, komut ve maliyet `.agent/audit/<tarih>-*.jsonl` dosyasına kaydedilir |
+| **Korunan yollar** | `agent.config.yaml` dosyasında ajanın hiçbir zaman değiştiremeyeceği dosya ve komutlar tanımlanır |
 
-```yaml
-agent:
-  mode: semi-autonomous          # autonomous | semi-autonomous | assisted
+### Eskalasyona İnsan Yanıtı
 
-issue_tracker:
-  provider: jira                 # jira | linear | github | azure-devops
-  jira:
-    server_url: "${JIRA_URL}"
-    project_key: "PROJ"          # ← Jira proje anahtarınız
+Ajan eskalasyon yaptığında GitHub issue'suna veya JIRA ticket'ına yorum ekleyin:
 
-domain:
-  acceptance_threshold: 0.80     # Bu eşiğin üstü otomatik kabul
-  rejection_threshold: 0.30      # Bu eşiğin altı otomatik red
+| Yorum | Etki |
+|-------|------|
+| `AGENT_RESUME` | Mevcut fazdan devam et |
+| `AGENT_RESUME phase=architect` | Belirli bir fazdan yeniden başla |
+| `AGENT_CLARIFY: <metin>` | Açıklama ver; ajan bunu kullanarak yeniden dener |
+| `AGENT_APPROVE_DESIGN` | Yüksek riskli tasarımı onayla; uygulamaya geç |
+| `AGENT_APPROVE_DEPLOY` | Üretim deployment'ını onayla |
+| `AGENT_SKIP_TASK` | Mevcut alt görevi atla; bir sonrakine geç |
+| `AGENT_REASSIGN` | Ajan kuyruğundan çıkar; insan geliştiriciye aktar |
+| `AGENT_ABANDON` | Bu ticket üzerindeki tüm çalışmayı durdur |
 
-autonomy:
-  gates:
-    implement:
-      max_retries: 3             # Test başarısızlığında maks. deneme
-      max_hours: 8               # Görev başına zaman aşımı
-  require_approval_for_risk:
-    - high                       # Yüksek riskli değişiklikler insan onayı gerektirir
-```
+---
 
-### Domain Sınırları Tanımlama
+## MCP Sunucuları
 
-`docs/context/domain-boundaries.md` dosyasını doldurun. Ajan bu dosyayı okuyarak hangi JIRA issue'larının bu projeyle ilgili olduğuna karar verir:
+`.cursor/mcp.json` dosyasında önceden yapılandırılmıştır. İlgili sunucunun `"disabled": true` satırını kaldırın ve gerekli ortam değişkenlerini `.env` dosyasına ekleyin:
 
-```markdown
-## Bu Proje Neyin Sorumlusu?
+| Sunucu | Amaç | Gerekli Ortam Değişkenleri |
+|--------|------|---------------------------|
+| `filesystem` | Çalışma alanı dosyalarını oku/yaz | — (otomatik) |
+| `git` | Git geçmişi, diff'ler, blame | — (otomatik) |
+| `github` | Issue'lar, PR'lar, CI durumu | `GITHUB_TOKEN` |
+| `postgres` | Şema inceleme, sorgu testi | `DATABASE_URL` |
+| `jira` | Issue çek, durumu güncelle — `/triage` ve `/groom` için | `JIRA_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN` |
+| `linear` | Jira'ya alternatif | `LINEAR_API_KEY` |
+| `slack` | Eskalasyon bildirimleri gönder | `SLACK_BOT_TOKEN`, `SLACK_TEAM_ID` |
+| `sentry` | Deployment sonrası hata izleme | `SENTRY_AUTH_TOKEN`, `SENTRY_ORG` |
+| `brave-search` | Dokümantasyon için web araması | `BRAVE_API_KEY` |
+| `memory` | Oturumlar arası kalıcı bellek | — |
+| `puppeteer` | Tarayıcı otomasyonu / E2E | — |
 
-### Kapsam İçi
-- Sipariş yönetimi (oluşturma, güncelleme, iptal)
-- Ödeme işleme (ödeme, iade)
-- Stok takibi
+---
 
-### Kapsam Dışı
-- Kullanıcı kimlik doğrulama (Auth servisi)
-- Ürün kataloğu (Catalog servisi)
-- Pazarlama sayfaları
+## Claude Code Hook'ları
 
-### Tipik Kapsam İçi İstekler
-✅ "Ödeme webhook zaman aşımında yeniden deneme ekle"
-✅ "Sipariş durumu API'sini sayfalandır"
+Araç kullanımında otomatik çalışan olay tetikleyicileri:
 
-### Tipik Kapsam Dışı İstekler
-❌ "Google ile SSO girişi ekle"  → Auth servisi
-❌ "Ürün açıklamasını güncelle"  → Catalog servisi
-```
+| Hook | Dosya | Ne Yapar |
+|------|-------|---------|
+| `UserPromptSubmit` | `toon.mjs` | Her prompt öncesi token kullanım optimizasyonu |
+| `PostToolUse(Write)` | `post-write.mjs` | Korunan yol yazımında uyarı verir; audit izine kaydeder |
+| `PostToolUse(Bash)` | `audit-log.mjs` | Her komutu + çıkış kodunu kaydeder; yasak komut desenlerini işaretler |
+| `Stop` | `on-stop.mjs` | Oturum sonu özeti: devam eden görevleri listeler, kill switch aktifse uyarır |
 
 ---
 
 ## Geliştirme İş Akışları
 
-### Önerilen Geliştirme Sırası
+### Önerilen Sıra
 
 ```
 Gereksinim Geldi
@@ -426,7 +459,7 @@ Gereksinim Geldi
 /requirements   → Kullanıcı hikayeleri ve görev listesi
       │
       ▼
-/architect      → Tasarım belgesi (kod yazmadan önce)
+/architect      → Tasarım belgesi (kod yazmadan önce zorunlu)
       │
       ▼
 /implement      → Alt-üst katmanlı uygulama + testler
@@ -438,13 +471,13 @@ Gereksinim Geldi
 /review         → Kod incelemesi
       │
       ▼
-PR Aç → Birleştir → Staging Deploy
+PR Aç → Birleştir → Staging Deployment
       │
       ▼
 /deploy production   → Üretim deployment kontrol listesi
 ```
 
-### Etkili Prompt Yazma
+### Etkili Prompt Kalıpları
 
 **Bağlam verin:**
 ```
@@ -462,136 +495,148 @@ Başarısız testi düzeltmek için en küçük değişikliği yap.
 **AI'yı rotada tutun:**
 ```
 Tasarım aşamasında repository desenini kullanmaya karar verdik.
-O yaklaşımda kal, doğrudan DB erişimi kullanma.
+O yaklaşımda kal; doğrudan DB erişimi kullanma.
 ```
 
-### Dikkat Edilmesi Gerekenler
+### AI Çıktısını İncelerken Dikkat Edilecekler
 
-AI tarafından üretilen kod şunları içeriyorsa **duraksayın ve inceleyin:**
-
+Şunları görürseniz **duraksayın ve dikkatlice inceleyin:**
 - Tartışmadığınız yeni bir bağımlılık ekleniyor
 - Kod tabanının geri kalanıyla tutarsız bir desen kullanılıyor
 - Hata yönetimi eksik
 - Test edilmeyen bir kod yolu var
-- "Gelecekteki esneklik için" gereksiz soyutlama ekleniyor
 - Dokunmadığınız dosyalar değiştiriliyor
+- "Gelecekteki esneklik için" gereksiz soyutlama ekleniyor
 
 ---
 
 ## Yapılandırma Rehberi
 
-### .env Dosyası
+### agent.config.yaml
 
-`.env.example` dosyasını kopyalayın ve değerleri doldurun:
+`agent.config.yaml` dosyasındaki TODO alanlarını doldurun:
 
-```bash
-cp .env.example .env
-```
-
-```env
-# Uygulama
-NODE_ENV=development
-PORT=3000
-
-# Veritabanı
-DATABASE_URL=postgresql://kullanici:sifre@localhost:5432/veritabanim
-
-# AI Araçları
-ANTHROPIC_API_KEY=sk-ant-...
-
-# Otonom Ajan (isteğe bağlı)
-JIRA_URL=https://sirketim.atlassian.net
-JIRA_EMAIL=gelistirici@sirketim.com
-JIRA_API_TOKEN=...
-SLACK_WEBHOOK_URL=https://hooks.slack.com/...
-```
-
-### MCP Sunucularını Etkinleştirme
-
-`.cursor/mcp.json` dosyasında ilgili sunucunun `"disabled": true` satırını silin:
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
-      }
-      // "disabled": true  ← Bu satırı silin
-    },
-    "jira": {
-      "command": "npx",
-      "args": ["-y", "mcp-server-jira"],
-      "env": {
-        "JIRA_URL": "${env:JIRA_URL}",
-        "JIRA_EMAIL": "${env:JIRA_EMAIL}",
-        "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}"
-      }
-      // "disabled": true  ← Bu satırı silin
-    }
-  }
-}
-```
-
-### Yeni Beceri Ekleme
-
-Projenize ait olmayan bir dil veya framework için beceri eklemek istiyorsanız:
-
-**1. Cursor kuralı oluşturun** (`.cursor/rules/skills/lang-rust.mdc`):
-```markdown
----
-description: Rust geliştirme standartları
-globs: ["**/*.rs", "**/Cargo.toml"]
-alwaysApply: false
----
-
-# Rust Standartları
-...
-```
-
-**2. Continue kuralı oluşturun** (`.continue/rules/skills/lang-rust.md`):
-```markdown
-# Rust Standartları (özet)
-...
-```
-
-**3. `skills/README.md` indeksine ekleyin.**
-
-**4. `.continue/config.yaml`'da aktif edin:**
 ```yaml
-rules:
-  - .continue/rules/skills/lang-rust.md
+agent:
+  mode: semi-autonomous          # autonomous | semi-autonomous | assisted
+  id: "benim-projem-ajan"
+
+issue_tracker:
+  provider: jira
+  jira:
+    server_url: "${JIRA_URL}"
+    project_key: "PROJ"          # Jira proje anahtarınız
+    poll_interval_minutes: 15
+
+domain:
+  acceptance_threshold: 0.80     # Bu eşiğin üstü → otomatik kabul
+  rejection_threshold: 0.30      # Bu eşiğin altı → otomatik red
+
+autonomy:
+  gates:
+    implement:
+      max_retries: 3             # Test başarısızlığında maks. deneme sayısı
+      max_hours: 8               # Görev başına zaman aşımı (saat)
+  require_approval_for_risk:
+    - high                       # Yüksek riskli değişiklikler insan onayı gerektirir
+
+escalation:
+  primary_channel: slack
+  slack:
+    webhook_url_env: "SLACK_WEBHOOK_URL"
+    channel: "#geliştirici-uyarıları"
 ```
+
+### Domain Sınırlarını Tanımlama
+
+`docs/context/domain-boundaries.md` dosyasını doldurun. Bu dosya ajanın triage kararının temelidir:
+
+```markdown
+## Bu Proje Neyin Sorumlusu?
+
+### Kapsam İçi
+- Sipariş yönetimi (oluşturma, güncelleme, iptal, sorgulama)
+- Ödeme işleme (ödeme alma, iade, mutabakat)
+- Stok takibi (stok seviyeleri, rezervasyonlar, yeniden sipariş tetikleyicileri)
+
+### Kapsam Dışı
+- Kullanıcı kimlik doğrulama → Auth servisi
+- Ürün kataloğu → Catalog servisi
+- Pazarlama sayfaları → Marketing ekibi
+
+### Tipik Kapsam İçi İstekler
+✅ "Ödeme webhook zaman aşımında yeniden deneme mantığı ekle"
+✅ "Sipariş geçmişi API'sini sayfalandır"
+
+### Tipik Kapsam Dışı İstekler
+❌ "Google ile SSO girişi ekle"        → Auth servisi
+❌ "Ürün açıklamasını güncelle"        → Catalog servisi
+```
+
+### Git'e Ne Commit Edilir?
+
+| ✅ Commit Et | ❌ Commit Etme |
+|-------------|---------------|
+| `.cursor/rules/**` | `.env` |
+| `.continue/config.yaml` (API anahtarsız) | `.agent/state/**` (çalışma zamanı) |
+| `.claude/commands/**` | `.agent/audit/**` (çalışma zamanı) |
+| `agent.config.yaml` (gizli bilgisiz) | `.claude/settings.local.json` |
+| `docs/**` | `.env.*` gerçek değerlerle |
+| `CLAUDE.md` | `node_modules/`, `__pycache__/` vb. |
+
+`.gitignore` bu kuralları zaten uygular.
 
 ---
 
 ## Sıkça Sorulan Sorular
 
-**S: Otonom ajan ne zaman insan onayı ister?**
+**S: /loop ile /implement arasındaki fark nedir?**
 
-Ajan şu durumlarda durur ve bekler:
-- Tasarım riski `yüksek` olarak değerlendirildiğinde
-- Bir test `max_retries` (varsayılan: 3) kez denenmesine rağmen geçemediğinde
-- QA kalite kapısı başarısız olduğunda
-- Üretim deployment'ı yapılmak istendiğinde (her zaman insan onayı gerekir)
-- Güven skoru eşiğin altında kaldığında
+`/implement` insan destekli bir komuttur — siz her adımı tetikler ve çıktıyı onaylarsınız. Tek bir görev için yapılandırılmış kod + test üretir.
+
+`/loop` ise tam otonom ajan komutudur. JIRA'dan alınan onaylanmış bir görevi baştan sona teslim eder: tasarım belgesi oluşturur, branch açar, kodu yazar, testleri çalıştırır (başarısız olursa otomatik düzeltir), QA kapılarından geçirir, PR oluşturur, CI'ı izler ve deployment sonrası metrikleri kontrol eder. İnsan müdahalesi yalnızca `/escalate` koşullarında gerekir.
 
 ---
 
-**S: Ajan yanlış bir JIRA issue'su alıp çalışmaya başlarsa ne olur?**
+**S: Otonom ajan ne zaman insan onayı ister?**
 
-`docs/context/domain-boundaries.md` dosyasındaki kapsam tanımını güncelleyin.
-Ayrıca şu yöntemlerle manuel müdahale edebilirsiniz:
+Ajan şu durumlarda durur ve bekler:
+- Tasarım riski `yüksek` olarak değerlendirildiğinde (`AGENT_APPROVE_DESIGN` beklenir)
+- Bir test `max_retries` kez denenmesine rağmen geçemediğinde
+- QA kalite kapısı başarısız olduğunda ve otomatik düzeltme çalışmadığında
+- Üretim deployment'ı yapılmak istendiğinde (her zaman insan onayı gerekir)
+- Triage güven skoru eşikler arasında kaldığında (0.30–0.80)
+
+---
+
+**S: Ajan yanlış bir JIRA issue'su alırsa ne olur?**
+
+`docs/context/domain-boundaries.md` dosyasındaki kapsam tanımını güncelleyin — bu ajanın triage kararının temelidir. Anlık müdahale için:
 
 ```bash
 # Ajanı hemen durdurun
 touch .agent/STOP
 
-# Belirli bir görevi bırakın (JIRA issue'suna yorum ekleyin)
+# Belirli bir görevi bırakın (GitHub issue veya JIRA ticket'ına yorum ekleyin)
 AGENT_ABANDON
 ```
+
+---
+
+**S: /groom ile /loop birlikte nasıl kullanılır?**
+
+```bash
+# 1. Backlog'u tara ve gereksinim analizi yap
+/groom
+
+# 2. Belirli bir görevi otonom olarak geliştir
+/loop PROJ-42
+
+# 3. Kesilen bir görevi kaldığı yerden devam ettir
+/loop resume PROJ-42
+```
+
+`/groom`, onaylanan görevler için `/loop`'u otomatik çalıştırabilir veya sadece hazırlık yapıp bırakabilir — bu `agent.config.yaml` dosyasındaki `mode` ayarına bağlıdır.
 
 ---
 
@@ -601,41 +646,24 @@ AGENT_ABANDON
 
 ---
 
-**S: Tüm AI komutları Claude kullanıyor mu?**
+**S: Hangi modeller destekleniyor?**
 
-Hayır. Farklı modeller kullanabilirsiniz:
+`.continue/config.yaml` dosyasındaki `models` bölümünü düzenleyerek seçebilirsiniz:
 - **Claude Sonnet 4.6** — sohbet, uygulama, karmaşık görevler (önerilen)
 - **Claude Haiku 4.5** — otomatik tamamlama (hızlı ve ekonomik)
-- **Ollama (yerel model)** — internet bağlantısı olmadan çalışma
-
-`.continue/config.yaml` dosyasındaki `models` bölümünü düzenleyerek yapılandırabilirsiniz.
+- **Ollama (yerel model)** — internet bağlantısı gerektirmez, ücretsiz
 
 ---
 
-**S: Hangi dosyaları Git'e commit etmeliyim?**
-
-| Commit ET | Commit ETME |
-|-----------|-------------|
-| Tüm `.cursor/rules/**` | `.env` |
-| `.continue/config.yaml` (API anahtarları olmadan) | `.agent/state/**` (çalışma zamanı) |
-| `.claude/commands/**` | `.agent/audit/**` (çalışma zamanı) |
-| `agent.config.yaml` (secrets olmadan) | `.claude/settings.local.json` |
-| `docs/**` | `node_modules/`, `__pycache__/` vb. |
-| `CLAUDE.md` | `.env.*` ile gerçek değerler |
-
-`.gitignore` bu kuralları zaten uygular.
-
----
-
-**S: Doğrulama betiği nasıl çalışır?**
+**S: Doğrulama betiği ne kontrol eder?**
 
 ```bash
 bash scripts/validate-ai-config.sh
 ```
 
-Betik 73 dosyayı kontrol eder:
+73 dosyayı kontrol eder:
 - **PASS** — Dosya mevcut
-- **WARN** — Dosya mevcut ama hâlâ TODO içeriyor (özelleştirme gerekli)
+- **WARN** — Dosya mevcut ama TODO içeriyor (özelleştirme bekleniyor)
 - **FAIL** — Dosya eksik (geliştirmeye başlamadan önce düzeltilmeli)
 
 ---
