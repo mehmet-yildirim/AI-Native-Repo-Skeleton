@@ -92,6 +92,12 @@ rules:
   # - .continue/rules/skills/fe-vue.md
   # - .continue/rules/skills/fe-angular.md
 
+  # --- Mobile skills: uncomment one for your platform ---
+  # - .continue/rules/skills/mobile-ios.md
+  # - .continue/rules/skills/mobile-android.md
+  # - .continue/rules/skills/mobile-flutter.md
+  # - .continue/rules/skills/mobile-reactnative.md
+
 # =============================================================================
 # SLASH COMMANDS — Custom commands available with /
 # =============================================================================

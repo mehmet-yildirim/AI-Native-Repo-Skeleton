@@ -33,6 +33,15 @@ deep context to AI tools.
 | Vue 3 | `skills/fe-vue.mdc` | `skills/fe-vue.md` | Composition API, Pinia, Vue Router |
 | Angular | `skills/fe-angular.mdc` | `skills/fe-angular.md` | Standalone, Signals, NgRx, RxJS |
 
+### Mobile Platforms
+
+| Skill | Cursor Rule | Continue Rule | Key Coverage |
+|-------|-------------|---------------|-------------|
+| iOS | `skills/mobile-ios.mdc` | `skills/mobile-ios.md` | Swift 5.9+, SwiftUI, MVVM, async/await, SwiftData, XCTest / Swift Testing |
+| Android | `skills/mobile-android.mdc` | `skills/mobile-android.md` | Kotlin, Jetpack Compose, Hilt, Room, Coroutines + Flow, Material 3 |
+| Flutter | `skills/mobile-flutter.mdc` | `skills/mobile-flutter.md` | Dart 3, Riverpod, GoRouter, Freezed, drift, EAS / Fastlane |
+| React Native | `skills/mobile-reactnative.mdc` | `skills/mobile-reactnative.md` | Expo, TypeScript strict, React Navigation, Zustand, TanStack Query, EAS |
+
 ### Infrastructure & DevOps
 
 | Skill | Cursor Rule | Continue Rule | Key Coverage |
@@ -54,14 +63,22 @@ rules:
   - .continue/rules/03-testing.md
   - .continue/rules/04-security.md
 
-  # Activate the skills relevant to YOUR project (uncomment):
-  - .continue/rules/skills/lang-java.md
+  # Backend — activate one:
+  # - .continue/rules/skills/lang-java.md
   # - .continue/rules/skills/lang-dotnet.md
   # - .continue/rules/skills/lang-python.md
+
+  # Frontend — activate one or more:
   # - .continue/rules/skills/fe-react.md
   # - .continue/rules/skills/fe-nextjs.md
   # - .continue/rules/skills/fe-vue.md
   # - .continue/rules/skills/fe-angular.md
+
+  # Mobile — activate one:
+  # - .continue/rules/skills/mobile-ios.md
+  # - .continue/rules/skills/mobile-android.md
+  # - .continue/rules/skills/mobile-flutter.md
+  # - .continue/rules/skills/mobile-reactnative.md
 ```
 
 ## Using Skills in Claude Code

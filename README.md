@@ -92,6 +92,10 @@ Complete these before writing any code:
 │   │       ├── fe-nextjs.mdc                 # App Router, Server Components, Actions
 │   │       ├── fe-vue.mdc                    # Composition API, Pinia, Vue Router
 │   │       ├── fe-angular.mdc                # Standalone, Signals, NgRx, RxJS
+│   │       ├── mobile-ios.mdc                # Swift, SwiftUI, async/await, SwiftData
+│   │       ├── mobile-android.mdc            # Kotlin, Compose, Hilt, Room, Flow
+│   │       ├── mobile-flutter.mdc            # Dart 3, Riverpod, GoRouter, Freezed
+│   │       ├── mobile-reactnative.mdc        # Expo, TS strict, React Navigation, EAS
 │   │       ├── be-microservices.mdc          # Service design, resilience, observability
 │   │       ├── devops-docker.mdc             # Dockerfile, Compose, security
 │   │       └── devops-cicd.mdc               # GitHub Actions, quality gates, deployment
@@ -111,7 +115,11 @@ Complete these before writing any code:
 │           ├── fe-react.md
 │           ├── fe-nextjs.md
 │           ├── fe-vue.md
-│           └── fe-angular.md
+│           ├── fe-angular.md
+│           ├── mobile-ios.md
+│           ├── mobile-android.md
+│           ├── mobile-flutter.md
+│           └── mobile-reactnative.md
 │
 ├── .claude/
 │   ├── settings.json                          # Tool permissions + event hooks
@@ -314,6 +322,10 @@ Skills provide deep, idiomatic guidance for specific languages and frameworks.
 | | Next.js App Router | Server Components, Server Actions, ISR, streaming |
 | | Vue 3 | Composition API, Pinia Setup Stores, composables |
 | | Angular 17+ | Standalone components, Signals, NgRx Signal Store, RxJS |
+| **Mobile** | iOS (Swift / SwiftUI) | async/await + actors, @Observable, NavigationStack, SwiftData, Swift Testing |
+| | Android (Kotlin / Compose) | StateFlow, Hilt, Room + Flow, Compose UDF, Turbine testing |
+| | Flutter / Dart | Riverpod + code-gen, GoRouter, Freezed, drift, EAS / Fastlane |
+| | React Native / Expo | Strict TS, FlashList, React Navigation v7, Zustand + TanStack Query, EAS |
 | **Infra** | Docker | Multi-stage builds, non-root user, Compose health checks, image scanning |
 | | GitHub Actions CI/CD | Quality gates, OIDC auth, canary / blue-green deployment |
 | | Microservices | Bounded contexts, circuit breakers, Saga pattern, OpenTelemetry |

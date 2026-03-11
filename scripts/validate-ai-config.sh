@@ -98,6 +98,10 @@ check_exists ".cursor/rules/skills/fe-angular.mdc"
 check_exists ".cursor/rules/skills/be-microservices.mdc"
 check_exists ".cursor/rules/skills/devops-docker.mdc"
 check_exists ".cursor/rules/skills/devops-cicd.mdc"
+check_exists ".cursor/rules/skills/mobile-ios.mdc"
+check_exists ".cursor/rules/skills/mobile-android.mdc"
+check_exists ".cursor/rules/skills/mobile-flutter.mdc"
+check_exists ".cursor/rules/skills/mobile-reactnative.mdc"
 
 # --- Continue skill rules ---
 check_exists ".continue/rules/skills/lang-java.md"
@@ -107,6 +111,10 @@ check_exists ".continue/rules/skills/fe-react.md"
 check_exists ".continue/rules/skills/fe-nextjs.md"
 check_exists ".continue/rules/skills/fe-vue.md"
 check_exists ".continue/rules/skills/fe-angular.md"
+check_exists ".continue/rules/skills/mobile-ios.md"
+check_exists ".continue/rules/skills/mobile-android.md"
+check_exists ".continue/rules/skills/mobile-flutter.md"
+check_exists ".continue/rules/skills/mobile-reactnative.md"
 
 # --- Workflow docs ---
 check_exists "docs/workflows/01-requirements-analysis.md"

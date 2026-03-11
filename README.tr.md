@@ -123,6 +123,10 @@ claude
 │   │       ├── fe-nextjs.mdc                 # App Router, Server Components, Actions
 │   │       ├── fe-vue.mdc                    # Composition API, Pinia, Vue Router
 │   │       ├── fe-angular.mdc                # Standalone, Signals, NgRx, RxJS
+│   │       ├── mobile-ios.mdc                # Swift, SwiftUI, async/await, SwiftData
+│   │       ├── mobile-android.mdc            # Kotlin, Compose, Hilt, Room, Flow
+│   │       ├── mobile-flutter.mdc            # Dart 3, Riverpod, GoRouter, Freezed
+│   │       ├── mobile-reactnative.mdc        # Expo, TS strict, React Navigation, EAS
 │   │       ├── be-microservices.mdc          # Servis tasarımı, dayanıklılık, gözlemlenebilirlik
 │   │       ├── devops-docker.mdc             # Dockerfile, Compose, güvenlik
 │   │       └── devops-cicd.mdc               # GitHub Actions, kalite kapıları, deployment
@@ -142,7 +146,11 @@ claude
 │           ├── fe-react.md
 │           ├── fe-nextjs.md
 │           ├── fe-vue.md
-│           └── fe-angular.md
+│           ├── fe-angular.md
+│           ├── mobile-ios.md
+│           ├── mobile-android.md
+│           ├── mobile-flutter.md
+│           └── mobile-reactnative.md
 │
 ├── .claude/
 │   ├── settings.json                          # Araç izinleri + olay hook'ları
@@ -258,14 +266,22 @@ rules:
   - .continue/rules/03-testing.md
   - .continue/rules/04-security.md
 
-  # Projenize göre birini seçin (yorumdan çıkarın):
+  # Backend — birini seçin:
   - .continue/rules/skills/lang-java.md
   # - .continue/rules/skills/lang-dotnet.md
   # - .continue/rules/skills/lang-python.md
+
+  # Frontend — birini seçin:
   # - .continue/rules/skills/fe-react.md
   # - .continue/rules/skills/fe-nextjs.md
   # - .continue/rules/skills/fe-vue.md
   # - .continue/rules/skills/fe-angular.md
+
+  # Mobil — birini seçin:
+  # - .continue/rules/skills/mobile-ios.md
+  # - .continue/rules/skills/mobile-android.md
+  # - .continue/rules/skills/mobile-flutter.md
+  # - .continue/rules/skills/mobile-reactnative.md
 ```
 
 ---
@@ -283,6 +299,10 @@ rules:
 | | Next.js App Router | Server Components, Server Actions, ISR önbellekleme, streaming |
 | | Vue 3 | Composition API, Pinia Setup Stores, composable'lar |
 | | Angular 17+ | Standalone bileşenler, Signals, NgRx Signal Store, RxJS disiplini |
+| **Mobil** | iOS (Swift / SwiftUI) | async/await + actor'lar, @Observable, NavigationStack, SwiftData, Swift Testing |
+| | Android (Kotlin / Compose) | StateFlow, Hilt, Room + Flow, Compose UDF, Turbine testi |
+| | Flutter / Dart | Riverpod + kod üretimi, GoRouter, Freezed, drift, EAS / Fastlane |
+| | React Native / Expo | Strict TS, FlashList, React Navigation v7, Zustand + TanStack Query, EAS |
 | **Altyapı** | Docker | Çok aşamalı build, root olmayan kullanıcı, Compose healthcheck, güvenlik taraması |
 | | GitHub Actions CI/CD | Kalite kapıları, OIDC kimlik doğrulama, canary/blue-green |
 | | Microservices | Sınırlı bağlamlar, devre kesici, Saga deseni, OpenTelemetry |
