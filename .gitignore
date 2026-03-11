@@ -98,3 +98,10 @@ env/
 .continue/.cache/
 .cursor/.cache/
 .claude/settings.local.json
+
+# Autonomous agent runtime state (generated at runtime — do NOT commit)
+.agent/state/
+.agent/audit/
+.agent/escalations/
+.agent/outputs/
+.agent/STOP

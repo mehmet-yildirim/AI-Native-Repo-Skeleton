@@ -44,6 +44,50 @@
       "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
       "description": "Browser automation for E2E testing and web scraping",
       "disabled": true
+    },
+
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-jira"],
+      "env": {
+        "JIRA_URL":       "${env:JIRA_URL}",
+        "JIRA_EMAIL":     "${env:JIRA_EMAIL}",
+        "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}"
+      },
+      "description": "Jira: read/update issues, transitions, comments — used by /triage and /groom",
+      "disabled": true
+    },
+
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "@linear/mcp-server"],
+      "env": {
+        "LINEAR_API_KEY": "${env:LINEAR_API_KEY}"
+      },
+      "description": "Linear: read/update issues and projects — alternative to Jira",
+      "disabled": true
+    },
+
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN":  "${env:SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID":    "${env:SLACK_TEAM_ID}"
+      },
+      "description": "Slack: send escalation notifications and read channel messages",
+      "disabled": true
+    },
+
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-sentry"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${env:SENTRY_AUTH_TOKEN}",
+        "SENTRY_ORG":        "${env:SENTRY_ORG}"
+      },
+      "description": "Sentry: read error reports during post-deploy monitoring",
+      "disabled": true
     }
   }
 }

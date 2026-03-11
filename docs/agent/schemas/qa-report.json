@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qa-report.json",
+  "title": "QAReport",
+  "description": "Structured machine-readable output of the /qa command. Used to gate PR creation and deployment.",
+  "type": "object",
+  "required": ["taskId", "timestamp", "overallPass", "gates"],
+  "properties": {
+    "taskId":    { "type": "string" },
+    "branchName":{ "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "overallPass": {
+      "type": "boolean",
+      "description": "True only if ALL required gates pass"
+    },
+    "gates": {
+      "type": "object",
+      "required": ["lint", "typecheck", "tests", "coverage", "security"],
+      "properties": {
+        "lint": {
+          "type": "object",
+          "required": ["pass", "errorCount", "warningCount"],
+          "properties": {
+            "pass":         { "type": "boolean" },
+            "errorCount":   { "type": "integer" },
+            "warningCount": { "type": "integer" },
+            "tool":         { "type": "string", "description": "e.g., eslint, ruff, golangci-lint" },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "file":     { "type": "string" },
+                  "line":     { "type": "integer" },
+                  "severity": { "type": "string", "enum": ["error", "warning"] },
+                  "rule":     { "type": "string" },
+                  "message":  { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "typecheck": {
+          "type": "object",
+          "required": ["pass", "errorCount"],
+          "properties": {
+            "pass":       { "type": "boolean" },
+            "errorCount": { "type": "integer" },
+            "tool":       { "type": "string", "description": "e.g., tsc, mypy, go vet" }
+          }
+        },
+        "tests": {
+          "type": "object",
+          "required": ["pass", "passed", "failed", "skipped"],
+          "properties": {
+            "pass":    { "type": "boolean" },
+            "passed":  { "type": "integer" },
+            "failed":  { "type": "integer" },
+            "skipped": { "type": "integer" },
+            "durationMs": { "type": "integer" },
+            "failures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name":    { "type": "string" },
+                  "file":    { "type": "string" },
+                  "error":   { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "required": ["pass", "percentage", "threshold"],
+          "properties": {
+            "pass":       { "type": "boolean" },
+            "percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+            "threshold":  { "type": "number", "minimum": 0, "maximum": 100 },
+            "uncoveredFiles": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "security": {
+          "type": "object",
+          "required": ["pass", "criticalCount", "highCount"],
+          "properties": {
+            "pass":          { "type": "boolean" },
+            "criticalCount": { "type": "integer" },
+            "highCount":     { "type": "integer" },
+            "mediumCount":   { "type": "integer" },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "severity":    { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+                  "type":        { "type": "string", "description": "e.g., sql-injection, xss, dependency-cve" },
+                  "file":        { "type": ["string", "null"] },
+                  "line":        { "type": ["integer", "null"] },
+                  "description": { "type": "string" },
+                  "cveId":       { "type": ["string", "null"] }
+                }
+              }
+            }
+          }
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "pass":          { "type": "boolean" },
+            "criticalCount": { "type": "integer" },
+            "highCount":     { "type": "integer" }
+          }
+        }
+      }
+    },
+    "issues": {
+      "type": "object",
+      "description": "Issues grouped by whether they block the PR",
+      "properties": {
+        "blocking": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "severity": { "type": "string", "enum": ["critical", "major"] },
+              "gate":     { "type": "string" },
+              "message":  { "type": "string" },
+              "location": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "nonBlocking": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "severity": { "type": "string", "enum": ["minor", "suggestion"] },
+              "gate":     { "type": "string" },
+              "message":  { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "recommendation": {
+      "type": "string",
+      "enum": ["approve", "request_changes", "escalate"],
+      "description": "Agent's recommendation for next action"
+    }
+  }
+}

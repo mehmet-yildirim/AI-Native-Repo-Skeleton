@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision.json",
+  "title": "AgentDecision",
+  "description": "Structured output for a significant agent decision — used for machine-readable handoffs between phases and for the audit trail",
+  "type": "object",
+  "required": ["id", "taskId", "phase", "action", "timestamp", "confidence", "reasoning"],
+  "properties": {
+    "id":        { "type": "string", "pattern": "^dec-[A-Z]+-[0-9]+-[0-9]+$" },
+    "taskId":    { "type": "string" },
+    "agentId":   { "type": "string" },
+    "phase":     { "type": "string" },
+    "action":    { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "confidence": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "0.0=no confidence, 1.0=fully certain. Null if confidence not applicable."
+    },
+    "reasoning": {
+      "type": "string",
+      "description": "Human-readable explanation of why this decision was made"
+    },
+    "input":  { "type": "object" },
+    "output": { "type": "object" },
+    "risk": {
+      "type": ["string", "null"],
+      "enum": ["low", "medium", "high", null]
+    },
+    "alternatives": {
+      "type": "array",
+      "description": "Alternative decisions that were considered but rejected",
+      "items": {
+        "type": "object",
+        "required": ["description", "rejectionReason"],
+        "properties": {
+          "description":     { "type": "string" },
+          "rejectionReason": { "type": "string" }
+        }
+      }
+    },
+    "escalated":      { "type": "boolean", "default": false },
+    "humanOverride":  { "type": "boolean", "default": false },
+    "reversible":     { "type": "boolean", "description": "Can this decision be undone?" },
+    "durationMs":     { "type": "integer" },
+    "tokensUsed":     { "type": "integer" },
+    "costUsd":        { "type": "number" }
+  }
+}

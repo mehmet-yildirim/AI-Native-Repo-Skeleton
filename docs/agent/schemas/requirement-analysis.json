@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "requirement-analysis.json",
+  "title": "RequirementAnalysis",
+  "description": "Structured machine-readable output of the /requirements command. Saved alongside the markdown document for inter-phase use.",
+  "type": "object",
+  "required": ["taskId", "confidence", "userStories", "tasks", "definitionOfDone"],
+  "properties": {
+    "taskId":      { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "confidence": {
+      "type": "number", "minimum": 0, "maximum": 1,
+      "description": "How confident the agent is that the requirements are complete and unambiguous"
+    },
+    "ambiguities": {
+      "type": "array",
+      "description": "Unresolved questions that could affect implementation",
+      "items": {
+        "type": "object",
+        "required": ["question", "impact"],
+        "properties": {
+          "question": { "type": "string" },
+          "impact":   { "type": "string", "enum": ["blocking", "high", "medium", "low"] },
+          "assumption": { "type": ["string", "null"], "description": "Assumption made if proceeding without answer" }
+        }
+      }
+    },
+    "outOfScope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicitly excluded from this feature"
+    },
+    "userStories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "asA", "iWant", "soThat", "acceptanceCriteria"],
+        "properties": {
+          "id":    { "type": "string", "pattern": "^US-[0-9]+$" },
+          "title": { "type": "string" },
+          "asA":   { "type": "string" },
+          "iWant": { "type": "string" },
+          "soThat":{ "type": "string" },
+          "acceptanceCriteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["given", "when", "then"],
+              "properties": {
+                "given": { "type": "string" },
+                "when":  { "type": "string" },
+                "then":  { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "type", "layer", "estimate", "status"],
+        "properties": {
+          "id":          { "type": "string", "pattern": "^TASK-[0-9]+$" },
+          "title":       { "type": "string" },
+          "description": { "type": "string" },
+          "type":        { "type": "string", "enum": ["feat", "fix", "refactor", "test", "chore", "docs"] },
+          "layer":       { "type": "string", "enum": ["backend", "frontend", "infra", "full-stack", "database", "api"] },
+          "estimate":    { "type": "string", "enum": ["XS", "S", "M", "L", "XL"] },
+          "status":      { "type": "string", "enum": ["pending", "in_progress", "completed", "skipped"] },
+          "dependsOn":   { "type": "array", "items": { "type": "string" }, "description": "Task IDs this task depends on" },
+          "storyIds":    { "type": "array", "items": { "type": "string" }, "description": "User story IDs this task implements" }
+        }
+      }
+    },
+    "architectureImpact": {
+      "type": "object",
+      "properties": {
+        "newComponents":  { "type": "array", "items": { "type": "string" } },
+        "modifiedFiles":  { "type": "array", "items": { "type": "string" } },
+        "schemaChanges":  { "type": "boolean" },
+        "apiChanges":     { "type": "boolean" },
+        "breakingChange": { "type": "boolean" },
+        "newDependencies":{ "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "testingStrategy": {
+      "type": "object",
+      "properties": {
+        "unitTests":        { "type": "array", "items": { "type": "string" } },
+        "integrationTests": { "type": "array", "items": { "type": "string" } },
+        "e2eTests":         { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "definitionOfDone": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Checklist items that must all be true for the feature to be complete"
+    },
+    "estimatedTotalEffort": {
+      "type": "string",
+      "enum": ["XS", "S", "M", "L", "XL"],
+      "description": "Rolled-up effort estimate for the entire feature"
+    }
+  }
+}

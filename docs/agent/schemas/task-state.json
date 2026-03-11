@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task-state.json",
+  "title": "AgentTaskState",
+  "description": "Persistent state for a single task being processed by the autonomous agent",
+  "type": "object",
+  "required": ["taskId", "title", "source", "phase", "status", "startedAt"],
+  "properties": {
+    "taskId": {
+      "type": "string",
+      "description": "Issue tracker ID, e.g. PROJ-42"
+    },
+    "title": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "required": ["tracker", "url"],
+      "properties": {
+        "tracker": { "type": "string", "enum": ["jira", "linear", "github", "azure-devops"] },
+        "url":     { "type": "string", "format": "uri" },
+        "issueType": { "type": "string", "enum": ["story", "task", "bug", "epic", "spike"] },
+        "priority": { "type": "string", "enum": ["highest", "high", "medium", "low", "lowest"] }
+      }
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["triage", "requirements", "architect", "implement", "qa", "pr", "ci", "deploy", "monitor", "done", "abandoned"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "escalated", "awaiting_human", "completed", "failed", "abandoned"]
+    },
+    "startedAt":      { "type": "string", "format": "date-time" },
+    "lastUpdatedAt":  { "type": "string", "format": "date-time" },
+    "completedAt":    { "type": ["string", "null"], "format": "date-time" },
+    "timeoutAt":      { "type": ["string", "null"], "format": "date-time" },
+    "branchName":     { "type": ["string", "null"] },
+    "prUrl":          { "type": ["string", "null"], "format": "uri" },
+    "prNumber":       { "type": ["integer", "null"] },
+    "retries": {
+      "type": "object",
+      "description": "Per-phase retry counters",
+      "properties": {
+        "requirements": { "type": "integer", "default": 0 },
+        "architect":    { "type": "integer", "default": 0 },
+        "implement":    { "type": "integer", "default": 0 },
+        "qa":           { "type": "integer", "default": 0 },
+        "ci":           { "type": "integer", "default": 0 },
+        "deploy":       { "type": "integer", "default": 0 }
+      }
+    },
+    "escalations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "trigger", "severity", "at", "resolved"],
+        "properties": {
+          "id":        { "type": "string" },
+          "trigger":   { "type": "string" },
+          "severity":  { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+          "at":        { "type": "string", "format": "date-time" },
+          "resolved":  { "type": "boolean" },
+          "resolvedAt":{ "type": ["string", "null"], "format": "date-time" },
+          "resolution":{ "type": ["string", "null"] }
+        }
+      }
+    },
+    "phaseOutputs": {
+      "type": "object",
+      "properties": {
+        "triage": {
+          "type": ["object", "null"],
+          "properties": {
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "accepted":   { "type": "boolean" },
+            "reasoning":  { "type": "string" }
+          }
+        },
+        "requirements": {
+          "type": ["object", "null"],
+          "properties": {
+            "outputFile":    { "type": "string" },
+            "taskCount":     { "type": "integer" },
+            "storyCount":    { "type": "integer" },
+            "confidence":    { "type": "number" }
+          }
+        },
+        "architect": {
+          "type": ["object", "null"],
+          "properties": {
+            "outputFile":      { "type": "string" },
+            "risk":            { "type": "string", "enum": ["low", "medium", "high"] },
+            "humanApproved":   { "type": "boolean" }
+          }
+        },
+        "implement": {
+          "type": ["object", "null"],
+          "properties": {
+            "tasksTotal":     { "type": "integer" },
+            "tasksCompleted": { "type": "integer" },
+            "tasksFailed":    { "type": "integer" }
+          }
+        },
+        "qa": {
+          "type": ["object", "null"],
+          "properties": {
+            "passed":     { "type": "boolean" },
+            "outputFile": { "type": "string" }
+          }
+        },
+        "deploy": {
+          "type": ["object", "null"],
+          "properties": {
+            "stagingUrl":   { "type": ["string", "null"] },
+            "deployedAt":   { "type": ["string", "null"], "format": "date-time" },
+            "rollbackDone": { "type": "boolean", "default": false }
+          }
+        }
+      }
+    },
+    "costSummary": {
+      "type": "object",
+      "properties": {
+        "totalTokens": { "type": "integer" },
+        "totalCostUsd": { "type": "number" }
+      }
+    }
+  }
+}

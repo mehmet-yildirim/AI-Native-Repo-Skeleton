@@ -1,0 +1,260 @@
+# =============================================================================
+# agent.config.yaml — Autonomous Agent Configuration
+# =============================================================================
+# This file controls the behavior of the autonomous AI development agent.
+# The agent pulls work items from an issue tracker, validates domain relevance,
+# and executes the full analysis → design → implement → QA → deploy loop.
+#
+# CUSTOMIZE THIS FILE for your project before enabling autonomous mode.
+# =============================================================================
+
+agent:
+  # Operating mode:
+  #   autonomous    — agent runs the full loop without human intervention (use with care)
+  #   semi-autonomous — agent pauses at configured gates for human approval
+  #   assisted      — agent provides analysis/suggestions; human executes each step
+  mode: semi-autonomous
+
+  # Unique identifier for this agent instance (use project slug)
+  id: "TODO: my-project-agent"
+
+  # Display name for notifications and logs
+  name: "TODO: My Project Dev Agent"
+
+# =============================================================================
+# ISSUE TRACKER — Where the agent pulls work from
+# =============================================================================
+issue_tracker:
+  # Supported: jira | linear | github | azure-devops
+  provider: jira
+
+  jira:
+    server_url: "${JIRA_URL}"              # e.g., https://mycompany.atlassian.net
+    project_key: "TODO"                    # e.g., PROJ
+    api_token_env: "JIRA_API_TOKEN"
+    email_env: "JIRA_EMAIL"
+
+    # JQL query to fetch candidate work items
+    # Agent will only process issues matching this query
+    backlog_jql: >
+      project = "TODO"
+      AND status = "To Do"
+      AND issuetype in (Story, Task, Bug)
+      AND priority in (High, Highest)
+      ORDER BY priority DESC, created ASC
+
+    # How often to poll for new issues (minutes). Set 0 to disable polling.
+    poll_interval_minutes: 15
+
+    # Status transitions (customize to match your Jira workflow)
+    status_transitions:
+      start:      "In Progress"
+      review:     "In Review"
+      done:       "Done"
+      blocked:    "Blocked"
+      rejected:   "Rejected - Out of Scope"
+
+  linear:
+    api_key_env: "LINEAR_API_KEY"
+    team_id: "TODO"
+    # GraphQL filter for candidate issues
+    filter: '{ state: { name: { eq: "Todo" } }, priority: { gte: 2 } }'
+    poll_interval_minutes: 15
+
+  github:
+    owner: "TODO"
+    repo: "TODO"
+    token_env: "GITHUB_TOKEN"
+    labels: ["ready-for-dev", "ai-agent"]
+    poll_interval_minutes: 15
+
+# =============================================================================
+# DOMAIN VALIDATION — Determines if an issue belongs to this project
+# =============================================================================
+domain:
+  # Path to the structured domain boundaries document
+  boundaries_file: "docs/context/domain-boundaries.md"
+
+  # Minimum confidence score (0.0–1.0) to auto-accept an issue as in-domain.
+  # Below this threshold → escalate to human for triage decision.
+  acceptance_threshold: 0.80
+
+  # Confidence below this → automatically reject (do not escalate)
+  rejection_threshold: 0.30
+
+  # If confidence is between rejection and acceptance threshold → escalate
+  # (gap between 0.30 and 0.80 always escalates)
+
+  # Keyword signals that strongly suggest this is in-domain
+  # (used as fast-path before running full LLM triage)
+  strong_include_keywords: []
+  # TODO: e.g., ["payment", "order", "cart", "user", "inventory"]
+
+  # Keywords that immediately disqualify an issue (no LLM needed)
+  hard_exclude_keywords: []
+  # TODO: e.g., ["marketing website", "HR system", "infrastructure only"]
+
+# =============================================================================
+# AUTONOMY THRESHOLDS — When to proceed vs. when to escalate
+# =============================================================================
+autonomy:
+  # Each phase gate checks confidence before proceeding automatically.
+  # If a phase's confidence score is below its threshold → escalate.
+  gates:
+    triage:
+      confidence_threshold: 0.80      # Domain relevance confidence
+      auto_reject_below: 0.30
+    requirements:
+      confidence_threshold: 0.75      # Requirement clarity confidence
+    architect:
+      confidence_threshold: 0.80      # Design certainty confidence
+      risk_threshold: medium          # low=proceed, medium=review, high=block
+    implement:
+      max_retries: 3                  # Max fix attempts per failing test
+      max_hours: 8                    # Timeout per task → escalate if exceeded
+    qa:
+      required_pass: true             # Block PR if QA fails (always)
+      coverage_threshold: 80          # Minimum test coverage %
+    deploy:
+      require_human_approval: true    # Always require human for production deploy
+      staging_auto_deploy: true       # Auto-deploy to staging after PR merge
+
+  # Risk levels that require human approval before proceeding
+  # Risk is assessed during /architect phase
+  require_approval_for_risk:
+    - high         # Always require approval for HIGH risk changes
+    # - medium     # Uncomment to also require approval for MEDIUM risk
+
+  # Maximum wall-clock time for a complete task (hours)
+  # If exceeded → escalate and mark as timed out
+  task_timeout_hours: 24
+
+  # Maximum number of tasks the agent works on concurrently
+  max_concurrent_tasks: 1
+
+# =============================================================================
+# ESCALATION — How the agent asks for help
+# =============================================================================
+escalation:
+  # Primary escalation channel
+  primary_channel: slack   # slack | email | github-issue | pagerduty | webhook
+
+  slack:
+    webhook_url_env: "SLACK_WEBHOOK_URL"
+    channel: "#dev-agent-alerts"
+    mention_on_critical: "@here"
+
+  github:
+    # Create a GitHub issue when escalation is needed
+    create_issue: true
+    label: "agent-escalation"
+    assignees: []  # TODO: ["username"]
+
+  email:
+    smtp_host_env: "SMTP_HOST"
+    smtp_port: 587
+    from_env: "ESCALATION_FROM_EMAIL"
+    to: []  # TODO: ["dev-lead@company.com"]
+
+  # Escalation severity levels and their channels
+  severity_routing:
+    critical: [slack, pagerduty]   # Breaking prod, security issue
+    high:     [slack, github]      # Blocking task, repeated failures
+    medium:   [github]             # Ambiguous requirement, design question
+    low:      [github]             # Informational, soft blocker
+
+# =============================================================================
+# GIT — Branch and PR management
+# =============================================================================
+git:
+  base_branch: "main"
+
+  # Branch naming pattern. Available variables:
+  # {issue_id}, {issue_type}, {issue_slug}
+  branch_pattern: "feat/{issue_id}-{issue_slug}"
+
+  # Patterns for different issue types
+  branch_patterns_by_type:
+    bug:   "fix/{issue_id}-{issue_slug}"
+    story: "feat/{issue_id}-{issue_slug}"
+    task:  "chore/{issue_id}-{issue_slug}"
+
+  # PR auto-merge conditions (all must be true)
+  auto_merge:
+    enabled: false                   # Enable only after thorough testing
+    require_ci_pass: true
+    require_coverage_pass: true
+    require_no_requested_changes: true
+    require_approvals: 1
+
+  # Commit signature
+  commit_author_name: "AI Dev Agent"
+  commit_author_email: "agent@noreply.local"
+
+# =============================================================================
+# OBSERVABILITY — Logging, metrics, audit trail
+# =============================================================================
+observability:
+  # Audit log: records every significant agent decision
+  audit_log:
+    enabled: true
+    path: ".agent/audit/{date}-decisions.jsonl"  # JSONL format, one entry per line
+
+  # State store: persists workflow state for resume-on-crash
+  state_store:
+    backend: file          # file | redis | postgres
+    path: ".agent/state/"  # For file backend
+
+  # Metrics export
+  metrics:
+    enabled: false
+    provider: none          # none | datadog | prometheus | cloudwatch
+    # datadog_api_key_env: "DATADOG_API_KEY"
+
+  # Cost tracking (token usage)
+  cost_tracking:
+    enabled: true
+    daily_budget_usd: 50.00   # Alert if exceeded
+    monthly_budget_usd: 500.00
+    alert_on_budget_exceeded: true
+
+  # Log level: debug | info | warn | error
+  log_level: info
+
+# =============================================================================
+# SAFETY — Hard limits and kill switches
+# =============================================================================
+safety:
+  # Files/paths the agent must NEVER modify (glob patterns)
+  protected_paths:
+    - ".github/workflows/**"
+    - "**/.env"
+    - "**/secrets/**"
+    - "agent.config.yaml"
+    - "CLAUDE.md"
+
+  # The agent must NEVER commit these file types
+  forbidden_file_patterns:
+    - "*.pem"
+    - "*.key"
+    - ".env"
+    - ".env.*"
+
+  # Commands the agent must NEVER run
+  forbidden_commands:
+    - "rm -rf"
+    - "DROP TABLE"
+    - "DROP DATABASE"
+    - "git push --force"
+
+  # Maximum changed files per PR (prevents massive PRs)
+  max_files_per_pr: 30
+
+  # Maximum lines changed per PR
+  max_lines_per_pr: 1000
+
+  # If agent encounters N consecutive failures on a task → abort and escalate
+  consecutive_failure_limit: 3
+
+  # Emergency kill switch: create this file to stop the agent immediately
+  kill_switch_file: ".agent/STOP"

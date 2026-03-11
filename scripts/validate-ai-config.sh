@@ -66,6 +66,24 @@ check_exists ".claude/commands/deploy.md"
 check_exists ".claude/commands/migrate.md"
 check_exists ".claude/commands/sprint.md"
 check_exists ".claude/commands/docs.md"
+check_exists ".claude/commands/triage.md"
+check_exists ".claude/commands/groom.md"
+check_exists ".claude/commands/loop.md"
+check_exists ".claude/commands/escalate.md"
+
+# --- Autonomous agent config & docs ---
+check_exists "agent.config.yaml"
+check_exists "docs/context/domain-boundaries.md"
+check_exists "docs/agent/autonomous-workflow.md"
+check_exists "docs/agent/escalation-protocol.md"
+check_exists "docs/agent/decision-log-template.md"
+check_exists "docs/agent/schemas/task-state.json"
+check_exists "docs/agent/schemas/decision.json"
+check_exists "docs/agent/schemas/requirement-analysis.json"
+check_exists "docs/agent/schemas/qa-report.json"
+check_exists ".claude/hooks/post-write.mjs"
+check_exists ".claude/hooks/audit-log.mjs"
+check_exists ".claude/hooks/on-stop.mjs"
 
 # --- Skill rules ---
 check_exists ".cursor/rules/skills/lang-java.mdc"
@@ -99,6 +117,7 @@ check_exists "skills/README.md"
 
 check_exists "docs/context/project-brief.md"
 check_exists "docs/context/tech-stack.md"
+check_exists "docs/context/domain-boundaries.md"
 check_exists "docs/context/domain-glossary.md"
 check_exists "docs/architecture/overview.md"
 
@@ -126,7 +145,9 @@ check_customized "CLAUDE.md"
 check_customized ".cursor/rules/00-project-overview.mdc"
 check_customized "docs/context/project-brief.md"
 check_customized "docs/context/tech-stack.md"
+check_customized "docs/context/domain-boundaries.md"
 check_customized "docs/architecture/overview.md"
+check_customized "agent.config.yaml"
 
 # ---------------------------------------------------------------------------
 # Environment check
