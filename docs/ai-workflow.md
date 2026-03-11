@@ -3,87 +3,149 @@
 This document describes how to work effectively with AI tools in this project.
 Following this workflow produces faster, higher-quality results.
 
+> **Türkçe:** [docs/ai-workflow.tr.md](ai-workflow.tr.md) — Türkçe sürüm için bakın.
+
+---
+
 ## The AI-Native Loop
 
 ```
-1. CONTEXT  → Give AI the right information before asking for code
-2. DESIGN   → Have AI design before it codes (/architect)
-3. IMPLEMENT → Implement with AI assistance in small steps
-4. REVIEW   → Review AI output critically (/review)
-5. TEST     → Generate and run tests (/test)
-6. DOCUMENT → Update docs while context is fresh (/docs)
+1. CONTEXT   → Give AI the right information before asking for code
+2. DESIGN    → Have AI design before it codes       (/architect)
+3. IMPLEMENT → Implement with AI in small steps     (/implement)
+4. SECURITY  → Evaluate every change for risks      (/security-audit)
+5. REVIEW    → Review AI output critically          (/review)
+6. TEST      → Generate and run tests              (/test)
+7. DOCUMENT  → Update docs while context is fresh  (/docs)
 ```
+
+### Autonomous Mode (agent drives the loop)
+
+```
+JIRA backlog ──▶ /triage ──▶ /groom ──▶ /loop ──▶ PR ──▶ /deploy
+                   │                      │
+             domain check          full loop per task:
+             accept/reject         architect → implement →
+                                   security-audit → qa → PR
+```
+
+---
 
 ## Tool Overview
 
 | Tool | Best for | Key config |
 |------|----------|-----------|
 | **Claude Code** | Complex agentic tasks, multi-file edits, CLI | `CLAUDE.md`, `.claude/commands/` |
-| **Cursor** | In-editor generation, chat, autocomplete | `.cursor/rules/` |
+| **Cursor** | In-editor generation, chat, autocomplete | `.cursor/rules/`, `.cursor/mcp.json` |
 | **Continue** | Inline edits, chat, autocomplete in any IDE | `.continue/config.yaml` |
 
-## Step 1: Provide Context First
+---
 
-AI tools work best when they understand your project. This skeleton provides context via:
+## Human-Guided Workflow
+
+### Step 1: Provide Context First
+
+AI tools work best when they understand your project. Context is provided via:
 
 - **`CLAUDE.md`** — Project overview, commands, conventions (loaded automatically by Claude Code)
-- **`.cursor/rules/`** — Persistent rules loaded for every Cursor interaction
+- **`.cursor/rules/`** — Persistent rules loaded for every Cursor interaction (auto by file type)
 - **`.continue/rules/`** — Rules included in every Continue request
 - **`docs/context/`** — Deeper project context you can reference with `@docs`
 
-**Before starting any significant task**, verify the AI has context by asking:
+**Before starting any significant task**, verify the AI has context:
 > "What do you know about this project's architecture and coding standards?"
 
-## Step 2: Design Before Coding
+---
 
-For any feature larger than ~50 lines of code, run `/architect` first:
+### Step 2: Analyze Requirements
+
+For any non-trivial feature, run `/requirements` first:
+
+```
+/requirements Add a password reset flow with email verification
+```
+
+This produces: user stories, acceptance criteria, an ordered task backlog, and a Definition of Done.
+Review before proceeding — AI may miss implied requirements or out-of-scope items.
+
+---
+
+### Step 3: Design Before Coding
+
+For any feature > 50 lines, run `/architect`:
 
 ```
 /architect Add a password reset flow with email verification
 ```
 
 Review the design output critically:
-- Does the approach fit our architecture?
+- Does the approach fit our architecture and layer boundaries?
 - Are all edge cases identified?
-- Does the implementation checklist make sense?
+- Is the risk level acceptable? (`high` → get a second opinion)
 
-Only proceed to implementation after approving the design.
+Only proceed after approving the design.
 
-## Step 3: Implement in Small Steps
+---
 
-**Divide the implementation checklist into individual steps**, each producing a single, testable commit.
+### Step 4: Implement in Small Steps
 
-Do NOT ask AI to implement an entire feature in one message. Instead:
+Use `/implement` with one task at a time — not the entire feature at once.
 
 ```
-Step 1: "Create the PasswordReset entity and repository interface"
-Step 2: "Implement the RequestPasswordReset use case"
-Step 3: "Add the POST /auth/password-reset endpoint"
-Step 4: "Write unit tests for the RequestPasswordReset use case"
-Step 5: "Write integration tests for the endpoint"
+/implement TASK-001: Create PasswordReset entity and repository interface
+/implement TASK-002: Implement RequestPasswordReset use case
+/implement TASK-003: Add POST /auth/password-reset endpoint
 ```
 
-After each step: **read and understand the generated code**. Do not accept code you don't understand.
+After each step:
+- **Read and understand the generated code** — never accept code you don't understand
+- Run the linter and type checker
+- Run the tests for the changed module
 
-## Step 4: Review AI Output
+---
 
-After AI generates code, use `/review` to check it:
+### Step 5: Security Evaluation
+
+Run `/security-audit` on every change that touches auth, user input, payments, or data access:
+
+```
+/security-audit diff          # scan only changes in this branch
+/security-audit src/payments/ # scan a specific directory
+```
+
+**Never open a PR with a CRITICAL security finding.**
+
+For scheduled or full scans:
+```
+/security-audit full          # entire codebase
+/security-audit deps          # CVE scan only
+```
+
+---
+
+### Step 6: Quality Assurance
+
+```
+/qa
+```
+
+Runs: lint → type check → tests → coverage → dependency CVE → security summary.
+Fix all blocking issues before opening a PR.
+
+---
+
+### Step 7: Code Review
 
 ```
 /review
 ```
 
-Or review a specific file:
-```
-/review src/auth/password-reset.service.ts
-```
+Checks the diff against project standards, architecture rules, and OWASP patterns.
+Address every raised issue or explicitly mark it "won't fix" with a reason.
 
-**Never commit AI-generated code without:**
-1. Reading every line of the diff
-2. Running the linter and type checker
-3. Running the tests
+---
 
-## Step 5: Generate Tests
+### Step 8: Generate Tests
 
 If tests weren't generated during implementation:
 
@@ -93,10 +155,12 @@ If tests weren't generated during implementation:
 
 Verify the generated tests:
 - Cover happy path, edge cases, and error cases
-- Are not trivial or testing implementation details
+- Are not testing implementation details
 - Actually fail when you introduce a bug
 
-## Step 6: Update Documentation
+---
+
+### Step 9: Document
 
 After completing a feature:
 
@@ -105,9 +169,63 @@ After completing a feature:
 ```
 
 Also update:
-- `CLAUDE.md` if new commands, conventions, or architectural patterns were introduced
+- `CLAUDE.md` if new conventions or patterns were introduced
 - `docs/architecture/decisions/` if a significant design decision was made
-- `docs/context/` if new domain concepts were added
+- `docs/context/domain-glossary.md` if new domain terms were introduced
+
+---
+
+## Autonomous Agent Workflow
+
+The agent drives the full loop without manual intervention for each step.
+See `docs/agent/autonomous-workflow.md` for the full state machine.
+
+### Starting the agent
+
+```bash
+# Process the full backlog (triage + requirements analysis)
+/groom
+
+# Execute a specific accepted task end-to-end
+/loop PROJ-42
+
+# Resume a task that was interrupted
+/loop resume PROJ-42
+```
+
+### What the agent does automatically
+
+```
+/groom          → polls JIRA → triages each issue → runs /requirements on accepted ones
+/triage         → domain relevance scoring → ACCEPT / ESCALATE / REJECT
+/loop           → /architect → create branch → /implement (retry loop) →
+                  /security-audit → /qa → create PR → monitor CI →
+                  /deploy staging → monitor post-deploy
+/escalate       → notifies Slack/GitHub when agent cannot proceed
+```
+
+### When the agent stops and waits for you
+
+The agent escalates (pauses + notifies) when:
+- Triage confidence is ambiguous (0.30–0.79)
+- Design risk is HIGH
+- Tests fail after `max_retries` attempts
+- `/security-audit` finds CRITICAL or HIGH vulnerabilities
+- `/qa` gates fail after auto-fix attempts
+- Production deployment approval is needed (always)
+
+Respond on the GitHub issue or JIRA ticket with a command:
+
+| Comment | Effect |
+|---------|--------|
+| `AGENT_RESUME` | Resume from current phase |
+| `AGENT_APPROVE_DESIGN` | Approve high-risk design |
+| `AGENT_CLARIFY: <text>` | Provide clarification and retry |
+| `AGENT_SKIP_TASK` | Skip current sub-task |
+| `AGENT_REASSIGN` | Hand to a human developer |
+| `AGENT_ABANDON` | Stop all work on this ticket |
+
+---
 
 ## Effective Prompt Patterns
 
@@ -140,35 +258,60 @@ We decided in the design step to use [approach]. Stick to that approach.
 Do not introduce [pattern we rejected].
 ```
 
-## Red Flags to Watch For
+---
+
+## Red Flags — Stop and Review
 
 Stop and review carefully when AI-generated code:
 
 - Introduces a new dependency you didn't discuss
-- Adds an abstraction layer that seems unnecessary
 - Uses a pattern inconsistent with the rest of the codebase
 - Skips error handling for a code path
-- Adds complexity "for future extensibility"
+- Adds unnecessary abstraction "for future extensibility"
 - Modifies files you didn't ask it to touch
 - Has TODO comments that weren't discussed
+- Touches auth, authorization, or cryptography — always review line by line
+- Produces a test that passes trivially (never actually asserts anything meaningful)
 
-## Effective Use of Custom Commands
+---
 
-| Command | When to use |
-|---------|------------|
-| `/architect <feature>` | Before implementing anything > 50 lines |
-| `/review` | After every significant implementation |
-| `/test <file>` | After implementing a module, before committing |
-| `/debug <issue>` | When a bug isn't immediately obvious |
-| `/docs <file>` | After completing a module |
-| `/standup` | At start of day to summarize yesterday's work |
+## All Commands — Quick Reference
+
+### Human-Guided
+
+| Command | Purpose | When |
+|---------|---------|------|
+| `/requirements <topic>` | User stories, tasks, DoD | Before any feature |
+| `/architect <feature>` | Design before coding | Tasks > 50 lines |
+| `/implement <task>` | Structured implementation | During coding |
+| `/security-audit [target]` | OWASP + CVE + secret scan | Before every PR |
+| `/qa` | Lint, types, tests, coverage | Before opening PR |
+| `/review` | Code review vs. standards | After implementation |
+| `/test <file>` | Generate comprehensive tests | After any module |
+| `/debug <issue>` | Systematic bug diagnosis | When stuck |
+| `/deploy <env>` | Pre-deploy checklist | Before every deploy |
+| `/migrate <desc>` | Safe DB migration | For schema changes |
+| `/sprint <theme>` | Sprint planning | Sprint kickoff |
+| `/docs <file>` | Generate documentation | After a module |
+| `/standup` | Daily summary from git | Start of day |
+
+### Autonomous Agent
+
+| Command | Purpose | When |
+|---------|---------|------|
+| `/triage <issue>` | Domain relevance check | Per JIRA issue |
+| `/groom` | Batch backlog processing | Scheduled / on demand |
+| `/loop <task-id>` | Full autonomous dev loop | Per accepted task |
+| `/escalate <sev> <trigger> <task>` | Human notification | When agent is blocked |
+
+---
 
 ## Context Window Management
 
-For long sessions, AI tools may lose context. Signs of this:
-- AI suggests solutions inconsistent with your architecture
+For long sessions, AI tools may lose context. Signs:
+- AI suggests solutions inconsistent with the architecture
 - AI contradicts earlier decisions
-- AI asks for information it already has
+- AI asks for information it was given earlier
 
 **Reset strategy:**
 1. Start a new session
@@ -176,14 +319,17 @@ For long sessions, AI tools may lose context. Signs of this:
 3. Briefly summarize the current task
 4. Continue from where you left off
 
+---
+
 ## Team Workflow
 
 ### Code Review
-- PRs should note which parts of the code were AI-generated
-- Reviewers should apply the same standards to AI-generated code as human-written code
-- Reviewers run `/review` on substantial AI-generated sections
+- PRs should note which parts were AI-generated
+- Apply the same review standards to AI-generated code as human-written code
+- Run `/security-audit diff` on PRs from the autonomous agent before approving
 
 ### Knowledge Sharing
-- When you discover an effective prompt pattern for this project, document it here
-- When AI makes a systematic mistake, add a rule to the relevant `.cursor/rules/` or `.continue/rules/` file
+- When you find an effective prompt pattern, document it in this file
+- When AI makes a systematic mistake, add a rule to `.cursor/rules/` or `.continue/rules/`
 - When a new domain concept is introduced, update `docs/context/domain-glossary.md`
+- When a security pattern recurs, add it to `.cursor/rules/skills/security-sast.mdc`
