@@ -80,6 +80,9 @@ rules:
   - .continue/rules/03-testing.md
   - .continue/rules/04-security.md
 
+  # --- Security SAST: always recommended for production projects ---
+  # - .continue/rules/skills/security-sast.md
+
   # --- Language skills: uncomment the one(s) for your project ---
   # - .continue/rules/skills/lang-java.md
   # - .continue/rules/skills/lang-dotnet.md

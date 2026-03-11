@@ -42,6 +42,14 @@ deep context to AI tools.
 | Flutter | `skills/mobile-flutter.mdc` | `skills/mobile-flutter.md` | Dart 3, Riverpod, GoRouter, Freezed, drift, EAS / Fastlane |
 | React Native | `skills/mobile-reactnative.mdc` | `skills/mobile-reactnative.md` | Expo, TypeScript strict, React Navigation, Zustand, TanStack Query, EAS |
 
+### Security
+
+| Skill | Cursor Rule | Continue Rule | Key Coverage |
+|-------|-------------|---------------|-------------|
+| Security SAST | `skills/security-sast.mdc` | `skills/security-sast.md` | OWASP Top 10 patterns per language, injection, crypto, path traversal, secret detection, mobile storage |
+
+> **Recommendation:** Enable `security-sast` for all production projects alongside your language skill. It activates on all common source file extensions.
+
 ### Infrastructure & DevOps
 
 | Skill | Cursor Rule | Continue Rule | Key Coverage |

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "security-report.json",
+  "title": "SecurityReport",
+  "description": "Structured output of the /security-audit command. Used for CI gates, autonomous agent decisions, and audit trails.",
+  "type": "object",
+  "required": ["reportId", "timestamp", "scope", "overallRisk", "recommendation", "summary", "findings"],
+  "properties": {
+    "reportId":  { "type": "string", "description": "Unique identifier: sec-<date>-<taskId>" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "taskId":    { "type": ["string", "null"], "description": "Agent task ID if triggered by autonomous loop" },
+    "triggeredBy": { "type": "string", "enum": ["manual", "autonomous_agent", "ci_pipeline", "scheduled_scan"] },
+    "scope": {
+      "type": "object",
+      "required": ["type", "target"],
+      "properties": {
+        "type":     { "type": "string", "enum": ["full", "diff", "path", "deps_only", "secrets_only"] },
+        "target":   { "type": "string", "description": "Path, branch name, or 'full'" },
+        "gitRef":   { "type": ["string", "null"] },
+        "techStack":{ "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "overallRisk": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "CLEAN"],
+      "description": "Highest severity finding determines overall risk"
+    },
+    "recommendation": {
+      "type": "string",
+      "enum": ["BLOCK_DEPLOYMENT", "REVIEW_REQUIRED", "APPROVED_WITH_NOTES", "CLEAN"],
+      "description": "Agent's deployment recommendation"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["totalFindings", "bySeverity", "owaspCategories"],
+      "properties": {
+        "totalFindings": { "type": "integer" },
+        "bySeverity": {
+          "type": "object",
+          "properties": {
+            "critical": { "type": "integer" },
+            "high":     { "type": "integer" },
+            "medium":   { "type": "integer" },
+            "low":      { "type": "integer" },
+            "info":     { "type": "integer" }
+          }
+        },
+        "owaspCategories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "OWASP Top 10 categories with findings, e.g. ['A01', 'A03']"
+        },
+        "cveCount":         { "type": "integer" },
+        "secretsFound":     { "type": "integer" },
+        "estimatedEffortHours": { "type": "number" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "category", "title", "description"],
+        "properties": {
+          "id":          { "type": "string", "description": "Finding ID: FIND-001" },
+          "severity":    { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"] },
+          "category":    { "type": "string", "description": "OWASP category or custom: A01, A03, SECRET, CVE, IaC" },
+          "owaspId":     { "type": ["string", "null"], "description": "e.g. A03:2021" },
+          "cweId":       { "type": ["string", "null"], "description": "e.g. CWE-89" },
+          "cveId":       { "type": ["string", "null"], "description": "e.g. CVE-2023-12345" },
+          "cvssScore":   { "type": ["number", "null"], "minimum": 0, "maximum": 10 },
+          "title":       { "type": "string" },
+          "description": { "type": "string" },
+          "location": {
+            "type": ["object", "null"],
+            "properties": {
+              "file":    { "type": "string" },
+              "line":    { "type": ["integer", "null"] },
+              "column":  { "type": ["integer", "null"] },
+              "snippet": { "type": ["string", "null"] }
+            }
+          },
+          "evidence":    { "type": ["string", "null"], "description": "The problematic code or value (redacted if sensitive)" },
+          "remediation": {
+            "type": "object",
+            "properties": {
+              "description":  { "type": "string" },
+              "fixedVersion": { "type": ["string", "null"], "description": "For CVEs: the version that fixes it" },
+              "codeExample":  { "type": ["string", "null"] },
+              "effortHours":  { "type": ["number", "null"] }
+            }
+          },
+          "tool":        { "type": ["string", "null"], "description": "Tool that detected this: semgrep, npm-audit, bandit, manual, etc." },
+          "falsePositive": { "type": "boolean", "default": false },
+          "suppressedUntil": { "type": ["string", "null"], "format": "date" }
+        }
+      }
+    },
+    "toolsRun": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name":    { "type": "string" },
+          "version": { "type": ["string", "null"] },
+          "status":  { "type": "string", "enum": ["passed", "failed", "not_installed", "skipped"] },
+          "findings":{ "type": "integer" }
+        }
+      }
+    },
+    "ciGate": {
+      "type": "object",
+      "description": "Whether this report should block CI pipeline stages",
+      "properties": {
+        "blockMerge":     { "type": "boolean" },
+        "blockDeploy":    { "type": "boolean" },
+        "blockReason":    { "type": ["string", "null"] }
+      }
+    },
+    "previousReportId": { "type": ["string", "null"], "description": "Report ID of prior scan for diff comparison" },
+    "newFindingsSincePrevious": { "type": ["integer", "null"] },
+    "resolvedSincePrevious":    { "type": ["integer", "null"] }
+  }
+}
