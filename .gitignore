@@ -1,109 +1,577 @@
 # =============================================================================
 # .gitignore — AI-Native Repo Skeleton
+# Covers: Java, .NET/C#, Python, TypeScript/JavaScript, Go, Swift/iOS,
+#         Android/Kotlin, Flutter/Dart, React Native/Expo, and shared tooling.
 # =============================================================================
 
-# Environment & Secrets
+# =============================================================================
+# SECRETS & CREDENTIALS — never commit these
+# =============================================================================
 .env
 .env.local
 .env.*.local
+.env.development
+.env.staging
+.env.production
 *.pem
 *.key
 *.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
 secrets/
+credentials/
+service-account*.json
+*-service-account.json
+google-services.json         # Android Firebase — per-environment, not committed
+GoogleService-Info.plist     # iOS Firebase — per-environment, not committed
+keystore.properties          # Android signing keystore config
 
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
-__pycache__/
-*.py[cod]
-*.egg-info/
-.eggs/
-dist/
-vendor/
+# =============================================================================
+# OS-GENERATED FILES
+# =============================================================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon?
 
-# Build output
-dist/
-build/
-out/
-.next/
-.nuxt/
-.svelte-kit/
-*.o
-*.a
-*.so
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
 
-# Test & Coverage
-coverage/
-.coverage
-*.lcov
-htmlcov/
-.pytest_cache/
-.tox/
+# Linux
+.directory
 
-# IDE & Editor
-.vscode/
+# =============================================================================
+# IDE & EDITOR
+# =============================================================================
+# VS Code (keep shared extension recommendations and workspace settings)
+.vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+
+# JetBrains (IntelliJ IDEA, Android Studio, AppCode, DataGrip, GoLand, etc.)
 .idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.metadata/
+bin/
+tmp/
+
+# NetBeans
+nbproject/
+nbdist/
+.nb-gradle/
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xccheckout
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+
+# Vim / Emacs
 *.swp
 *.swo
 *~
-.DS_Store
-Thumbs.db
+\#*\#
+.#*
+*.elc
+*.orig
 
-# Logs
+# =============================================================================
+# JAVA — Maven & Gradle
+# =============================================================================
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+**/build/
+!src/**/build/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+.gradletasknamecache
+
+# Spring Boot
+HELP.md
+spring-shell.log
+
+# =============================================================================
+# .NET / C#
+# =============================================================================
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp_proj
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+*.StackExchange.Redis.StrongName.*.nupkg
+TestResult.xml
+[Tt]est[Rr]esult*/
+*.nupkg
+*.snupkg
+*.[Cc]ache
+!*.[Cc]ache/
+packages/
+!packages/repositories.config
+*.nupkg
+*.zip
+PublishScripts/
+*.pfx
+*.publishsettings
+orleans.codegen.cs
+*.[Rr]elease/
+*.[Dd]ebug/
+
+# =============================================================================
+# PYTHON
+# =============================================================================
+# Byte-compiled / optimised / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version         # pyenv version file (project-specific, sometimes committed)
+
+# Package managers
+.uv/                    # uv tool cache
+poetry.lock             # KEEP this — commit poetry.lock
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testing
+.pytest_cache/
+.tox/
+.nox/
+.hypothesis/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+nosetests.xml
+coverage/
+
+# Type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+.pyright/
+
+# Jupyter
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+ipython_config.py
+profile_default/
+
+# Alembic / Django migrations (keep source-controlled; ignore only outputs)
+# *.pyc already covered above
+
+# FastAPI / Uvicorn
+*.pid
+
+# =============================================================================
+# TYPESCRIPT / JAVASCRIPT / NODE.JS
+# =============================================================================
+# Dependencies
+node_modules/
+jspm_packages/
+.pnp/
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.npm/
+
+# Build outputs
+dist/
+build/
+out/
+.output/
+storybook-static/
+
+# Framework build caches
+.next/                  # Next.js
+.nuxt/                  # Nuxt.js
+.svelte-kit/            # SvelteKit
+.vite/                  # Vite
+.turbo/                 # Turborepo
+.astro/                 # Astro
+.cache/                 # Gatsby, Parcel
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+junit.xml
+
+# Type checking
+*.tsbuildinfo
+
+# Misc
+.eslintcache
+.stylelintcache
+.parcelcache/
+*.tgz
+.env.test
+tsconfig.tsbuildinfo
+
+# Bun
+.bun/
+bun.lockb              # Keep this — it's the lockfile, commit it
+
+# =============================================================================
+# GO
+# =============================================================================
+# Compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary (generated by go test -c)
+*.test
+
+# Output of go build
+bin/
+vendor/                 # Only ignore if not vendoring; remove this line if you use go mod vendor
+
+# Go workspace file (keep go.work if you use workspaces)
+# go.work.sum is usually committed; go.work can be committed or gitignored depending on team preference
+
+# =============================================================================
+# SWIFT / iOS (Xcode)
+# =============================================================================
+# Build artifacts
+DerivedData/
+*.ipa
+*.dSYM/
+*.dSYM.zip
+*.app
+build/
+
+# Xcode user data
+*.xcuserstate
+xcuserdata/
+.xcode.env.local
+
+# Swift Package Manager
+.build/
+*.resolved              # Remove to commit Package.resolved (strongly recommended — keep this)
+# NOTE: Package.resolved SHOULD be committed for reproducible builds
+# Remove the line above if you keep Package.resolved (recommended)
+
+# CocoaPods (if used instead of SPM)
+Pods/
+*.xcworkspace           # Only if generated by CocoaPods; keep if hand-authored
+Podfile.lock            # KEEP this — commit Podfile.lock for reproducible builds
+
+# Carthage
+Carthage/Build/
+Carthage/Checkouts/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# Simulator
+*.moved-aside
+*.trim
+
+# =============================================================================
+# ANDROID / KOTLIN
+# =============================================================================
+# Build outputs
+**/build/
+!src/**/build/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+local.properties          # contains sdk.dir — machine-specific, never commit
+
+# Signing (CRITICAL — never commit keystore files)
+*.jks
+*.keystore
+keystore.properties
+upload-keystore.jks
+release.keystore
+
+# Gradle
+.gradle/
+gradle-wrapper.jar        # Usually committed; remove this line to commit it
+!gradle/wrapper/gradle-wrapper.jar
+captures/
+.externalNativeBuild/
+.cxx/
+*.hprof                   # Heap dumps
+
+# Lint
+lint/
+*.lint.xml
+
+# Android Studio profiler
+*.trace
+
+# =============================================================================
+# FLUTTER / DART
+# =============================================================================
+# Dart tool
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+
+# Build
+build/
+*.snapshot
+
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+flutter_*.png
+
+# NOTE: pubspec.lock SHOULD be committed for application projects
+# for library packages, it is typically gitignored
+
+# Generated files (usually kept for debugging; remove if committing)
+*.g.dart                  # Remove this line to commit generated files
+*.freezed.dart            # Remove this line to commit generated files
+
+# iOS build artifacts (within Flutter project)
+**/ios/Flutter/
+**/ios/.symlinks/
+**/android/.gradle/
+
+# Coverage
+coverage/
+
+# =============================================================================
+# REACT NATIVE / EXPO
+# =============================================================================
+# Expo
+.expo/
+.expo-shared/
+dist/                     # Expo web build
+web-build/
+
+# React Native
+ios/build/
+android/build/
+android/app/build/
+android/.gradle/
+*.jsbundle
+*.map                     # Source maps (keep for error tracking — remove to exclude)
+
+# Metro bundler
+.metro-health-check-result
+
+# Watchman
+.watchmanconfig           # Keep if committed for team consistency
+
+# Expo EAS
+.eas/
+
+# =============================================================================
+# DATABASES
+# =============================================================================
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.mdb
+*.ldf
+*.mdf
+dump.sql
+dump.rdb
+*.rdb                     # Redis dump
+data/                     # Local DB data directories
+
+# =============================================================================
+# DOCKER
+# =============================================================================
+.docker/
+docker-compose.override.yml   # Local overrides — usually not committed
+
+# =============================================================================
+# TERRAFORM / INFRASTRUCTURE
+# =============================================================================
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars                  # Variable files with secrets — never commit
+!*.tfvars.example         # Example files are OK to commit
+.terraform.lock.hcl       # Keep this — commit provider lock file
+
+# =============================================================================
+# KUBERNETES / HELM
+# =============================================================================
+*.kubeconfig
+kubeconfig
+secrets.yaml
+*-secret.yaml
+*-secrets.yaml
+!*-secret.example.yaml
+
+# =============================================================================
+# LOGS & TEMP FILES
+# =============================================================================
 *.log
 logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Temporary files
-*.tmp
+bun-debug.log*
+*.pid
+*.seed
+*.pid.lock
 *.temp
-.cache/
+*.tmp
 tmp/
 temp/
+.cache/
 
-# Language-specific
-# Go
-*.exe
-*.exe~
+# =============================================================================
+# TEST & COVERAGE OUTPUTS
+# =============================================================================
+coverage/
+.nyc_output/
+test-results/
+junit*.xml
+*.lcov
+*.cover
+reports/
 
-# Python
-.venv/
-venv/
-env/
-
-# Terraform
-.terraform/
-*.tfstate
-*.tfstate.backup
-.terraform.lock.hcl
-
-# Docker
-.docker/
-
-# AI Tool caches and local overrides (keep shared configs, ignore local)
+# =============================================================================
+# AI TOOL — LOCAL OVERRIDES & RUNTIME STATE
+# =============================================================================
+# Keep shared AI config; ignore local overrides and runtime files
 .continue/.cache/
 .cursor/.cache/
 .claude/settings.local.json
 
-# Autonomous agent runtime state (generated at runtime — do NOT commit)
+# Autonomous agent runtime (generated at runtime — commit skeleton.json only)
 .agent/state/
 .agent/audit/
 .agent/escalations/
 .agent/outputs/
 .agent/STOP
-# Deployed copy of webhook receiver (track .agent-templates/ instead)
-.agent/webhook-receiver.mjs
+.agent/webhook-receiver.mjs    # Deployed copy — track .agent-templates/ instead
