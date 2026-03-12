@@ -17,7 +17,7 @@
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
-| **İskelet senkronizasyonu** | `skeleton.json`, `scripts/sync-skeleton.sh` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
+| **İskelet senkronizasyonu** | `skeleton.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
 
 ---
 
@@ -125,7 +125,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── .agent-templates/webhook-receiver.mjs
 └── scripts/
     ├── setup / init / validate        # Her biri için .sh, .bat, .ps1 sürümleri
-    └── sync-skeleton.sh               # İskelet güncellemelerini uygula
+    └── sync-skeleton.{sh,ps1,bat}     # İskelet güncellemelerini uygula
 ```
 
 ---
@@ -262,9 +262,24 @@ Tam indeks, aktivasyon kılavuzu ve yeni beceri ekleme için: [skills/README.md]
 İskelet yeni komutlar, güncellenmiş beceri kuralları veya güvenlik düzeltmeleri aldığında:
 
 ```bash
-bash scripts/sync-skeleton.sh         # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
-bash scripts/sync-skeleton.sh --auto  # etkileşimsiz: tüm iskelet-owned dosyaları uygula
-bash scripts/sync-skeleton.sh --check # sadece güncelleme mevcut mu kontrol et
+# macOS / Linux / Git Bash
+bash scripts/sync-skeleton.sh          # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
+bash scripts/sync-skeleton.sh --auto   # etkileşimsiz: tüm iskelet-owned dosyaları uygula
+bash scripts/sync-skeleton.sh --check  # sadece güncelleme mevcut mu kontrol et
+```
+
+```powershell
+# Windows (PowerShell — önerilir)
+.\scripts\sync-skeleton.ps1            # etkileşimli
+.\scripts\sync-skeleton.ps1 -Auto     # etkileşimsiz
+.\scripts\sync-skeleton.ps1 -Check    # sadece kontrol et
+```
+
+```bat
+:: Windows (Batch — PowerShell'e otomatik yönlendirir)
+scripts\sync-skeleton.bat
+scripts\sync-skeleton.bat --auto
+scripts\sync-skeleton.bat --check
 ```
 
 Senkronizasyon betiği `skeleton.json` kullanarak her dosyayı sınıflandırır:
