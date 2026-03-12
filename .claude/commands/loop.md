@@ -95,6 +95,12 @@ Files to change: [from design output]
 ### 4c. Check result
 
 **If tests pass:**
+
+Generate documentation for new or significantly changed files in this task:
+```
+/docs <new-or-modified-source-file>
+```
+Commit code + updated doc comments together:
 ```bash
 git add <changed files>
 git commit -m "<type>(<scope>): <task title>"
@@ -126,9 +132,55 @@ If still failing after max_retries:
 
 ---
 
+## Phase 4.5: Documentation Sync (Conditional)
+
+After all implementation tasks are committed, check the requirements JSON for these flags
+from `.agent/outputs/<task-id>-requirements.json`:
+
+### If `architectureImpact.apiChanges: true` — update OpenAPI spec
+```
+/doc-api diff
+```
+This scans the changed controllers/handlers, updates `openapi.json`, validates the spec,
+and generates a fresh ReDoc output. If new endpoints are undocumented, generates stubs.
+
+Commit the updated spec:
+```bash
+git add openapi.json openapi-bundled.json docs/api/ 2>/dev/null
+git commit -m "docs(api): update OpenAPI spec for <task-title>"
+```
+
+If `/doc-api` reports **breaking changes** (removed endpoints, changed schemas):
+```
+/escalate medium api_breaking_change_detected <task-id>
+  changes: [list of breaking changes]
+  action: ensure version bump and migration guide before PR merge
+```
+
+### If `architectureImpact.schemaChanges: true` — update DB schema docs
+```
+/doc-schema migrations
+```
+This reads the migration files committed in the previous phase and regenerates:
+- Mermaid ERD embedded in `docs/architecture/`
+- Table reference in `docs/database/schema.md`
+
+Commit if docs changed:
+```bash
+git add docs/database/ docs/architecture/erd.md 2>/dev/null
+git commit -m "docs(schema): update ERD and table reference for <task-title>" 2>/dev/null || true
+```
+
+### If neither flag is set — skip this phase
+No documentation sync needed for this task.
+
+Update task state: phase = `docs_sync`, status = `completed`.
+
+---
+
 ## Phase 5: Quality Assurance
 
-After all tasks are committed:
+After all implementation tasks and documentation sync are committed:
 
 ```
 /qa
@@ -249,8 +301,9 @@ Trigger auto-rollback:
 ║  TASK COMPLETE: <task-id> — <title>                 ║
 ╠══════════════════════════════════════════════════════╣
 ║  Total time:  Xh Ym                                  ║
-║  Phases:      triage ✓ → reqs ✓ → design ✓ →        ║
-║               implement ✓ → qa ✓ → pr ✓ → deploy ✓  ║
+║  Phases:      triage ✓ → reqs ✓ → design ✓ →          ║
+║               implement ✓ → docs-sync ✓ → qa ✓ →     ║
+║               security ✓ → pr ✓ → deploy ✓           ║
 ║  PR:          <pr-url>                               ║
 ║  Cost:        $X.XX (XYYY tokens)                   ║
 ║  Escalations: N (all resolved)                       ║

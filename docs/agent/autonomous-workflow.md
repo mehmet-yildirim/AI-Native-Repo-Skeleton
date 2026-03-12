@@ -85,6 +85,7 @@ for the autonomous AI development agent.
          ┌───────────────────┐
          │    IMPLEMENT      │ ◀── /implement command (per task, bottom-up)
          │    (per task)     │     With retry loop (max N attempts)
+         │                   │     + /docs per new/modified file
          └───────────────────┘
                  │
            tests pass?
@@ -95,6 +96,17 @@ for the autonomous AI development agent.
               │  No (retry>N)
               │       │
               │  [ESCALATE_IMPL] ──▶ Human assists → agent resumes
+              │
+              ▼
+         ┌───────────────────┐
+         │   DOCS SYNC       │ ◀── Conditional on requirements flags
+         │   (conditional)   │     apiChanges → /doc-api diff
+         │                   │     schemaChanges → /doc-schema migrations
+         └───────────────────┘
+                 │
+          API breaking change?
+              │       │
+              │  YES → [ESCALATE_API_BREAKING] ──▶ version bump reminder
               │
               ▼
          ┌───────────────┐
@@ -204,7 +216,8 @@ Each phase gate checks these conditions before proceeding automatically:
 | After TRIAGE | confidence ≥ 0.80 | 0.30 ≤ conf < 0.80 |
 | After REQUIREMENTS | confidence ≥ 0.75 AND all tasks sized ≤ L | ambiguities > 2 |
 | After ARCHITECT | risk = low | risk = medium or high |
-| After each IMPLEMENT task | all tests pass | tests fail after N retries |
+| After each IMPLEMENT task | all tests pass + /docs run on new files | tests fail after N retries |
+| After DOCS SYNC | /doc-api no errors (if apiChanges); /doc-schema updated (if schemaChanges) | API breaking change detected → escalate reminder |
 | After QA | all gates PASS | any gate FAIL |
 | After CI | all checks green | any check red |
 | Before PROD DEPLOY | always escalate for human approval | — |
