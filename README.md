@@ -25,6 +25,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 
 ## Quick Start
 
+**macOS / Linux:**
 ```bash
 # 1. Clone the skeleton into your new project
 git clone <this-repo> my-project
@@ -41,7 +42,30 @@ claude
 /init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
 
 # 5. Verify everything is in place
-bash scripts/validate-ai-config.sh   # expect 73 PASS, 0 FAIL
+bash scripts/validate-ai-config.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+# Allow local scripts to run (one-time, run as your user — not system-wide)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 1. Clone the skeleton into your new project
+git clone <this-repo> my-project
+cd my-project
+
+# 2. Initialize git, create .env, check config files
+.\scripts\setup.ps1
+
+# 3. Run the interactive wizard — configures name, stack, tracker, keywords
+.\scripts\init.ps1
+
+# 4. Open Claude Code and let AI populate all remaining files
+claude
+/init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
+
+# 5. Verify everything is in place
+.\scripts\validate-ai-config.ps1
 
 # 6. Start coding
 /requirements <your first feature>
@@ -241,9 +265,12 @@ mkdir -p .agent/{state,audit,outputs}
 │   └── webhook-receiver.mjs                   # Jira Server webhook receiver (copy to .agent/)
 │
 └── scripts/
-    ├── setup.sh                               # Step 1: git init, .env, config check
-    ├── init.sh                                # Step 2: interactive wizard (name, stack, tracker, keywords)
-    └── validate-ai-config.sh                  # Configuration validator (73 checks, 14 of 16 slash commands)
+    ├── setup.sh                               # Step 1 (macOS/Linux): git init, .env, config check
+    ├── setup.ps1                              # Step 1 (Windows):     same as setup.sh
+    ├── init.sh                                # Step 2 (macOS/Linux): interactive wizard
+    ├── init.ps1                               # Step 2 (Windows):     same as init.sh
+    ├── validate-ai-config.sh                  # Validator (macOS/Linux): all config files + TODO checks
+    └── validate-ai-config.ps1                 # Validator (Windows):     same as validate-ai-config.sh
 ```
 
 ---

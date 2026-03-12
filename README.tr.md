@@ -49,8 +49,17 @@ cd benim-projem
 
 ### 2. Kurulum Betiğini Çalıştırın
 
+**macOS / Linux:**
 ```bash
 ./scripts/setup.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+# Yerel betiklere izin ver (bir kez, kullanıcı düzeyinde)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+.\scripts\setup.ps1
 ```
 
 Bu betik şunları yapar:
@@ -60,8 +69,14 @@ Bu betik şunları yapar:
 
 ### 3. Başlatma Sihirbazını Çalıştırın
 
+**macOS / Linux:**
 ```bash
 bash scripts/init.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+.\scripts\init.ps1
 ```
 
 Şunları yapılandırır: proje adı ve türü, teknoloji yığını, issue tracker bağlantısı (JIRA/Linear/GitHub), domain anahtar kelimeleri. `agent.config.yaml` ve `CLAUDE.md` içindeki mekanik alanları otomatik doldurur.
@@ -120,7 +135,7 @@ Hedefli doldurma için:
 
 ### 4. Manuel Kurulum Adımları
 
-`setup.sh` tarafından otomatik yapılmayan işlemler:
+`setup.sh` / `setup.ps1` tarafından otomatik yapılmayan işlemler:
 
 **Pre-commit gizli tarama hook'u** — `docs/workflows/05-security-evaluation.md` dosyasında belgelenmiştir ancak otomatik olarak kurulmaz. Tercih ettiğiniz araçla kurun:
 ```bash
