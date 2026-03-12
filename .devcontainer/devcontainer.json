@@ -1,0 +1,21 @@
+{
+  "name": "AI-Native-Repo-Skeleton",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": "latest"
+  },
+  "postCreateCommand": "cp .env.example .env 2>/dev/null || true && echo '✓ .env created from .env.example (or already exists)'",
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "continue.continue",
+        "GitHub.copilot",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
