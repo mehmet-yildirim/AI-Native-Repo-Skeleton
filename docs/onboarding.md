@@ -2,59 +2,96 @@
 
 Welcome to the project. This guide gets you from zero to productive as quickly as possible.
 
+> **Turkish / Türkçe:** See [docs/ai-workflow.tr.md](ai-workflow.tr.md) for the Turkish developer guide.
+
 ---
 
 ## Prerequisites
 
-Before you start, make sure you have:
+Before you start:
 
-- [ ] TODO: List required tools (e.g., Node.js 22+, Docker, etc.)
+- [ ] TODO: List required tools (e.g., Node.js 22+, Docker, Git, etc.)
 - [ ] TODO: Access to required services (e.g., AWS account, database, secrets)
-- [ ] Git configured with your work email
-- [ ] An AI coding tool set up (Cursor, VS Code with Continue, or Claude Code)
+- [ ] Git configured with your work email: `git config --global user.email "you@company.com"`
+- [ ] An AI coding tool: [Cursor](https://cursor.sh), [VS Code + Continue](https://continue.dev), or [Claude Code](https://claude.ai/code)
 
 ---
 
 ## Initial Setup
 
+### macOS / Linux
+
 ```bash
-# 1. Clone the repository
+# 1. Clone
 git clone <repo-url>
 cd <project-name>
 
-# 2. Run the setup script
+# 2. Initialize (git, .env, config checks)
 ./scripts/setup.sh
 
-# 3. Copy environment file and fill in values
-cp .env.example .env
-# Edit .env with your local values
+# 3. Run interactive wizard — fills project name, stack, tracker keys
+bash scripts/init.sh
 
-# 4. TODO: Start local dependencies
+# 4. Let AI populate all remaining TODO files
+claude
+/init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
+
+# 5. Verify everything is in place
+bash scripts/validate-ai-config.sh   # expect: all PASS, no FAIL
+```
+
+### Windows (PowerShell — recommended)
+
+```powershell
+# One-time: allow script execution
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+.\scripts\setup.ps1
+.\scripts\init.ps1
+# Then open Claude Code and run /init as above
+.\scripts\validate-ai-config.ps1
+```
+
+### Windows (Batch — no permissions needed)
+
+```bat
+scripts\setup.bat
+scripts\init.bat
+scripts\validate-ai-config.bat
+```
+
+### After the wizard — fill in manually
+
+```bash
+cp .env.example .env      # fill in credentials and API keys
+
+# TODO: start local dependencies
 # e.g., docker compose up -d
 
-# 5. TODO: Install dependencies
-# e.g., bun install
+# TODO: install application dependencies
+# e.g., bun install / pip install -e ".[dev]" / go mod tidy
 
-# 6. TODO: Run database migrations
-# e.g., bun db:migrate
+# TODO: run database migrations
+# e.g., bun db:migrate / alembic upgrade head
 
-# 7. Verify everything works
-# TODO: e.g., bun test
-# TODO: e.g., bun dev → open http://localhost:3000
+# TODO: verify the app works
+# e.g., bun test / bun dev → open http://localhost:3000
 ```
 
 ---
 
 ## Understanding the Project
 
-Read these documents in order:
+Read these documents in order before writing any code:
 
-1. **`docs/context/project-brief.md`** — What this project does and for whom
-2. **`docs/context/tech-stack.md`** — Technology choices and why
-3. **`docs/architecture/overview.md`** — How the system is structured
-4. **`CLAUDE.md`** — Coding conventions and key commands
-5. **`docs/context/domain-glossary.md`** — Business terminology
-6. **`docs/context/domain-boundaries.md`** — Scope definition for the autonomous agent
+| Document | Contents |
+|----------|---------|
+| `docs/context/project-brief.md` | What this project does and for whom |
+| `docs/context/tech-stack.md` | Technology choices and rationale |
+| `docs/architecture/overview.md` | How the system is structured |
+| `CLAUDE.md` | Coding conventions, key commands, architecture summary |
+| `docs/context/domain-glossary.md` | Business terminology — read before naming anything |
+| `docs/context/domain-boundaries.md` | Scope definition (critical for autonomous agent) |
 
 ---
 
@@ -63,92 +100,128 @@ Read these documents in order:
 ### Claude Code
 
 ```bash
-# Install Claude Code (if not already installed)
+# Install (if not already installed)
 npm install -g @anthropic-ai/claude-code
 
-# In the project directory, Claude Code automatically loads CLAUDE.md
+# Launch — CLAUDE.md is loaded automatically
 claude
+```
 
-# All 20 custom commands (type / to see them):
-# --- Human-guided ---
-# /init          — populate all TODO files from a project description
-# /requirements  — analyze requirements → user stories, tasks, DoD
-# /architect     — design a feature before implementing
-# /implement     — structured bottom-up implementation with tests
-# /security-audit — OWASP + CVE + secret scan (run before every PR)
-# /qa            — full quality gates: lint, types, tests, coverage
-# /review        — code review against project standards
-# /test          — generate comprehensive tests
-# /debug         — systematic bug diagnosis
-# /deploy        — pre-deploy checklist + monitoring plan
-# /infra         — scaffold deployment infrastructure (AWS/GCP/on-prem)
-# /migrate       — safe database migration planning
-# /db            — database lifecycle: init, create, dml, seed, audit
-# /sprint        — sprint planning from backlog
-# /docs          — generate documentation
-# /standup       — daily standup from git history
+All 25 custom commands (type `/` to see them):
+
+```
+# --- Project initialization ---
+/init          — populate all TODO files from a free-form project description
+/init domain:  — generate domain boundaries and agent scope keywords
+/init stack:   — generate tech stack doc and CLAUDE.md commands
+/init ci:      — generate CI workflow for your language and deploy target
+/init agent:   — configure tracker keys, GitHub repo, escalation channels
+
+# --- Human-guided development ---
+/requirements  — analyze requirements → user stories, tasks, DoD
+/architect     — design before writing a single line of code
+/implement     — structured bottom-up implementation with tests
+/security-audit — OWASP + CVE + secret scan (run before every PR)
+/qa            — full quality gates: lint, types, tests, coverage
+/review        — code review against project standards and OWASP
+/test          — generate comprehensive tests
+/debug         — systematic bug diagnosis: hypotheses → fix → prevention
+/deploy        — pre-deploy checklist + execution steps + monitoring plan
+/infra         — scaffold Terraform / K8s for AWS, GCP, or on-prem
+/migrate       — safe DB migration: Expand-Contract + rollback plan
+/db            — database lifecycle: init, create, dml, seed, status, diff
+/sprint        — sprint planning: capacity, backlog, tasks, risk register
+/standup       — daily summary from git history
+
+# --- Documentation generation ---
+/docs          — generate code-level docs (JSDoc, docstrings, GoDoc…)
+/doc-api       — generate/update OpenAPI spec + ReDoc output
+/doc-changelog — generate CHANGELOG.md from git history (git-cliff)
+/doc-schema    — generate database ERD and table reference
+
 # --- Autonomous agent ---
-# /triage        — assess if a JIRA issue belongs to this project
-# /groom         — process backlog through triage + requirements
-# /loop          — run the full autonomous development loop for a task
-# /escalate      — raise a structured escalation when blocked
+/triage        — domain relevance check for a JIRA/Linear/GitHub issue
+/groom         — batch-process backlog through triage + requirements
+/loop          — full autonomous loop: design → code → docs → QA → PR → deploy
+/escalate      — structured human notification when agent is blocked
+
+# --- Skeleton maintenance ---
+/sync-skeleton — pull improvements from the upstream skeleton
 ```
 
 ### Cursor
 
 1. Open the project folder in Cursor
-2. Rules in `.cursor/rules/` are loaded automatically by file type
-3. Enable MCP servers in `.cursor/mcp.json` if desired (see README.md → MCP Servers)
-4. Add your `ANTHROPIC_API_KEY` to Cursor settings
+2. Rules in `.cursor/rules/` load automatically by file type (no action needed)
+3. Skill rules in `.cursor/rules/skills/` activate when you open matching files
+4. To use prompt files: `@.cursor/prompts/requirements.md` in the chat
+5. Enable MCP servers: edit `.cursor/mcp.json`, remove `"disabled": true`, set env vars in `.env`
+6. Add your `ANTHROPIC_API_KEY` to Cursor settings
 
 ### Continue (VS Code / JetBrains)
 
 1. Install the Continue extension
-2. Continue will detect `.continue/config.yaml` automatically
-3. Add your `ANTHROPIC_API_KEY` to the config or environment
-4. Uncomment the skill rules relevant to your stack in `.continue/config.yaml`
-5. Custom slash commands are available in the chat (`/requirements`, `/architect`, etc.)
+2. Open `.continue/config.yaml` — it's auto-detected
+3. Add your `ANTHROPIC_API_KEY` under the `models:` section
+4. Uncomment the skill rules matching your stack (Java, Python, React, iOS, etc.)
+5. Slash commands are available in the Continue chat panel
+
+---
+
+## Development Workflow
+
+```bash
+# Start a feature
+git checkout main && git pull
+git checkout -b feat/PROJ-42-feature-name
+
+# --- AI-assisted development loop ---
+/requirements Add payment retry logic     # 1. Analyze and decompose
+/architect                                # 2. Design (for tasks > 50 lines)
+/implement TASK-001: ...                  # 3. Implement one task at a time
+/docs src/payments/retry.service.ts       # 4. Document new code
+/security-audit diff                      # 5. Security check (ALWAYS before PR)
+/qa                                       # 6. Quality gates
+/review                                   # 7. Final code review
+
+# Commit and open PR
+git commit -m "feat(payments): add retry logic"
+gh pr create --fill
+```
+
+**Full workflow guide:** [`docs/ai-workflow.md`](ai-workflow.md)
 
 ---
 
 ## Setting Up the Autonomous Agent (Optional)
 
-If you will be using the autonomous agent (JIRA backlog → automated development), complete
-this additional setup:
+Skip this section if you are not using autonomous JIRA-driven development.
 
-### 1. Configure the issue tracker connection
+### 1. Configure the issue tracker
 
 Edit `agent.config.yaml`:
 ```yaml
 agent:
-  mode: semi-autonomous        # Start here before moving to autonomous
+  mode: semi-autonomous         # Start here; move to autonomous after testing
 issue_tracker:
-  provider: jira               # or: linear, github, azure-devops
+  provider: jira                # or: linear, github, azure-devops
   jira:
     server_url: "${JIRA_URL}"
     project_key: "YOUR_KEY"
 ```
 
-For on-premise Jira Server setup, see `docs/agent/jira-server-setup.md`.
+For on-premise Jira Server: see `docs/agent/jira-server-setup.md`.
 
 ### 2. Define the project domain
 
-Fill in `docs/context/domain-boundaries.md` — this file controls which JIRA issues
-the agent accepts or rejects. Be specific:
-
-```markdown
-## In-Scope Examples
-✅ "Add retry logic to payment webhook handler"
-✅ "Fix order status not updating after payment"
-
-## Out-of-Scope Examples
-❌ "Update marketing landing page"  → Frontend/Marketing team
-❌ "Add SSO login"                 → Auth service team
+Fill in `docs/context/domain-boundaries.md` — controls which JIRA issues the agent accepts:
+```
+✅ In scope:  "Add retry logic to payment webhook handler"
+❌ Out of scope: "Update marketing landing page" → Marketing team
 ```
 
-### 3. Set environment variables
+### 3. Add agent environment variables to `.env`
 
-Add to your `.env`:
 ```env
 JIRA_URL=https://jira.yourcompany.com
 JIRA_EMAIL=your-username
@@ -156,120 +229,107 @@ JIRA_API_TOKEN=your-pat-token
 SLACK_WEBHOOK_URL=https://hooks.slack.com/...
 ```
 
-### 4. Test the connection
+### 4. Test the setup
 
 ```bash
-# Verify Jira API access from the agent host
+# Verify Jira API access
 curl -H "Authorization: Bearer $JIRA_API_TOKEN" \
   "$JIRA_URL/rest/api/2/myself" | jq .displayName
 
-# Run a triage test on a known issue
+# Triage a known issue manually
 /triage YOUR-PROJECT-1
-```
 
-### 5. Run the full loop on a test issue
-
-```bash
+# Run the full loop on a test issue
 /loop YOUR-PROJECT-1
 ```
-
-The agent will:
-- Design the implementation (`/architect`)
-- Create a git branch
-- Implement with a retry loop on test failures
-- Run `/security-audit` on the changes
-- Run `/qa` quality gates
-- Create a Pull Request
-- Monitor CI and deployment
 
 Full documentation: `docs/agent/autonomous-workflow.md`
 
 ---
 
-## Development Workflow
+## Security Checklist (Before Every PR)
 
-```bash
-# Start a new feature
-git checkout main && git pull
-git checkout -b feat/PROJ-42-feature-name
+Run `/security-audit diff` before opening any PR:
 
-# Develop (with AI assistance — see docs/ai-workflow.md)
-/requirements Add payment retry logic   # 1. Analyze requirements
-/architect                              # 2. Design (for large tasks)
-/implement TASK-001: ...                # 3. Implement step by step
-/security-audit diff                   # 4. Security check (ALWAYS)
-/qa                                    # 5. Quality gates
-/review                                # 6. Final review
+- [ ] No CRITICAL or HIGH findings
+- [ ] No committed secrets, API keys, or credentials
+- [ ] All user inputs validated at the entry point
+- [ ] Authorization checked before data access
+- [ ] No dependency CVEs with CVSS ≥ 7.0
 
-# Commit
-git commit -m "feat(scope): description"
-
-# Open PR
-gh pr create --fill
-```
-
-Full workflow details: **`docs/ai-workflow.md`** | **`docs/ai-workflow.tr.md`** (Turkish)
+See [`docs/workflows/05-security-evaluation.md`](workflows/05-security-evaluation.md) for the full security workflow.
 
 ---
 
-## Security Checklist (Before Every PR)
+## Keeping Your Setup Up to Date
 
-Run `/security-audit diff` and verify:
-- [ ] No CRITICAL or HIGH findings
-- [ ] No committed secrets or credentials
-- [ ] All user inputs validated at entry point
-- [ ] Authorization checked before data access
-- [ ] No dependency CVEs with CVSS ≥ 7.0
+When the team updates the skeleton (new commands, improved skill rules, security fixes):
+
+```bash
+# macOS / Linux
+bash scripts/sync-skeleton.sh --check    # check if update available
+bash scripts/sync-skeleton.sh            # apply updates interactively
+```
+
+```powershell
+# Windows
+.\scripts\sync-skeleton.ps1 -Check
+.\scripts\sync-skeleton.ps1
+```
+
+The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`docs/skeleton-sync.md`](skeleton-sync.md) for details.
 
 ---
 
 ## Key Commands
 
 ```bash
-# TODO: Fill these in with actual project commands
+# TODO: Replace these with actual project commands
 
 # Development
-bun dev          # Start dev server
+bun dev           # Start dev server
 
 # Testing
-bun test         # Run all tests
-bun test --watch # Watch mode
+bun test          # Run all tests
+bun test --watch  # Watch mode
 
 # Code quality
-bun lint         # Lint
-bun typecheck    # Type check
-bun format       # Format
+bun lint          # Lint
+bun typecheck     # Type check
+bun format        # Format
 
 # Database
-bun db:migrate   # Run migrations
-bun db:seed      # Seed data
+bun db:migrate    # Run migrations
+bun db:seed       # Seed data
 
-# Other
-bun build        # Production build
+# Build
+bun build         # Production build
 ```
 
 ---
 
 ## Getting Help
 
-- **Project questions**: Ask in `#<channel>` on Slack / Teams
-- **AI tool questions**: See `docs/ai-workflow.md`
-- **Autonomous agent issues**: See `docs/agent/escalation-protocol.md`
-- **Bug in this skeleton**: Open an issue in the skeleton repository
+| Need | Resource |
+|------|---------|
+| Project questions | `#<channel>` on Slack / Teams |
+| AI workflow guidance | [`docs/ai-workflow.md`](ai-workflow.md) |
+| Autonomous agent issues | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
+| Skeleton bug or improvement | Open an issue in the skeleton repository |
 
 ---
 
-## First Task
+## First Task Checklist
 
-Once setup is complete, your first task should be:
+Once setup is complete:
 
 1. Pick up a `good-first-issue` ticket from the backlog
-2. Run `/requirements <issue description>` to analyze and decompose it
-3. Run `/architect <issue description>` to design the implementation
-4. Implement following the checklist — one task per commit
-5. Run `/security-audit diff` — fix any CRITICAL/HIGH findings
-6. Run `/qa` — fix any blocking issues
-7. Run `/review` — address any feedback
+2. `/requirements <issue description>` — analyze and decompose
+3. `/architect <issue description>` — design the implementation
+4. Implement following the checklist — one task per commit, `/docs` after each
+5. `/security-audit diff` — fix any CRITICAL/HIGH findings
+6. `/qa` — fix any blocking quality issues
+7. `/review` — address any feedback
 8. Open a PR using the template
 
 Good luck, and don't hesitate to ask for help!
