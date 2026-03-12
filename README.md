@@ -17,7 +17,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow skeleton |
-| **Skeleton sync** | `skeleton.json`, `scripts/sync-skeleton.sh` | Pull improvements from upstream skeleton without overwriting customizations |
+| **Skeleton sync** | `skeleton.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Pull improvements from upstream skeleton without overwriting customizations |
 
 ---
 
@@ -184,7 +184,7 @@ After setup, code with the AI loop:
     ├── setup.{sh,bat,ps1}            # Step 1 — initialize project
     ├── init.{sh,bat,ps1}             # Step 2 — interactive configuration wizard
     ├── validate-ai-config.{sh,bat,ps1}  # 128-point configuration validator
-    └── sync-skeleton.{sh}            # Pull upstream skeleton improvements
+    └── sync-skeleton.{sh,ps1,bat}    # Pull upstream skeleton improvements
 ```
 
 ---
@@ -321,9 +321,24 @@ Configured in `.cursor/mcp.json`. Enable a server: remove `"disabled": true` and
 When the skeleton receives improvements (new commands, updated skill rules, security fixes):
 
 ```bash
-bash scripts/sync-skeleton.sh         # interactive: shows diff, auto-applies safe files
-bash scripts/sync-skeleton.sh --auto  # non-interactive: apply all skeleton-owned files
-bash scripts/sync-skeleton.sh --check # just check if an update is available
+# macOS / Linux / Git Bash
+bash scripts/sync-skeleton.sh          # interactive: shows diff, auto-applies safe files
+bash scripts/sync-skeleton.sh --auto   # non-interactive: apply all skeleton-owned files
+bash scripts/sync-skeleton.sh --check  # just check if an update is available
+```
+
+```powershell
+# Windows (PowerShell — recommended)
+.\scripts\sync-skeleton.ps1            # interactive
+.\scripts\sync-skeleton.ps1 -Auto     # non-interactive
+.\scripts\sync-skeleton.ps1 -Check    # check only
+```
+
+```bat
+:: Windows (Batch — delegates to PowerShell automatically)
+scripts\sync-skeleton.bat
+scripts\sync-skeleton.bat --auto
+scripts\sync-skeleton.bat --check
 ```
 
 The sync script uses `skeleton.json` to classify every file:

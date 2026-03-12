@@ -169,6 +169,8 @@ check_exists "docs/architecture/overview.md"
 check_exists "skeleton.json"
 check_exists "SKELETON-UPDATES.md"
 check_exists "scripts/sync-skeleton.sh"
+check_exists "scripts/sync-skeleton.ps1"
+check_exists "scripts/sync-skeleton.bat"
 check_exists "docs/skeleton-sync.md"
 check_exists ".claude/commands/sync-skeleton.md"
 

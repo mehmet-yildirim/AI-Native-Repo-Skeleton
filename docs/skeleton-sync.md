@@ -76,18 +76,35 @@ if the skeleton template was updated (so you can read the new guidance):
 
 ### Option 1: Automated script (recommended)
 
+**macOS / Linux / Git Bash (WSL):**
 ```bash
-# Interactive mode — shows diffs, asks for each merge-required file
-bash scripts/sync-skeleton.sh
+bash scripts/sync-skeleton.sh           # Interactive
+bash scripts/sync-skeleton.sh --auto    # Auto-apply skeleton-owned files
+bash scripts/sync-skeleton.sh --dry-run # Preview only
+bash scripts/sync-skeleton.sh --check   # Check for updates
+```
 
-# Apply all skeleton_owned files without prompting
-bash scripts/sync-skeleton.sh --auto
+**Windows — PowerShell (recommended on Windows):**
+```powershell
+# One-time: allow script execution if not already set
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# Preview what would change (dry run)
-bash scripts/sync-skeleton.sh --dry-run
+.\scripts\sync-skeleton.ps1            # Interactive
+.\scripts\sync-skeleton.ps1 -Auto     # Auto-apply
+.\scripts\sync-skeleton.ps1 -DryRun   # Preview only
+.\scripts\sync-skeleton.ps1 -Check    # Check for updates
+```
 
-# Just check if updates are available
-bash scripts/sync-skeleton.sh --check
+> **PowerShell advantage on Windows:** No `jq` required — uses built-in
+> `ConvertFrom-Json`. For merge-required files, opens VS Code diff (if
+> available) instead of vimdiff. Fully equivalent to the bash version.
+
+**Windows — Batch (delegates to PowerShell automatically):**
+```bat
+scripts\sync-skeleton.bat
+scripts\sync-skeleton.bat --auto
+scripts\sync-skeleton.bat --dry-run
+scripts\sync-skeleton.bat --check
 ```
 
 ### Option 2: Claude Code command

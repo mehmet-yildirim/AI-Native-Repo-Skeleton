@@ -111,7 +111,10 @@
       "docs/workflows/05-security-evaluation.md",
       "scripts/setup.sh",
       "scripts/validate-ai-config.sh",
-      "skills/README.md"
+      "skills/README.md",
+      "scripts/sync-skeleton.sh",
+      "scripts/sync-skeleton.ps1",
+      "scripts/sync-skeleton.bat"
     ],
     "project_owned": [
       "CLAUDE.md",
