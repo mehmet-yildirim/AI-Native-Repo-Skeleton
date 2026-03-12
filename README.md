@@ -14,7 +14,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 
 | Layer | Config | Purpose |
 |-------|--------|---------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 16 slash commands, event hooks |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 20 slash commands, event hooks |
 | **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 18 contextual rule files + 16 workflow prompt files |
 | **Continue** | `.continue/` | Multi-model config, inline slash commands, persistent rules |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation |
@@ -172,9 +172,15 @@ mkdir -p .agent/{state,audit,outputs}
 │   │       ├── mobile-android.mdc            # Kotlin, Compose, Hilt, Room, Flow
 │   │       ├── mobile-flutter.mdc            # Dart 3, Riverpod, GoRouter, Freezed
 │   │       ├── mobile-reactnative.mdc        # Expo, TS strict, React Navigation, EAS
+│   │       ├── mobile-kmp.mdc                # Kotlin Multiplatform, Compose MP, SQLDelight
 │   │       ├── be-microservices.mdc          # Service design, resilience, observability
+│   │       ├── db-migrations.mdc             # Flyway, Alembic, Prisma, Drizzle, Goose…
 │   │       ├── devops-docker.mdc             # Dockerfile, Compose, security
-│   │       └── devops-cicd.mdc               # GitHub Actions, quality gates, deployment
+│   │       ├── devops-cicd.mdc               # GitHub Actions, quality gates, deployment
+│   │       ├── devops-aws.mdc                # ECS/EKS, RDS, Secrets Manager, Terraform
+│   │       ├── devops-gcp.mdc                # Cloud Run, GKE, Cloud SQL, Workload Identity
+│   │       ├── devops-onprem.mdc             # k3s/kubeadm, Vault, Harbor, Ansible
+│   │       └── security-sast.mdc             # OWASP Top 10 patterns per language
 │   └── mcp.json                               # MCP: GitHub, Jira, Linear, Slack, Sentry…
 │
 ├── .continue/
@@ -195,28 +201,42 @@ mkdir -p .agent/{state,audit,outputs}
 │           ├── mobile-ios.md
 │           ├── mobile-android.md
 │           ├── mobile-flutter.md
-│           └── mobile-reactnative.md
+│           ├── mobile-reactnative.md
+│           ├── mobile-kmp.md
+│           ├── be-microservices.md
+│           ├── db-migrations.md
+│           ├── devops-docker.md
+│           ├── devops-cicd.md
+│           ├── devops-aws.md
+│           ├── devops-gcp.md
+│           ├── devops-onprem.md
+│           ├── lang-typescript.md
+│           ├── lang-go.md
+│           └── security-sast.md
 │
 ├── .claude/
 │   ├── settings.json                          # Tool permissions + event hooks
-│   ├── commands/                              # 17 slash commands
-│   │   ├── init.md                           # /init  ← project initialization
+│   ├── commands/                              # 20 slash commands
+│   │   ├── init.md                           # /init         ← project initialization
 │   │   ├── requirements.md                   # /requirements
 │   │   ├── architect.md                      # /architect
 │   │   ├── implement.md                      # /implement
 │   │   ├── review.md                         # /review
 │   │   ├── qa.md                             # /qa
+│   │   ├── security-audit.md                 # /security-audit ← OWASP + CVE + secrets
 │   │   ├── test.md                           # /test
 │   │   ├── debug.md                          # /debug
 │   │   ├── deploy.md                         # /deploy
+│   │   ├── infra.md                          # /infra        ← infrastructure scaffolding
 │   │   ├── migrate.md                        # /migrate
+│   │   ├── db.md                             # /db           ← database lifecycle
 │   │   ├── sprint.md                         # /sprint
 │   │   ├── docs.md                           # /docs
 │   │   ├── standup.md                        # /standup
-│   │   ├── triage.md                         # /triage  ← autonomous agent
-│   │   ├── groom.md                          # /groom   ← autonomous agent
-│   │   ├── loop.md                           # /loop    ← autonomous agent
-│   │   └── escalate.md                       # /escalate ← autonomous agent
+│   │   ├── triage.md                         # /triage       ← autonomous agent
+│   │   ├── groom.md                          # /groom        ← autonomous agent
+│   │   ├── loop.md                           # /loop         ← autonomous agent
+│   │   └── escalate.md                       # /escalate     ← autonomous agent
 │   └── hooks/                                # Event-driven hooks
 │       ├── post-write.mjs                    # Guards protected paths on every file write
 │       ├── audit-log.mjs                     # Records every bash command + exit code
@@ -228,7 +248,8 @@ mkdir -p .agent/{state,audit,outputs}
 │   └── workflows/ci.yml                       # CI skeleton — adapt for your stack
 │
 ├── docs/
-│   ├── ai-workflow.md                         # AI-Native development guide
+│   ├── ai-workflow.md                         # AI-Native development guide (English)
+│   ├── ai-workflow.tr.md                      # AI-Native development guide (Turkish)
 │   ├── onboarding.md                          # New developer onboarding
 │   ├── context/                               # ← CUSTOMIZE ALL
 │   │   ├── project-brief.md                  # What the project does and for whom
@@ -255,7 +276,9 @@ mkdir -p .agent/{state,audit,outputs}
 │       ├── 02-feature-development.md
 │       ├── 03-testing-strategy.md
 │       ├── 04-deployment.md
-│       └── 05-security-evaluation.md         # Security touchpoints & remediation workflow
+│       ├── 05-security-evaluation.md         # Security touchpoints & remediation workflow
+│       ├── 06-database-migrations.md         # Full DB change lifecycle with /db and /migrate
+│       └── 07-deployment-platforms.md        # Platform-specific guides (AWS, GCP, on-prem)
 │
 ├── skills/
 │   └── README.md                              # Skills index & activation guide
@@ -349,6 +372,7 @@ Used interactively — you invoke each step and review the output.
 | `/db <subcommand>` | Database change management lifecycle: `init`, `create`, `dml`, `seed`, `status`, `diff`, `audit` | Tool setup, scaffolding, drift detection |
 | `/sprint` | Sprint planning: capacity analysis, backlog selection, task breakdown, risk register | Sprint kickoff |
 | `/docs` | Generate API docs, architecture docs, or user guides from source | After implementation |
+| `/security-audit [target]` | OWASP Top 10 + CVE + secret scan: `diff`, `full`, `deps`, `secrets`, or a path | Before every PR; weekly for full codebase |
 | `/standup` | Daily standup summary from git history | Start of day |
 
 ### Autonomous Agent Commands
@@ -482,7 +506,7 @@ Skills provide deep, idiomatic guidance for specific languages and frameworks.
 
 See [skills/README.md](skills/README.md) for the full index and instructions for adding new skills.
 
-> **Continue skill parity note:** Cursor has 21 skill files. `.continue/rules/skills/` ships with 18 — `lang-typescript`, `lang-go`, `be-microservices`, `devops-docker`, and `devops-cicd` are absent. If your project uses any of those, create the corresponding `.md` file under `.continue/rules/skills/` and add it to `.continue/config.yaml`. Mirror the structure of the existing `.continue` skill files.
+> **Continue skill parity:** Cursor and Continue ship with the same 22 skill files. Every `.cursor/rules/skills/*.mdc` has a matching `.continue/rules/skills/*.md`. Activate the relevant skills by uncommenting them in `.continue/config.yaml`.
 
 ---
 
@@ -553,7 +577,7 @@ Use sequential numbering. Link each ADR from `docs/architecture/overview.md` onc
 bash scripts/validate-ai-config.sh
 ```
 
-Runs 73 checks across all configuration files:
+Runs checks across all configuration files:
 
 | Result | Meaning |
 |--------|---------|
@@ -561,7 +585,7 @@ Runs 73 checks across all configuration files:
 | `WARN` | File exists but contains TODO placeholders (customization expected) |
 | `FAIL` | File missing — fix before starting development |
 
-> **Known coverage gap:** The script validates 14 of the 16 slash commands. `standup.md` and `security-audit.md` are present in `.claude/commands/` but are not included in the validation checks. This does not affect functionality — both commands work — but `validate-ai-config.sh` will not detect if they are accidentally deleted.
+> Run `bash scripts/validate-ai-config.sh` after cloning and after adding new skills or commands. If you add new files, add a `check_exists` call to the script to keep coverage complete.
 
 ---
 

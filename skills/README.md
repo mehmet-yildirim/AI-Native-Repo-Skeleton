@@ -21,8 +21,8 @@ deep context to AI tools.
 | Java | `skills/lang-java.mdc` | `skills/lang-java.md` | Spring Boot, JPA, JUnit 5, Java 21 |
 | .NET / C# | `skills/lang-dotnet.mdc` | `skills/lang-dotnet.md` | ASP.NET Core, EF Core, xUnit, C# 12 |
 | Python | `skills/lang-python.mdc` | `skills/lang-python.md` | FastAPI, SQLAlchemy, pytest, type hints |
-| TypeScript | `skills/lang-typescript.mdc` | *(covered by base rules)* | Strict TS, ESM, Bun/Node.js |
-| Go | `skills/lang-go.mdc` | *(add as needed)* | Idiomatic Go, stdlib, concurrency |
+| TypeScript | `skills/lang-typescript.mdc` | `skills/lang-typescript.md` | Strict TS, ESM, Bun/Node.js |
+| Go | `skills/lang-go.mdc` | `skills/lang-go.md` | Idiomatic Go, stdlib, concurrency |
 
 ### Frontend Frameworks
 
@@ -55,9 +55,9 @@ deep context to AI tools.
 
 | Skill | Cursor Rule | Continue Rule | Key Coverage |
 |-------|-------------|---------------|-------------|
-| Docker | `skills/devops-docker.mdc` | *(add as needed)* | Dockerfile, Compose, security, optimization |
-| CI/CD | `skills/devops-cicd.mdc` | *(add as needed)* | GitHub Actions, quality gates, deployment strategies |
-| Microservices | `skills/be-microservices.mdc` | *(add as needed)* | Service design, communication, observability |
+| Docker | `skills/devops-docker.mdc` | `skills/devops-docker.md` | Dockerfile, Compose, security, optimization |
+| CI/CD | `skills/devops-cicd.mdc` | `skills/devops-cicd.md` | GitHub Actions, quality gates, deployment strategies |
+| Microservices | `skills/be-microservices.mdc` | `skills/be-microservices.md` | Service design, communication, observability |
 | Database Migrations | `skills/db-migrations.mdc` | `skills/db-migrations.md` | Flyway, Liquibase, Alembic, Django, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight |
 | AWS Deployment | `skills/devops-aws.mdc` | `skills/devops-aws.md` | ECS Fargate, EKS, ECR, RDS, S3/CloudFront, OIDC/IAM, Secrets Manager, CloudWatch, Terraform |
 | GCP Deployment | `skills/devops-gcp.mdc` | `skills/devops-gcp.md` | Cloud Run, GKE Autopilot, Cloud SQL, Artifact Registry, Workload Identity Federation, Secret Manager, Cloud Armor, Terraform |
@@ -80,6 +80,8 @@ rules:
   # - .continue/rules/skills/lang-java.md
   # - .continue/rules/skills/lang-dotnet.md
   # - .continue/rules/skills/lang-python.md
+  # - .continue/rules/skills/lang-typescript.md
+  # - .continue/rules/skills/lang-go.md
 
   # Frontend — activate one or more:
   # - .continue/rules/skills/fe-react.md
@@ -98,9 +100,15 @@ rules:
   # - .continue/rules/skills/db-migrations.md
 
   # Deployment platform (activate one matching your target):
+  # - .continue/rules/skills/devops-docker.md
+  # - .continue/rules/skills/devops-cicd.md
   # - .continue/rules/skills/devops-aws.md
   # - .continue/rules/skills/devops-gcp.md
   # - .continue/rules/skills/devops-onprem.md
+  # - .continue/rules/skills/be-microservices.md
+
+  # Security SAST (recommended for all production projects):
+  # - .continue/rules/skills/security-sast.md
 ```
 
 ## Using Skills in Claude Code

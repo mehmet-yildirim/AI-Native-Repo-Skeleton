@@ -29,7 +29,7 @@ Bu iskelet, yeni veya mevcut projelerde **yapay zeka destekli otonom yazılım g
 
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 16 slash komutu, olay hook'ları |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 20 slash komutu, olay hook'ları |
 | **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 18 bağlamsal kural dosyası + 16 iş akışı prompt dosyası |
 | **Continue** | `.continue/` | Çok-model yapılandırması, satır içi slash komutları, kalıcı kurallar |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
@@ -226,9 +226,15 @@ claude
 │   │       ├── mobile-android.mdc            # Kotlin, Compose, Hilt, Room, Flow
 │   │       ├── mobile-flutter.mdc            # Dart 3, Riverpod, GoRouter, Freezed
 │   │       ├── mobile-reactnative.mdc        # Expo, TS strict, React Navigation, EAS
+│   │       ├── mobile-kmp.mdc                # Kotlin Multiplatform, Compose MP, SQLDelight
 │   │       ├── be-microservices.mdc          # Servis tasarımı, dayanıklılık, gözlemlenebilirlik
+│   │       ├── db-migrations.mdc             # Flyway, Alembic, Prisma, Drizzle, Goose…
 │   │       ├── devops-docker.mdc             # Dockerfile, Compose, güvenlik
-│   │       └── devops-cicd.mdc               # GitHub Actions, kalite kapıları, deployment
+│   │       ├── devops-cicd.mdc               # GitHub Actions, kalite kapıları, deployment
+│   │       ├── devops-aws.mdc                # ECS/EKS, RDS, Secrets Manager, Terraform
+│   │       ├── devops-gcp.mdc                # Cloud Run, GKE, Cloud SQL, Workload Identity
+│   │       ├── devops-onprem.mdc             # k3s/kubeadm, Vault, Harbor, Ansible
+│   │       └── security-sast.mdc             # OWASP Top 10 desenleri dil bazında
 │   └── mcp.json                               # MCP: GitHub, Jira, Linear, Slack, Sentry…
 │
 ├── .continue/
@@ -249,27 +255,42 @@ claude
 │           ├── mobile-ios.md
 │           ├── mobile-android.md
 │           ├── mobile-flutter.md
-│           └── mobile-reactnative.md
+│           ├── mobile-reactnative.md
+│           ├── mobile-kmp.md
+│           ├── be-microservices.md
+│           ├── db-migrations.md
+│           ├── devops-docker.md
+│           ├── devops-cicd.md
+│           ├── devops-aws.md
+│           ├── devops-gcp.md
+│           ├── devops-onprem.md
+│           ├── lang-typescript.md
+│           ├── lang-go.md
+│           └── security-sast.md
 │
 ├── .claude/
 │   ├── settings.json                          # Araç izinleri + olay hook'ları
-│   ├── commands/                              # 16 slash komutu
+│   ├── commands/                              # 20 slash komutu
+│   │   ├── init.md                           # /init          ← proje başlatma
 │   │   ├── requirements.md                   # /requirements
 │   │   ├── architect.md                      # /architect
 │   │   ├── implement.md                      # /implement
 │   │   ├── review.md                         # /review
 │   │   ├── qa.md                             # /qa
+│   │   ├── security-audit.md                 # /security-audit ← OWASP + CVE + gizli bilgi
 │   │   ├── test.md                           # /test
 │   │   ├── debug.md                          # /debug
 │   │   ├── deploy.md                         # /deploy
+│   │   ├── infra.md                          # /infra         ← altyapı iskeleti
 │   │   ├── migrate.md                        # /migrate
+│   │   ├── db.md                             # /db            ← veritabanı yaşam döngüsü
 │   │   ├── sprint.md                         # /sprint
 │   │   ├── docs.md                           # /docs
 │   │   ├── standup.md                        # /standup
-│   │   ├── triage.md                         # /triage    ← otonom ajan
-│   │   ├── groom.md                          # /groom     ← otonom ajan
-│   │   ├── loop.md                           # /loop      ← otonom ajan
-│   │   └── escalate.md                       # /escalate  ← otonom ajan
+│   │   ├── triage.md                         # /triage        ← otonom ajan
+│   │   ├── groom.md                          # /groom         ← otonom ajan
+│   │   ├── loop.md                           # /loop          ← otonom ajan
+│   │   └── escalate.md                       # /escalate      ← otonom ajan
 │   └── hooks/                                # Olay tetikleyicileri
 │       ├── post-write.mjs                    # Yazma sonrası korunan yol denetimi
 │       ├── audit-log.mjs                     # Bash komutu kaydı + yasak komut tespiti
@@ -281,7 +302,8 @@ claude
 │   └── workflows/ci.yml                       # CI şablonu — stack'inize göre uyarlayın
 │
 ├── docs/
-│   ├── ai-workflow.md                         # AI geliştirme rehberi
+│   ├── ai-workflow.md                         # AI geliştirme rehberi (İngilizce)
+│   ├── ai-workflow.tr.md                      # AI geliştirme rehberi (Türkçe)
 │   ├── onboarding.md                          # Yeni geliştirici kılavuzu
 │   ├── context/                               # ← TÜMÜNÜ DÜZENLE
 │   │   ├── project-brief.md
@@ -308,7 +330,9 @@ claude
 │       ├── 02-feature-development.md
 │       ├── 03-testing-strategy.md
 │       ├── 04-deployment.md
-│       └── 05-security-evaluation.md         # Güvenlik kontrol noktaları ve düzeltme iş akışı
+│       ├── 05-security-evaluation.md         # Güvenlik kontrol noktaları ve düzeltme iş akışı
+│       ├── 06-database-migrations.md         # /db ve /migrate ile tam DB değişim yaşam döngüsü
+│       └── 07-deployment-platforms.md        # Platform rehberleri (AWS, GCP, şirket içi)
 │
 ├── skills/
 │   └── README.md                              # Beceri indeksi ve aktivasyon rehberi
@@ -318,7 +342,7 @@ claude
 │
 └── scripts/
     ├── setup.sh                               # Tek seferlik kurulum
-    └── validate-ai-config.sh                  # Yapılandırma doğrulayıcı (73 kontrol, 16 slash komutundan 14'ü)
+    └── validate-ai-config.sh                  # Yapılandırma doğrulayıcı
 ```
 
 ---
@@ -336,7 +360,7 @@ claude       # Claude Code'u başlatın
 
 **Otomatik yüklenen bağlam:**
 - `CLAUDE.md` — proje talimatları, mimari, kodlama kuralları
-- `.claude/commands/` — 16 özel slash komutu
+- `.claude/commands/` — 20 özel slash komutu
 - `.claude/settings.json` — araç izinleri ve hook yapılandırması
 
 ### Cursor
@@ -416,7 +440,7 @@ rules:
 
 Yeni beceri ekleme için [skills/README.md](skills/README.md) dosyasına bakın.
 
-> **Continue beceri eşitliği notu:** Cursor'da 17 beceri dosyası bulunur. `.continue/rules/skills/` ile 12 dosya gelir — `lang-typescript`, `lang-go`, `be-microservices`, `devops-docker` ve `devops-cicd` eksiktir. Projenizde bu teknolojilerden birini kullanıyorsanız, `.continue/rules/skills/` altında ilgili `.md` dosyasını oluşturun ve `.continue/config.yaml` dosyasına ekleyin. Mevcut `.continue` beceri dosyalarının yapısını örnek alın.
+> **Continue beceri eşitliği:** Cursor ve Continue aynı 22 beceri dosyasıyla gelir. Her `.cursor/rules/skills/*.mdc` dosyasının `.continue/rules/skills/*.md` karşılığı mevcuttur. İlgili becerileri `.continue/config.yaml` dosyasında yorumdan çıkararak aktive edin.
 
 ---
 
@@ -867,7 +891,7 @@ Tüm yapılandırma dosyalarında 73 kontrol çalıştırır:
 | `WARN` | Dosya mevcut ama TODO içeriyor (özelleştirme bekleniyor) |
 | `FAIL` | Dosya eksik — geliştirmeye başlamadan önce düzeltilmeli |
 
-> **Bilinen kapsam eksikliği:** Betik, 16 slash komutundan 14'ünü doğrular. `standup.md` ve `security-audit.md` dosyaları `.claude/commands/` altında mevcuttur ve çalışır; ancak doğrulama betikine dahil edilmemiştir. Yanlışlıkla silinmeleri durumunda betik bunu tespit etmez.
+> `bash scripts/validate-ai-config.sh` komutunu klonladıktan sonra ve yeni beceri veya komut ekledikçe çalıştırın. Yeni dosya eklerseniz, betiğe bir `check_exists` satırı ekleyerek kapsam bütünlüğünü koruyun.
 
 ---
 
