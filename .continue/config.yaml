@@ -88,6 +88,7 @@ rules:
   # - .continue/rules/skills/lang-dotnet.md
   # - .continue/rules/skills/lang-python.md
   # - .continue/rules/skills/lang-typescript.md   # (TypeScript covered by base rules too)
+  # - .continue/rules/skills/lang-go.md
 
   # --- Frontend skills: uncomment the one(s) for your project ---
   # - .continue/rules/skills/fe-react.md
@@ -100,6 +101,14 @@ rules:
   # - .continue/rules/skills/mobile-android.md
   # - .continue/rules/skills/mobile-flutter.md
   # - .continue/rules/skills/mobile-reactnative.md
+  # - .continue/rules/skills/mobile-kmp.md
+
+  # --- Backend / Architecture skills: uncomment for microservices projects ---
+  # - .continue/rules/skills/be-microservices.md
+
+  # --- DevOps skills: uncomment if working on infra/pipeline ---
+  # - .continue/rules/skills/devops-docker.md
+  # - .continue/rules/skills/devops-cicd.md
 
 # =============================================================================
 # SLASH COMMANDS — Custom commands available with /
