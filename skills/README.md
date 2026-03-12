@@ -39,6 +39,7 @@ deep context to AI tools.
 |-------|-------------|---------------|-------------|
 | iOS | `skills/mobile-ios.mdc` | `skills/mobile-ios.md` | Swift 5.9+, SwiftUI, MVVM, async/await, SwiftData, XCTest / Swift Testing |
 | Android | `skills/mobile-android.mdc` | `skills/mobile-android.md` | Kotlin, Jetpack Compose, Hilt, Room, Coroutines + Flow, Material 3 |
+| Kotlin Multiplatform | `skills/mobile-kmp.mdc` | `skills/mobile-kmp.md` | KMP shared logic, Ktor, kotlinx.serialization, SQLDelight, Koin, Compose Multiplatform, SKIE |
 | Flutter | `skills/mobile-flutter.mdc` | `skills/mobile-flutter.md` | Dart 3, Riverpod, GoRouter, Freezed, drift, EAS / Fastlane |
 | React Native | `skills/mobile-reactnative.mdc` | `skills/mobile-reactnative.md` | Expo, TypeScript strict, React Navigation, Zustand, TanStack Query, EAS |
 
@@ -85,6 +86,7 @@ rules:
   # Mobile — activate one:
   # - .continue/rules/skills/mobile-ios.md
   # - .continue/rules/skills/mobile-android.md
+  # - .continue/rules/skills/mobile-kmp.md
   # - .continue/rules/skills/mobile-flutter.md
   # - .continue/rules/skills/mobile-reactnative.md
 ```

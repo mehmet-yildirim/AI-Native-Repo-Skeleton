@@ -438,6 +438,7 @@ Skills provide deep, idiomatic guidance for specific languages and frameworks.
 | | Angular 17+ | Standalone components, Signals, NgRx Signal Store, RxJS |
 | **Mobile** | iOS (Swift / SwiftUI) | async/await + actors, @Observable, NavigationStack, SwiftData, Swift Testing |
 | | Android (Kotlin / Compose) | StateFlow, Hilt, Room + Flow, Compose UDF, Turbine testing |
+| | Kotlin Multiplatform (KMP) | Shared logic + Compose Multiplatform UI, Ktor, SQLDelight, Koin, expect/actual, SKIE Swift interop |
 | | Flutter / Dart | Riverpod + code-gen, GoRouter, Freezed, drift, EAS / Fastlane |
 | | React Native / Expo | Strict TS, FlashList, React Navigation v7, Zustand + TanStack Query, EAS |
 | **Infra** | Docker | Multi-stage builds, non-root user, Compose health checks, image scanning |

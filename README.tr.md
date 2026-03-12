@@ -384,6 +384,7 @@ rules:
 | | Angular 17+ | Standalone bileşenler, Signals, NgRx Signal Store, RxJS disiplini |
 | **Mobil** | iOS (Swift / SwiftUI) | async/await + actor'lar, @Observable, NavigationStack, SwiftData, Swift Testing |
 | | Android (Kotlin / Compose) | StateFlow, Hilt, Room + Flow, Compose UDF, Turbine testi |
+| | Kotlin Multiplatform (KMP) | Paylaşımlı mantık + Compose Multiplatform UI, Ktor, SQLDelight, Koin, expect/actual, SKIE Swift entegrasyonu |
 | | Flutter / Dart | Riverpod + kod üretimi, GoRouter, Freezed, drift, EAS / Fastlane |
 | | React Native / Expo | Strict TS, FlashList, React Navigation v7, Zustand + TanStack Query, EAS |
 | **Altyapı** | Docker | Çok aşamalı build, root olmayan kullanıcı, Compose healthcheck, güvenlik taraması |
