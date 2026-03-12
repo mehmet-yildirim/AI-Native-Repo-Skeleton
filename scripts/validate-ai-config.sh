@@ -144,8 +144,10 @@ check_exists "docs/architecture/overview.md"
 # --- Scripts ---
 check_exists "scripts/setup.sh"
 check_exists "scripts/setup.ps1"
+check_exists "scripts/setup.bat"
 check_exists "scripts/init.sh"
 check_exists "scripts/init.ps1"
+check_exists "scripts/init.bat"
 
 # ---------------------------------------------------------------------------
 # Customization checks (look for TODO placeholders)

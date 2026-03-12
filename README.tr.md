@@ -54,11 +54,14 @@ cd benim-projem
 ./scripts/setup.sh
 ```
 
-**Windows (PowerShell):**
-```powershell
-# Yerel betiklere izin ver (bir kez, kullanıcı düzeyinde)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+**Windows (Batch — izin gerekmez):**
+```bat
+scripts\setup.bat
+```
 
+**Windows (PowerShell — renkli çıktı; bir kez izin gerektirir):**
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 .\scripts\setup.ps1
 ```
 
@@ -72,6 +75,11 @@ Bu betik şunları yapar:
 **macOS / Linux:**
 ```bash
 bash scripts/init.sh
+```
+
+**Windows (Batch — izin gerekmez):**
+```bat
+scripts\init.bat
 ```
 
 **Windows (PowerShell):**

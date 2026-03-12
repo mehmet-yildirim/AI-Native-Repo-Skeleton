@@ -1,0 +1,126 @@
+@echo off
+:: =============================================================================
+:: AI-Native Repo Skeleton -- Project Setup Script (Windows Batch)
+:: =============================================================================
+:: Run this once after cloning the skeleton to initialize your project.
+:: No special permissions required -- runs on any Windows system.
+::
+:: Usage:
+::   scripts\setup.bat
+:: =============================================================================
+
+setlocal enabledelayedexpansion
+
+echo.
+echo ========================================
+echo   AI-Native Project Setup
+echo ========================================
+echo.
+
+:: ---------------------------------------------------------------------------
+:: 1. Initialize git repository (if not already a repo)
+:: ---------------------------------------------------------------------------
+if not exist ".git\" (
+    echo [INFO] Initializing git repository...
+    git init
+    if !errorlevel! equ 0 (
+        echo [OK]   Git repository initialized.
+    ) else (
+        echo [WARN] git init failed -- is Git installed?
+    )
+) else (
+    echo [INFO] Git repository already exists, skipping init.
+)
+
+:: ---------------------------------------------------------------------------
+:: 2. Remove skeleton remote origin (if inherited from clone)
+:: ---------------------------------------------------------------------------
+for /f "delims=" %%R in ('git remote get-url origin 2^>nul') do set "REMOTE_URL=%%R"
+if defined REMOTE_URL (
+    echo !REMOTE_URL! | findstr /c:"AI-Native-Repo-Skeleton" >nul 2>&1
+    if not errorlevel 1 (
+        echo [WARN] Removing skeleton remote origin: !REMOTE_URL!
+        git remote remove origin
+        echo [OK]   Removed. Add your own with: git remote add origin ^<url^>
+    )
+)
+
+:: ---------------------------------------------------------------------------
+:: 3. Create .env from .env.example if it doesn't exist
+:: ---------------------------------------------------------------------------
+if exist ".env.example" (
+    if not exist ".env" (
+        echo [INFO] Creating .env from .env.example...
+        copy /y ".env.example" ".env" >nul
+        echo [OK]   Created .env -- fill in your values before starting development.
+    ) else (
+        echo [INFO] .env already exists, skipping.
+    )
+) else (
+    echo [WARN] No .env.example found. Create one with your required environment variables.
+)
+
+:: ---------------------------------------------------------------------------
+:: 4. Validate required AI tool configurations
+:: ---------------------------------------------------------------------------
+echo [INFO] Checking AI tool configuration files...
+
+set MISSING_CONFIG=0
+
+call :check_file "CLAUDE.md" "Claude Code config"
+call :check_file ".cursor\rules\00-project-overview.mdc" "Cursor project overview"
+call :check_file ".continue\config.yaml" "Continue config"
+
+if !MISSING_CONFIG! equ 1 (
+    echo [WARN] Some AI config files are missing. Run: scripts\validate-ai-config.bat
+)
+
+:: ---------------------------------------------------------------------------
+:: 5. Next steps
+:: ---------------------------------------------------------------------------
+echo.
+echo ========================================
+echo   Next Steps
+echo ========================================
+echo.
+echo   STEP 1 - Run the initialization wizard:
+echo   scripts\init.bat
+echo   (configures project name, stack, tracker, and domain keywords)
+echo.
+echo   STEP 2 - AI-powered content generation:
+echo   Open Claude Code and run:  /init ^<describe your project^>
+echo   Or in Cursor:              @.cursor/prompts/init.md
+echo.
+echo   This populates:
+echo     * CLAUDE.md, docs\context\, docs\architecture\overview.md
+echo     * agent.config.yaml domain keywords
+echo     * .github\workflows\ci.yml  (use: /init ci: ^<your stack^>)
+echo.
+echo   STEP 3 - Finish setup:
+echo     * Edit .continue\config.yaml (add API keys)
+echo     * Add git remote:  git remote add origin ^<url^>
+echo     * Install dependencies: [from CLAUDE.md after /init]
+echo     * Validate: scripts\validate-ai-config.bat
+echo     * Read the AI workflow: docs\ai-workflow.md
+echo.
+echo   AI commands available in Claude Code (type / to invoke):
+echo   /init       - populate all TODO files from your project description
+echo   /architect  - design a feature before implementing
+echo   /review     - review code for issues
+echo   /test       - generate tests
+echo   /debug      - systematic debugging
+echo.
+echo [OK]   Setup complete!
+goto :eof
+
+:: ---------------------------------------------------------------------------
+:: Helper: check a file exists
+:: ---------------------------------------------------------------------------
+:check_file
+if exist "%~1" (
+    echo [OK]   %~2: %~1
+) else (
+    echo [WARN] %~2 not found: %~1
+    set MISSING_CONFIG=1
+)
+goto :eof
