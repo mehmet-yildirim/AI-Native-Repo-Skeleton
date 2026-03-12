@@ -344,6 +344,7 @@ Used interactively — you invoke each step and review the output.
 | `/test` | Generate comprehensive tests (happy path, edge cases, error cases) | For any module or function |
 | `/debug` | Systematic bug diagnosis: hypotheses → investigation → fix → prevention | When stuck on a bug |
 | `/deploy` | Pre-deploy checklist, execution steps, post-deploy monitoring plan | Before every deploy |
+| `/infra <platform> [subcommand]` | Scaffold deployment infrastructure: Terraform, K8s manifests, CI/CD workflows, secrets, monitoring | When setting up a new deployment target (AWS / GCP / on-prem) |
 | `/migrate` | Safe DB migration: Expand-Contract pattern, batch strategy, rollback plan | For a specific schema change |
 | `/db <subcommand>` | Database change management lifecycle: `init`, `create`, `dml`, `seed`, `status`, `diff`, `audit` | Tool setup, scaffolding, drift detection |
 | `/sprint` | Sprint planning: capacity analysis, backlog selection, task breakdown, risk register | Sprint kickoff |
@@ -474,11 +475,14 @@ Skills provide deep, idiomatic guidance for specific languages and frameworks.
 | **Infra** | Docker | Multi-stage builds, non-root user, Compose health checks, image scanning |
 | | GitHub Actions CI/CD | Quality gates, OIDC auth, canary / blue-green deployment |
 | | Microservices | Bounded contexts, circuit breakers, Saga pattern, OpenTelemetry |
-| | Database Migrations | Flyway, Alembic, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight — DDL/DML patterns, seed data, drift detection |
+| | Database Migrations | Flyway, Alembic, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight |
+| | AWS Deployment | ECS Fargate, EKS, ECR, RDS Aurora, CloudFront, OIDC/IAM, Secrets Manager, CloudWatch, Terraform |
+| | GCP Deployment | Cloud Run, GKE Autopilot, Cloud SQL, Artifact Registry, Workload Identity, Secret Manager, Cloud Armor, Terraform |
+| | On-Premise | k3s/kubeadm, MetalLB, Nginx Ingress, cert-manager, HashiCorp Vault, Harbor, Ansible, Prometheus/Grafana |
 
 See [skills/README.md](skills/README.md) for the full index and instructions for adding new skills.
 
-> **Continue skill parity note:** Cursor includes all 17 skill files. `.continue/rules/skills/` ships with 12 — `lang-typescript`, `lang-go`, `be-microservices`, `devops-docker`, and `devops-cicd` are absent. If your project uses any of those, create the corresponding `.md` file under `.continue/rules/skills/` and add it to `.continue/config.yaml`. Mirror the structure of the existing `.continue` skill files.
+> **Continue skill parity note:** Cursor has 21 skill files. `.continue/rules/skills/` ships with 18 — `lang-typescript`, `lang-go`, `be-microservices`, `devops-docker`, and `devops-cicd` are absent. If your project uses any of those, create the corresponding `.md` file under `.continue/rules/skills/` and add it to `.continue/config.yaml`. Mirror the structure of the existing `.continue` skill files.
 
 ---
 

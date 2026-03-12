@@ -56,9 +56,12 @@ deep context to AI tools.
 | Skill | Cursor Rule | Continue Rule | Key Coverage |
 |-------|-------------|---------------|-------------|
 | Docker | `skills/devops-docker.mdc` | *(add as needed)* | Dockerfile, Compose, security, optimization |
-| CI/CD | `skills/devops-cicd.mdc` | *(add as needed)* | GitHub Actions, quality gates, deployment |
+| CI/CD | `skills/devops-cicd.mdc` | *(add as needed)* | GitHub Actions, quality gates, deployment strategies |
 | Microservices | `skills/be-microservices.mdc` | *(add as needed)* | Service design, communication, observability |
-| Database Migrations | `skills/db-migrations.mdc` | `skills/db-migrations.md` | Flyway, Liquibase, Alembic, Django, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight — DDL/DML patterns, seed data, drift detection |
+| Database Migrations | `skills/db-migrations.mdc` | `skills/db-migrations.md` | Flyway, Liquibase, Alembic, Django, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight |
+| AWS Deployment | `skills/devops-aws.mdc` | `skills/devops-aws.md` | ECS Fargate, EKS, ECR, RDS, S3/CloudFront, OIDC/IAM, Secrets Manager, CloudWatch, Terraform |
+| GCP Deployment | `skills/devops-gcp.mdc` | `skills/devops-gcp.md` | Cloud Run, GKE Autopilot, Cloud SQL, Artifact Registry, Workload Identity Federation, Secret Manager, Cloud Armor, Terraform |
+| On-Premise Deployment | `skills/devops-onprem.mdc` | `skills/devops-onprem.md` | k3s/kubeadm, MetalLB, Nginx Ingress, cert-manager, HashiCorp Vault, Harbor, Ansible, Prometheus/Grafana, Velero |
 
 ## Activating Skills in Continue
 
@@ -93,6 +96,11 @@ rules:
 
   # Database (activate if your project uses a relational or mobile DB):
   # - .continue/rules/skills/db-migrations.md
+
+  # Deployment platform (activate one matching your target):
+  # - .continue/rules/skills/devops-aws.md
+  # - .continue/rules/skills/devops-gcp.md
+  # - .continue/rules/skills/devops-onprem.md
 ```
 
 ## Using Skills in Claude Code
