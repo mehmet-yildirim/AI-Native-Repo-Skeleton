@@ -58,32 +58,62 @@ Bu betik şunları yapar:
 - `.env.example` dosyasından `.env` oluşturur
 - Temel yapılandırma dosyalarının varlığını kontrol eder
 
-### 3. Zorunlu Dosyaları Özelleştirin
+### 3. Başlatma Sihirbazını Çalıştırın
 
-**AI bağlamı için:**
+```bash
+bash scripts/init.sh
+```
 
-| Dosya | Ne Yazılacak |
-|-------|-------------|
-| `CLAUDE.md` | Proje adı, teknoloji yığını, temel komutlar, mimari, kodlama kuralları |
-| `.cursor/rules/00-project-overview.mdc` | Cursor'ın her dosyada yükleyeceği proje bağlamı |
-| `.continue/config.yaml` | Model API anahtarları, etkin beceri kuralları |
-| `docs/context/project-brief.md` | Projenin ne yaptığı ve kimler için olduğu |
-| `docs/context/tech-stack.md` | Teknoloji seçimleri ve gerekçeleri |
-| `docs/architecture/overview.md` | Üst düzey sistem mimarisi |
+Şunları yapılandırır: proje adı ve türü, teknoloji yığını, issue tracker bağlantısı (JIRA/Linear/GitHub), domain anahtar kelimeleri. `agent.config.yaml` ve `CLAUDE.md` içindeki mekanik alanları otomatik doldurur.
 
-**Otonom ajan için:**
+### 4. Yapay Zeka Destekli İçerik Üretimi
 
-| Dosya | Ne Yazılacak |
-|-------|-------------|
-| `agent.config.yaml` | JIRA/Linear bağlantısı, özerklik eşikleri, eskalasyon kanalları |
-| `docs/context/domain-boundaries.md` | Hangi JIRA issue'larının bu projeye ait olduğunun tanımı |
+Claude Code veya Cursor'da aşağıdaki komutu çalıştırın:
+
+```
+# Claude Code
+/init Sipariş yönetimi yapan bir B2C e-ticaret API'si geliştiriyorum. Yığın: TypeScript, Fastify, PostgreSQL.
+
+# Cursor
+@.cursor/prompts/init.md
+[ardından projenizi açıklayan bir mesaj yazın]
+```
+
+Hedefli doldurma için:
+```
+/init domain: <alan açıklaması>
+/init stack: <teknoloji yığını>
+/init ci: <CI/CD ve deployment hedefi>
+/init agent: <tracker anahtarları, GitHub owner, eskalasyon kanalı>
+```
+
+**Otomatik doldurulan dosyalar:**
+
+| Dosya | Doldurma Yöntemi |
+|-------|-----------------|
+| `CLAUDE.md` | `init.sh` + `/init` |
+| `.cursor/rules/00-project-overview.mdc` | `init.sh` + `/init` |
+| `docs/context/project-brief.md` | `/init` |
+| `docs/context/tech-stack.md` | `/init stack:` |
+| `docs/context/domain-boundaries.md` | `/init domain:` ← **ajan triage için kritik** |
+| `docs/context/domain-glossary.md` | `/init` |
+| `docs/architecture/overview.md` | `/init` |
+| `agent.config.yaml` (kimlik, anahtar, kelimeler) | `init.sh` + `/init agent:` |
+| `.github/workflows/ci.yml` | `/init ci:` |
+
+### 5. Manuel Tamamlama
+
+**Hâlâ manuel müdahale gereken dosyalar:**
+- `.continue/config.yaml` — API anahtarlarını ekleyin
+- `.env` — kimlik bilgilerini doldurun
+- `.cursor/mcp.json` — MCP sunucularını etkinleştirin
+- `docs/architecture/decisions/` — `0001-template.md` şablonundan ADR oluşturun
+- Üretilen içerikleri ilk commit'ten önce gözden geçirin
 
 **Önerilen:**
 
 | Dosya / Adım | Açıklama |
 |---|---|
-| `docs/context/domain-glossary.md` | Domain'e özgü terminoloji |
-| `.github/workflows/ci.yml` | Stack'inize göre uyarlayın |
 | `.cursor/mcp.json` | MCP sunucularını etkinleştirin |
 | `.continue/config.yaml` becerileri | Yalnızca stack'inizle eşleşen kuralları yorumdan çıkarın |
 | `docs/architecture/decisions/` | `0001-template.md` dosyasından ilk ADR'ınızı oluşturun |

@@ -18,6 +18,34 @@ becomes the task input — equivalent to Claude Code's `$ARGUMENTS`.
 
 ## Available Prompts
 
+### Project Initialization
+
+| File | Equivalent | When to use |
+|------|-----------|------------|
+| `init.md` | `/init` | First thing after cloning — populate all TODO files from your description |
+
+Supports targeted scopes:
+```
+@.cursor/prompts/init.md
+
+domain: Order management platform for B2C e-commerce — cart, checkout, payment, fulfilment
+```
+```
+@.cursor/prompts/init.md
+
+stack: Go, Gin, PostgreSQL, Docker, GitHub Actions, AWS ECS
+```
+```
+@.cursor/prompts/init.md
+
+ci: GitHub Actions, Docker multi-stage build, deploy to AWS ECS via OIDC
+```
+```
+@.cursor/prompts/init.md
+
+agent: JIRA project key ORD, GitHub owner acme/order-service, Slack #dev-alerts
+```
+
 ### Human-Guided Workflows
 
 | File | Equivalent | When to use |

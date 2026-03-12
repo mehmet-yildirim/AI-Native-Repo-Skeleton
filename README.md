@@ -30,35 +30,49 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 git clone <this-repo> my-project
 cd my-project
 
-# 2. Initialize (sets up git, creates .env, checks config)
+# 2. Initialize git, create .env, check config files
 ./scripts/setup.sh
 
-# 3. Customize the required files (see checklist below)
+# 3. Run the interactive wizard — configures name, stack, tracker, keywords
+bash scripts/init.sh
 
-# 4. Verify everything is in place
+# 4. Open Claude Code and let AI populate all remaining files
+claude
+/init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
+
+# 5. Verify everything is in place
 bash scripts/validate-ai-config.sh   # expect 73 PASS, 0 FAIL
 
-# 5. Start coding
-claude        # Claude Code — type / to see all commands
+# 6. Start coding
+/requirements <your first feature>
 ```
 
 ---
 
 ## Customization Checklist
 
-Complete these before writing any code:
+### Automated by `scripts/init.sh` + `/init`
 
-### Required — AI Context
-- [ ] `CLAUDE.md` — project name, stack, key commands, architecture, coding conventions
-- [ ] `.cursor/rules/00-project-overview.mdc` — project context loaded by Cursor on every file
-- [ ] `.continue/config.yaml` — add API key, uncomment your language/framework skill rules
-- [ ] `docs/context/project-brief.md` — what this project does and who uses it
-- [ ] `docs/context/tech-stack.md` — technology choices and rationale
-- [ ] `docs/architecture/overview.md` — high-level system architecture
+Run `bash scripts/init.sh` then `/init <description>` in Claude Code — these populate everything below automatically.
 
-### Required — Autonomous Agent
-- [ ] `agent.config.yaml` — issue tracker connection, autonomy thresholds, escalation channels
-- [ ] `docs/context/domain-boundaries.md` — which JIRA issues belong to this project (agent triage input)
+| File | Populated by | Method |
+|------|-------------|--------|
+| `CLAUDE.md` | `init.sh` + `/init` | wizard fills mechanical fields; AI fills conventions and layout |
+| `.cursor/rules/00-project-overview.mdc` | `init.sh` + `/init` | same as CLAUDE.md |
+| `docs/context/project-brief.md` | `/init` | AI-generated from your description |
+| `docs/context/tech-stack.md` | `/init stack:` | AI-generated with confirmed or inferred choices |
+| `docs/context/domain-boundaries.md` | `/init domain:` | AI-generated — **critical for autonomous agent** |
+| `docs/context/domain-glossary.md` | `/init` or `/init glossary:` | AI-generated from domain analysis |
+| `docs/architecture/overview.md` | `/init` | AI-generated architecture skeleton |
+| `agent.config.yaml` (IDs, keys, keywords) | `init.sh` + `/init agent:` | wizard fills IDs; `/init agent:` fills tracker/team keys |
+| `.github/workflows/ci.yml` | `/init ci:` | AI-generated per detected stack |
+
+### Still requires manual action
+- [ ] `.continue/config.yaml` — add API keys
+- [ ] `.env` — fill in credentials
+- [ ] `.cursor/mcp.json` — enable MCP servers (GitHub, Jira, Slack, Sentry, etc.)
+- [ ] `docs/architecture/decisions/` — create ADRs from `0001-template.md`
+- [ ] Review and refine all AI-generated content before first commit
 
 ### Recommended
 - [ ] `docs/context/domain-glossary.md` — domain-specific terminology
@@ -107,8 +121,9 @@ mkdir -p .agent/{state,audit,outputs}
 ├── agent.config.yaml                          # ← CUSTOMIZE — autonomous agent config
 │
 ├── .cursor/
-│   ├── prompts/                               # 16 reusable workflow prompts (invoke via @)
+│   ├── prompts/                               # 17 reusable workflow prompts (invoke via @)
 │   │   ├── README.md                         # How to use Cursor prompts
+│   │   ├── init.md                           # @init  ← project initialization
 │   │   ├── requirements.md  architect.md  implement.md  review.md
 │   │   ├── qa.md  test.md  debug.md  deploy.md  migrate.md
 │   │   ├── sprint.md  docs.md  standup.md  security-audit.md
@@ -161,7 +176,8 @@ mkdir -p .agent/{state,audit,outputs}
 │
 ├── .claude/
 │   ├── settings.json                          # Tool permissions + event hooks
-│   ├── commands/                              # 16 slash commands
+│   ├── commands/                              # 17 slash commands
+│   │   ├── init.md                           # /init  ← project initialization
 │   │   ├── requirements.md                   # /requirements
 │   │   ├── architect.md                      # /architect
 │   │   ├── implement.md                      # /implement
@@ -225,7 +241,8 @@ mkdir -p .agent/{state,audit,outputs}
 │   └── webhook-receiver.mjs                   # Jira Server webhook receiver (copy to .agent/)
 │
 └── scripts/
-    ├── setup.sh                               # One-time project initialization
+    ├── setup.sh                               # Step 1: git init, .env, config check
+    ├── init.sh                                # Step 2: interactive wizard (name, stack, tracker, keywords)
     └── validate-ai-config.sh                  # Configuration validator (73 checks, 14 of 16 slash commands)
 ```
 
@@ -274,6 +291,16 @@ See [`.cursor/prompts/README.md`](.cursor/prompts/README.md) for the full refere
 ---
 
 ## Slash Commands Reference
+
+### Project Initialization
+
+| Command | Purpose | When to use |
+|---------|---------|------------|
+| `/init <description>` | Populate all TODO files from a free-form project description | First thing after cloning the skeleton |
+| `/init domain: <desc>` | Populate domain boundaries, glossary, and agent keywords only | When refining scope or adding a new service |
+| `/init stack: <stack>` | Populate tech stack file and CLAUDE.md commands | When changing or finalizing the technology choices |
+| `/init ci: <stack>` | Generate real CI workflow steps for your language and deployment target | After deciding on CI/CD infrastructure |
+| `/init agent: <keys>` | Set tracker keys, GitHub owner/repo, escalation recipients in agent.config.yaml | When configuring the autonomous agent |
 
 ### Human-Guided Commands
 Used interactively — you invoke each step and review the output.
