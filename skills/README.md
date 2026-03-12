@@ -58,6 +58,7 @@ deep context to AI tools.
 | Docker | `skills/devops-docker.mdc` | *(add as needed)* | Dockerfile, Compose, security, optimization |
 | CI/CD | `skills/devops-cicd.mdc` | *(add as needed)* | GitHub Actions, quality gates, deployment |
 | Microservices | `skills/be-microservices.mdc` | *(add as needed)* | Service design, communication, observability |
+| Database Migrations | `skills/db-migrations.mdc` | `skills/db-migrations.md` | Flyway, Liquibase, Alembic, Django, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight — DDL/DML patterns, seed data, drift detection |
 
 ## Activating Skills in Continue
 
@@ -89,6 +90,9 @@ rules:
   # - .continue/rules/skills/mobile-kmp.md
   # - .continue/rules/skills/mobile-flutter.md
   # - .continue/rules/skills/mobile-reactnative.md
+
+  # Database (activate if your project uses a relational or mobile DB):
+  # - .continue/rules/skills/db-migrations.md
 ```
 
 ## Using Skills in Claude Code

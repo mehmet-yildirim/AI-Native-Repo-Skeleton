@@ -344,7 +344,8 @@ Used interactively — you invoke each step and review the output.
 | `/test` | Generate comprehensive tests (happy path, edge cases, error cases) | For any module or function |
 | `/debug` | Systematic bug diagnosis: hypotheses → investigation → fix → prevention | When stuck on a bug |
 | `/deploy` | Pre-deploy checklist, execution steps, post-deploy monitoring plan | Before every deploy |
-| `/migrate` | Safe DB migration: Expand-Contract pattern, batch strategy, rollback plan | For schema changes |
+| `/migrate` | Safe DB migration: Expand-Contract pattern, batch strategy, rollback plan | For a specific schema change |
+| `/db <subcommand>` | Database change management lifecycle: `init`, `create`, `dml`, `seed`, `status`, `diff`, `audit` | Tool setup, scaffolding, drift detection |
 | `/sprint` | Sprint planning: capacity analysis, backlog selection, task breakdown, risk register | Sprint kickoff |
 | `/docs` | Generate API docs, architecture docs, or user guides from source | After implementation |
 | `/standup` | Daily standup summary from git history | Start of day |
@@ -473,6 +474,7 @@ Skills provide deep, idiomatic guidance for specific languages and frameworks.
 | **Infra** | Docker | Multi-stage builds, non-root user, Compose health checks, image scanning |
 | | GitHub Actions CI/CD | Quality gates, OIDC auth, canary / blue-green deployment |
 | | Microservices | Bounded contexts, circuit breakers, Saga pattern, OpenTelemetry |
+| | Database Migrations | Flyway, Alembic, Prisma, Drizzle, Goose, golang-migrate, Atlas, EF Core, Room, drift, SQLDelight — DDL/DML patterns, seed data, drift detection |
 
 See [skills/README.md](skills/README.md) for the full index and instructions for adding new skills.
 
