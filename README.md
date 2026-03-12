@@ -15,7 +15,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | Layer | Config | Purpose |
 |-------|--------|---------|
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 16 slash commands, event hooks |
-| **Cursor** | `.cursor/rules/` | 18 contextual rule files, auto-activated by file type |
+| **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 18 contextual rule files + 16 workflow prompt files |
 | **Continue** | `.continue/` | Multi-model config, inline slash commands, persistent rules |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow skeleton |
@@ -64,6 +64,38 @@ Complete these before writing any code:
 - [ ] `docs/context/domain-glossary.md` — domain-specific terminology
 - [ ] `.github/workflows/ci.yml` — adapt to your language and framework
 - [ ] `.cursor/mcp.json` — enable MCP servers (GitHub, Jira, Slack, Sentry, etc.)
+- [ ] `.continue/config.yaml` skills — uncomment only the rules matching your stack
+- [ ] `docs/architecture/decisions/` — create your first ADR from `0001-template.md`
+
+### Manual Steps Not Automated by `setup.sh`
+
+These require explicit action after cloning:
+
+**Pre-commit secret scanning hook** — documented in `docs/workflows/05-security-evaluation.md` but not wired automatically. Install with your preferred tool:
+```bash
+# Option A — Husky (Node.js projects)
+npx husky init
+echo "npx secretlint '**/*'" > .husky/pre-commit
+
+# Option B — pre-commit (Python / polyglot)
+pip install pre-commit
+# add detect-secrets or gitleaks to .pre-commit-config.yaml
+pre-commit install
+```
+
+**Webhook receiver** — copy the Jira Server webhook template before enabling autonomous mode:
+```bash
+mkdir -p .agent
+cp .agent-templates/webhook-receiver.mjs .agent/webhook-receiver.mjs
+# then set JIRA_WEBHOOK_SECRET in .env and start: node .agent/webhook-receiver.mjs
+```
+
+**Runtime agent directories** — hooks write to `.agent/audit/` and `.agent/state/` at runtime; they are created on first use and git-ignored. No action needed unless you want to pre-create them:
+```bash
+mkdir -p .agent/{state,audit,outputs}
+```
+
+**PagerDuty escalation** — `agent.config.yaml` routes CRITICAL escalations to PagerDuty, but no PagerDuty MCP server or SDK integration is included. You must implement this integration or reroute CRITICAL events to Slack/email before enabling autonomous mode in production.
 
 ---
 
@@ -75,6 +107,12 @@ Complete these before writing any code:
 ├── agent.config.yaml                          # ← CUSTOMIZE — autonomous agent config
 │
 ├── .cursor/
+│   ├── prompts/                               # 16 reusable workflow prompts (invoke via @)
+│   │   ├── README.md                         # How to use Cursor prompts
+│   │   ├── requirements.md  architect.md  implement.md  review.md
+│   │   ├── qa.md  test.md  debug.md  deploy.md  migrate.md
+│   │   ├── sprint.md  docs.md  standup.md  security-audit.md
+│   │   └── triage.md  groom.md  loop.md  escalate.md
 │   ├── rules/
 │   │   ├── 00-project-overview.mdc           # ← CUSTOMIZE — always loaded by Cursor
 │   │   ├── 01-coding-standards.mdc           # General coding standards
@@ -165,24 +203,73 @@ Complete these before writing any code:
 │   │   ├── autonomous-workflow.md             # State machine, phases, gates, resume
 │   │   ├── escalation-protocol.md            # Triggers, severity, human responses
 │   │   ├── decision-log-template.md          # Audit trail schema & examples
+│   │   ├── security-evaluator.md             # Security architecture & integration points
+│   │   ├── jira-server-setup.md              # On-premise Jira Server setup guide
 │   │   └── schemas/                          # JSON schemas for inter-phase contracts
 │   │       ├── task-state.json               # Per-task persistent state
 │   │       ├── decision.json                 # Structured decision record
 │   │       ├── requirement-analysis.json     # /requirements structured output
-│   │       └── qa-report.json                # /qa gate results
+│   │       ├── qa-report.json                # /qa gate results
+│   │       └── security-report.json          # /security-audit output schema
 │   └── workflows/                             # Development workflow guides
 │       ├── 01-requirements-analysis.md
 │       ├── 02-feature-development.md
 │       ├── 03-testing-strategy.md
-│       └── 04-deployment.md
+│       ├── 04-deployment.md
+│       └── 05-security-evaluation.md         # Security touchpoints & remediation workflow
 │
 ├── skills/
 │   └── README.md                              # Skills index & activation guide
 │
+├── .agent-templates/
+│   └── webhook-receiver.mjs                   # Jira Server webhook receiver (copy to .agent/)
+│
 └── scripts/
     ├── setup.sh                               # One-time project initialization
-    └── validate-ai-config.sh                  # 73-point configuration validator
+    └── validate-ai-config.sh                  # Configuration validator (73 checks, 14 of 16 slash commands)
 ```
+
+---
+
+## Cursor Prompt Files
+
+Cursor does not have a native slash command registry, but it supports **prompt files** — Markdown
+workflow templates that are injected into the chat via `@` references. The `.cursor/prompts/`
+directory provides a 1:1 equivalent to the Claude Code slash commands.
+
+### How to invoke
+
+```
+@.cursor/prompts/requirements.md
+
+Add JWT-based authentication to the login endpoint.
+```
+
+Cursor injects the full prompt into the conversation. Your text after the `@` reference is the
+task input — equivalent to `$ARGUMENTS` in the Claude commands.
+
+You can also combine with source files for richer context:
+
+```
+@.cursor/prompts/review.md @src/api/orders.ts
+```
+
+### Comparison
+
+| Claude Code | Cursor | Same workflow? |
+|------------|--------|---------------|
+| `/requirements Add auth` | `@.cursor/prompts/requirements.md` + "Add auth" | Yes |
+| `/architect` | `@.cursor/prompts/architect.md` | Yes |
+| `/qa` | `@.cursor/prompts/qa.md` | Yes |
+| `/loop PROJ-42` | `@.cursor/prompts/loop.md` + "PROJ-42" | Yes |
+
+Key differences from the Claude commands:
+- Cursor loads project rules (`.cursor/rules/`) automatically — prompt files do not repeat "read CLAUDE.md"
+- The `standup.md` prompt asks you to run the git command in your terminal and paste the output
+- Bash commands described in prompts must be run manually in Cursor's integrated terminal
+- Cursor supports `@file` cross-references directly inside prompts (e.g., `@docs/context/domain-boundaries.md`)
+
+See [`.cursor/prompts/README.md`](.cursor/prompts/README.md) for the full reference.
 
 ---
 
@@ -332,6 +419,8 @@ Skills provide deep, idiomatic guidance for specific languages and frameworks.
 
 See [skills/README.md](skills/README.md) for the full index and instructions for adding new skills.
 
+> **Continue skill parity note:** Cursor includes all 17 skill files. `.continue/rules/skills/` ships with 12 — `lang-typescript`, `lang-go`, `be-microservices`, `devops-docker`, and `devops-cicd` are absent. If your project uses any of those, create the corresponding `.md` file under `.continue/rules/skills/` and add it to `.continue/config.yaml`. Mirror the structure of the existing `.continue` skill files.
+
 ---
 
 ## MCP Servers
@@ -378,6 +467,38 @@ Four principles this skeleton is built on:
 3. **Structured workflows.** Slash commands encode your team's recurring workflows so AI agents execute them consistently — from a raw requirement all the way to a merged PR.
 
 4. **Humans set limits, agents execute.** The agent acts autonomously within its configured thresholds. Every risky decision (high-risk design, production deploy) escalates to a human. The audit trail records everything.
+
+---
+
+## Architecture Decision Records
+
+The skeleton ships with a single ADR template at `docs/architecture/decisions/0001-template.md`. Create real ADRs for every significant design choice in your project:
+
+```bash
+# Copy the template for each new decision
+cp docs/architecture/decisions/0001-template.md \
+   docs/architecture/decisions/0002-database-choice.md
+```
+
+Use sequential numbering. Link each ADR from `docs/architecture/overview.md` once it is accepted.
+
+---
+
+## Validation Script Reference
+
+```bash
+bash scripts/validate-ai-config.sh
+```
+
+Runs 73 checks across all configuration files:
+
+| Result | Meaning |
+|--------|---------|
+| `PASS` | File exists |
+| `WARN` | File exists but contains TODO placeholders (customization expected) |
+| `FAIL` | File missing — fix before starting development |
+
+> **Known coverage gap:** The script validates 14 of the 16 slash commands. `standup.md` and `security-audit.md` are present in `.claude/commands/` but are not included in the validation checks. This does not affect functionality — both commands work — but `validate-ai-config.sh` will not detect if they are accidentally deleted.
 
 ---
 

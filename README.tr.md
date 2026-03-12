@@ -30,7 +30,7 @@ Bu iskelet, yeni veya mevcut projelerde **yapay zeka destekli otonom yazılım g
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 16 slash komutu, olay hook'ları |
-| **Cursor** | `.cursor/rules/` | Dosya türüne göre otomatik etkinleşen 18 kural dosyası |
+| **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 18 bağlamsal kural dosyası + 16 iş akışı prompt dosyası |
 | **Continue** | `.continue/` | Çok-model yapılandırması, satır içi slash komutları, kalıcı kurallar |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
@@ -78,7 +78,47 @@ Bu betik şunları yapar:
 | `agent.config.yaml` | JIRA/Linear bağlantısı, özerklik eşikleri, eskalasyon kanalları |
 | `docs/context/domain-boundaries.md` | Hangi JIRA issue'larının bu projeye ait olduğunun tanımı |
 
-### 4. Yapılandırmayı Doğrulayın
+**Önerilen:**
+
+| Dosya / Adım | Açıklama |
+|---|---|
+| `docs/context/domain-glossary.md` | Domain'e özgü terminoloji |
+| `.github/workflows/ci.yml` | Stack'inize göre uyarlayın |
+| `.cursor/mcp.json` | MCP sunucularını etkinleştirin |
+| `.continue/config.yaml` becerileri | Yalnızca stack'inizle eşleşen kuralları yorumdan çıkarın |
+| `docs/architecture/decisions/` | `0001-template.md` dosyasından ilk ADR'ınızı oluşturun |
+
+### 4. Manuel Kurulum Adımları
+
+`setup.sh` tarafından otomatik yapılmayan işlemler:
+
+**Pre-commit gizli tarama hook'u** — `docs/workflows/05-security-evaluation.md` dosyasında belgelenmiştir ancak otomatik olarak kurulmaz. Tercih ettiğiniz araçla kurun:
+```bash
+# Seçenek A — Husky (Node.js projeleri)
+npx husky init
+echo "npx secretlint '**/*'" > .husky/pre-commit
+
+# Seçenek B — pre-commit (Python / çok dilli)
+pip install pre-commit
+# .pre-commit-config.yaml dosyasına detect-secrets veya gitleaks ekleyin
+pre-commit install
+```
+
+**Webhook alıcısı** — Otonom modu etkinleştirmeden önce Jira Server webhook şablonunu kopyalayın:
+```bash
+mkdir -p .agent
+cp .agent-templates/webhook-receiver.mjs .agent/webhook-receiver.mjs
+# .env dosyasına JIRA_WEBHOOK_SECRET ekleyin, ardından: node .agent/webhook-receiver.mjs
+```
+
+**Çalışma zamanı ajan dizinleri** — Hook'lar `.agent/audit/` ve `.agent/state/` dizinlerine ilk kullanımda otomatik yazar; bu dizinler git-ignored'dur. İsterseniz önceden oluşturabilirsiniz:
+```bash
+mkdir -p .agent/{state,audit,outputs}
+```
+
+**PagerDuty entegrasyonu** — `agent.config.yaml`, CRITICAL eskalasyonları PagerDuty'ye yönlendirir; ancak iskelet bir PagerDuty MCP sunucusu veya SDK entegrasyonu içermez. Otonom modu üretime almadan önce bu entegrasyonu kendiniz uygulamanız veya CRITICAL olayları Slack/e-posta'ya yönlendirmeniz gerekir.
+
+### 5. Yapılandırmayı Doğrulayın
 
 ```bash
 bash scripts/validate-ai-config.sh
@@ -86,7 +126,7 @@ bash scripts/validate-ai-config.sh
 # WARN: Doldurulması gereken TODO alanları (kabul edilebilir)
 ```
 
-### 5. Geliştirmeye Başlayın
+### 6. Geliştirmeye Başlayın
 
 ```bash
 # Claude Code'u başlatın
@@ -106,6 +146,12 @@ claude
 ├── agent.config.yaml                          # ← DÜZENLE — otonom ajan yapılandırması
 │
 ├── .cursor/
+│   ├── prompts/                               # 16 iş akışı prompt dosyası (@ ile çağrılır)
+│   │   ├── README.md                         # Cursor prompt dosyaları kullanım kılavuzu
+│   │   ├── requirements.md  architect.md  implement.md  review.md
+│   │   ├── qa.md  test.md  debug.md  deploy.md  migrate.md
+│   │   ├── sprint.md  docs.md  standup.md  security-audit.md
+│   │   └── triage.md  groom.md  loop.md  escalate.md
 │   ├── rules/
 │   │   ├── 00-project-overview.mdc           # ← DÜZENLE — her dosyada yüklenir
 │   │   ├── 01-coding-standards.mdc           # Genel kodlama standartları
@@ -196,23 +242,30 @@ claude
 │   │   ├── autonomous-workflow.md             # Durum makinesi, fazlar, kapılar
 │   │   ├── escalation-protocol.md            # Tetikleyiciler, önem dereceleri, yanıt komutları
 │   │   ├── decision-log-template.md          # Audit izi şeması ve örnekleri
+│   │   ├── security-evaluator.md             # Güvenlik mimarisi ve entegrasyon noktaları
+│   │   ├── jira-server-setup.md              # Şirket içi Jira Server kurulum kılavuzu
 │   │   └── schemas/                          # Fazlar arası JSON şemaları
 │   │       ├── task-state.json               # Görev başına kalıcı durum
 │   │       ├── decision.json                 # Yapısal karar kaydı
 │   │       ├── requirement-analysis.json     # /requirements yapısal çıktısı
-│   │       └── qa-report.json                # /qa kapı sonuçları
+│   │       ├── qa-report.json                # /qa kapı sonuçları
+│   │       └── security-report.json          # /security-audit çıktı şeması
 │   └── workflows/                             # Geliştirme iş akışı kılavuzları
 │       ├── 01-requirements-analysis.md
 │       ├── 02-feature-development.md
 │       ├── 03-testing-strategy.md
-│       └── 04-deployment.md
+│       ├── 04-deployment.md
+│       └── 05-security-evaluation.md         # Güvenlik kontrol noktaları ve düzeltme iş akışı
 │
 ├── skills/
 │   └── README.md                              # Beceri indeksi ve aktivasyon rehberi
 │
+├── .agent-templates/
+│   └── webhook-receiver.mjs                   # Jira Server webhook alıcısı (.agent/ altına kopyalayın)
+│
 └── scripts/
     ├── setup.sh                               # Tek seferlik kurulum
-    └── validate-ai-config.sh                  # 73 noktalı doğrulama betiği
+    └── validate-ai-config.sh                  # Yapılandırma doğrulayıcı (73 kontrol, 16 slash komutundan 14'ü)
 ```
 
 ---
@@ -308,6 +361,50 @@ rules:
 | | Microservices | Sınırlı bağlamlar, devre kesici, Saga deseni, OpenTelemetry |
 
 Yeni beceri ekleme için [skills/README.md](skills/README.md) dosyasına bakın.
+
+> **Continue beceri eşitliği notu:** Cursor'da 17 beceri dosyası bulunur. `.continue/rules/skills/` ile 12 dosya gelir — `lang-typescript`, `lang-go`, `be-microservices`, `devops-docker` ve `devops-cicd` eksiktir. Projenizde bu teknolojilerden birini kullanıyorsanız, `.continue/rules/skills/` altında ilgili `.md` dosyasını oluşturun ve `.continue/config.yaml` dosyasına ekleyin. Mevcut `.continue` beceri dosyalarının yapısını örnek alın.
+
+---
+
+## Cursor Prompt Dosyaları
+
+Cursor'un Claude Code gibi yerel bir slash komut kaydı yoktur; ancak **prompt dosyaları** —
+`@` referansıyla sohbete enjekte edilen Markdown iş akışı şablonları — desteklenmektedir.
+`.cursor/prompts/` dizini, Claude Code slash komutlarıyla birebir eşdeğer bir yapı sunar.
+
+### Nasıl Kullanılır
+
+```
+@.cursor/prompts/requirements.md
+
+Giriş endpoint'ine JWT tabanlı kimlik doğrulama ekle.
+```
+
+Cursor, prompt şablonunu sohbete enjekte eder. `@` referansından sonra yazdığınız metin,
+Claude komutlarındaki `$ARGUMENTS` değişkeninin karşılığıdır.
+
+Daha zengin bağlam için kaynak dosyalarla birleştirilebilir:
+
+```
+@.cursor/prompts/review.md @src/api/orders.ts
+```
+
+### Claude Code ile Karşılaştırma
+
+| Claude Code | Cursor | Aynı iş akışı? |
+|------------|--------|---------------|
+| `/requirements Kimlik doğrulama ekle` | `@.cursor/prompts/requirements.md` + "Kimlik doğrulama ekle" | Evet |
+| `/architect` | `@.cursor/prompts/architect.md` | Evet |
+| `/qa` | `@.cursor/prompts/qa.md` | Evet |
+| `/loop PROJ-42` | `@.cursor/prompts/loop.md` + "PROJ-42" | Evet |
+
+Temel farklar:
+- Cursor, proje kurallarını (`.cursor/rules/`) otomatik yükler — prompt dosyaları bunu tekrarlamaz
+- `standup.md` prompt'u, git komutunu terminalde çalıştırıp çıktıyı yapıştırmanızı ister
+- Prompt dosyalarındaki bash komutları Cursor'ın entegre terminalinde manuel olarak çalıştırılmalıdır
+- Cursor, prompt dosyalarının içinde doğrudan `@file` çapraz referansını destekler
+
+Tam referans için [`.cursor/prompts/README.md`](.cursor/prompts/README.md) dosyasına bakın.
 
 ---
 
@@ -685,6 +782,38 @@ bash scripts/validate-ai-config.sh
 - **PASS** — Dosya mevcut
 - **WARN** — Dosya mevcut ama TODO içeriyor (özelleştirme bekleniyor)
 - **FAIL** — Dosya eksik (geliştirmeye başlamadan önce düzeltilmeli)
+
+---
+
+## Mimari Karar Kayıtları (ADR)
+
+İskelet, `docs/architecture/decisions/0001-template.md` dosyasında tek bir ADR şablonu içerir. Projenizdeki her önemli tasarım kararı için gerçek ADR'lar oluşturun:
+
+```bash
+# Her yeni karar için şablonu kopyalayın
+cp docs/architecture/decisions/0001-template.md \
+   docs/architecture/decisions/0002-veritabani-secimi.md
+```
+
+Sıralı numaralama kullanın. Kabul edilen her ADR'ı `docs/architecture/overview.md` dosyasına bağlayın.
+
+---
+
+## Doğrulama Betiği Referansı
+
+```bash
+bash scripts/validate-ai-config.sh
+```
+
+Tüm yapılandırma dosyalarında 73 kontrol çalıştırır:
+
+| Sonuç | Anlam |
+|-------|-------|
+| `PASS` | Dosya mevcut |
+| `WARN` | Dosya mevcut ama TODO içeriyor (özelleştirme bekleniyor) |
+| `FAIL` | Dosya eksik — geliştirmeye başlamadan önce düzeltilmeli |
+
+> **Bilinen kapsam eksikliği:** Betik, 16 slash komutundan 14'ünü doğrular. `standup.md` ve `security-audit.md` dosyaları `.claude/commands/` altında mevcuttur ve çalışır; ancak doğrulama betikine dahil edilmemiştir. Yanlışlıkla silinmeleri durumunda betik bunu tespit etmez.
 
 ---
 
