@@ -19,6 +19,21 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.2 — Fix sync-skeleton.sh sync logic
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** PATCH
+
+### Updated Files (skeleton-owned — auto-applied)
+- `scripts/sync-skeleton.sh` — Three bugs fixed:
+  - `((APPLIED++))` / `((SKIPPED++))` with `set -e` silently exited after first file; replaced with `APPLIED=$((APPLIED + 1))`
+  - File ownership was read from local (potentially stale) `skeleton.json`; now reads from `skeleton/main:skeleton.json` so newly added files are always included
+  - First-sync file list used `git show` (single commit diff) instead of `git ls-tree -r` (full tree)
+- `skeleton.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-skeleton` commands, `toon.mjs` hook, workflows `06`/`07`, `scripts/init.sh`
+
+---
+
 ## v1.0.1 — Fix sync-skeleton.sh bash 3.2 compatibility
 
 **Date:** 2026-03-14

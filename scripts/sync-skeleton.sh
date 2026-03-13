@@ -156,14 +156,16 @@ if [ "$AUTO" = false ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Read file ownership lists
+# Read file ownership lists — always from the skeleton remote so newly
+# added files in the latest skeleton version are included, regardless of
+# what the local skeleton.json says.
 # ---------------------------------------------------------------------------
 SKELETON_OWNED=()
-while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(jq -r '.fileOwnership.skeleton_owned[]' "$SKELETON_JSON")
+while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(git show "$SKELETON_REMOTE/main:skeleton.json" | jq -r '.fileOwnership.skeleton_owned[]')
 PROJECT_OWNED=()
-while IFS= read -r line; do PROJECT_OWNED+=("$line"); done < <(jq -r '.fileOwnership.project_owned[]' "$SKELETON_JSON")
+while IFS= read -r line; do PROJECT_OWNED+=("$line"); done < <(git show "$SKELETON_REMOTE/main:skeleton.json" | jq -r '.fileOwnership.project_owned[]')
 MERGE_REQUIRED=()
-while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(jq -r '.fileOwnership.merge_required[]' "$SKELETON_JSON")
+while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(git show "$SKELETON_REMOTE/main:skeleton.json" | jq -r '.fileOwnership.merge_required[]')
 
 # ---------------------------------------------------------------------------
 # Get list of changed files in skeleton since last sync
@@ -171,8 +173,8 @@ while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(jq -r '.fileOwne
 if git cat-file -e "$CURRENT_COMMIT" 2>/dev/null; then
   CHANGED_FILES=$(git diff --name-only "$CURRENT_COMMIT" "$SKELETON_REMOTE/main")
 else
-  # First sync — treat all skeleton_owned files as changed
-  CHANGED_FILES=$(git show "$SKELETON_REMOTE/main" --name-only --format="" | tail -n +2)
+  # First sync — list every file tracked in the skeleton tree
+  CHANGED_FILES=$(git ls-tree -r --name-only "$SKELETON_REMOTE/main")
 fi
 
 APPLIED=0
@@ -210,13 +212,13 @@ for file in $CHANGED_FILES; do
 
   if [ "$DRY_RUN" = true ]; then
     echo -e "  ${GREEN}[DRY-RUN WOULD UPDATE]${NC} $file"
-    ((APPLIED++))
+    APPLIED=$((APPLIED + 1))
   else
     # Create parent directory if needed
     mkdir -p "$(dirname "$file")"
     git show "$SKELETON_REMOTE/main:$file" > "$file"
     success "  Updated: $file"
-    ((APPLIED++))
+    APPLIED=$((APPLIED + 1))
   fi
 done
 
@@ -285,7 +287,7 @@ else
             mkdir -p "$(dirname "$file")"
             git show "$SKELETON_REMOTE/main:$file" > "$file"
             success "  Overwritten: $file"
-            ((APPLIED++))
+            APPLIED=$((APPLIED + 1))
             ;;
           o|O)
             SKELETON_TMP=$(mktemp /tmp/skeleton-XXXXXX)
@@ -293,16 +295,16 @@ else
             ${VISUAL:-vimdiff} "$SKELETON_TMP" "$file" || true
             rm -f "$SKELETON_TMP"
             warn "  Review complete — your changes kept. Stage manually if you edited."
-            ((SKIPPED++))
+            SKIPPED=$((SKIPPED + 1))
             ;;
           *)
             warn "  Skipped: $file — merge manually"
-            ((SKIPPED++))
+            SKIPPED=$((SKIPPED + 1))
             ;;
         esac
       else
         warn "  Skipped (--auto mode): $file — merge manually"
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
       fi
     done
   fi
