@@ -45,7 +45,7 @@ bash scripts/validate-ai-config.sh   # expect: all PASS, no FAIL
 
 After setup, code with the AI loop:
 ```
-/requirements <your first feature>   →  /architect  →  /implement  →  /qa  →  /deploy
+/requirements <your first feature>   →  /architect  →  /task plan  →  /implement  →  /qa  →  /deploy
 ```
 
 ---
@@ -85,11 +85,12 @@ After setup, code with the AI loop:
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
-│   ├── commands/                       # 25 slash commands (type / in Claude Code)
+│   ├── commands/                       # 26 slash commands (type / in Claude Code)
 │   │   ├── init.md                     # /init — project setup wizard
 │   │   ├── requirements.md             # /requirements
 │   │   ├── architect.md                # /architect
 │   │   ├── implement.md                # /implement
+│   │   ├── task.md                     # /task — task planning + tracking
 │   │   ├── review.md                   # /review
 │   │   ├── qa.md                       # /qa
 │   │   ├── security-audit.md           # /security-audit
@@ -177,6 +178,13 @@ After setup, code with the AI loop:
 ├── skills/
 │   └── README.md                     # Skills index, activation guide, how to add new skills
 │
+├── .agent/
+│   ├── tasks/                        # ← Per-feature task files created by /task plan
+│   │   ├── TASK-001-*.md             #   One file per task: status, AC, dependencies
+│   │   └── INDEX.md                  #   Execution order and progress summary
+│   ├── outputs/                      # Agent pipeline artifacts (requirements, design, QA JSONs)
+│   └── audit/                        # JSONL audit trail of all agent actions
+│
 ├── .agent-templates/
 │   └── webhook-receiver.mjs          # Jira Server webhook receiver (copy to .agent/)
 │
@@ -207,6 +215,11 @@ After setup, code with the AI loop:
 |---------|---------|------|
 | `/requirements` | → user stories + acceptance criteria + ordered task backlog + DoD | Before any feature |
 | `/architect` | Design before a single line of code | Tasks > 50 lines |
+| `/task plan` | Break design output into tracked `.agent/tasks/*.md` files | After architect, before coding |
+| `/task next` | Get the next actionable task respecting dependencies | During implementation |
+| `/task done <id>` | Mark a task complete and unblock dependents | After each commit |
+| `/task list` | Show all tasks and their status | Anytime |
+| `/task status` | Progress dashboard with percentage and critical path | Anytime |
 | `/implement` | Bottom-up implementation with self-review | During coding |
 | `/qa` | Lint + types + tests + coverage + security | Before opening PR |
 | `/security-audit [target]` | OWASP Top 10 + CVE + secret scan | Before every PR |
@@ -262,9 +275,12 @@ JIRA / Linear / GitHub Issues
     ▼ /requirements — user stories + task backlog (JSON + Markdown)
     ▼ /architect — design doc + risk level
     │   risk=HIGH → human approval gate (AGENT_APPROVE_DESIGN)
+    ▼ /task plan — materialize tasks into .agent/tasks/*.md files
+    │   each file: status, acceptance criteria, dependencies
     ▼
-    ▼ /loop per task:
-    │   implement → /docs → test → fail? → /debug (max retries) → escalate
+    ▼ /loop per task (reads .agent/tasks/ if present):
+    │   /task next → implement → /docs → test → /task done → next task
+    │   fail? → /debug (max retries) → escalate
     ▼ docs sync (conditional):
     │   apiChanges → /doc-api diff · schemaChanges → /doc-schema migrations
     ▼ /qa — lint + types + coverage + security

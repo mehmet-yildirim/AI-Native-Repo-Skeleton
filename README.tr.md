@@ -45,7 +45,7 @@ bash scripts/validate-ai-config.sh   # beklenen: tüm PASS, FAIL yok
 
 Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ```
-/requirements <ilk özelliğin>   →  /architect  →  /implement  →  /qa  →  /deploy
+/requirements <ilk özelliğin>   →  /architect  →  /task plan  →  /implement  →  /qa  →  /deploy
 ```
 
 ---
@@ -148,6 +148,10 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 |-------|------|---------|
 | `/requirements` | Kullanıcı hikayeleri + kabul kriterleri + sıralı görev listesi + Tamamlanma Tanımı | Her özellikten önce |
 | `/architect` | Tek satır kod yazmadan önce tasarım | 50+ satır görevler |
+| `/task plan` | Tasarımı takip edilebilir `.agent/tasks/*.md` dosyalarına böl | Tasarım sonrası, kodlama öncesi |
+| `/task next` | Bağımlılıklara göre sonraki işlem yapılabilir görevi getir | Uygulama sırasında |
+| `/task done <id>` | Görevi tamamlandı olarak işaretle, bağımlıları aç | Her commit sonrası |
+| `/task list` | Tüm görevleri ve durumlarını göster | Her zaman |
 | `/implement` | Alt-üst yapılandırılmış uygulama + öz-inceleme | Kodlama sırasında |
 | `/qa` | Lint + tip + testler + kapsam + güvenlik | PR açmadan önce |
 | `/security-audit [hedef]` | OWASP Top 10 + CVE + gizli bilgi taraması | Her PR'dan önce |
@@ -203,9 +207,12 @@ JIRA / Linear / GitHub İssue'ları
     ▼ /requirements — kullanıcı hikayeleri + görev listesi (JSON + Markdown)
     ▼ /architect — tasarım belgesi + risk seviyesi
     │   risk=YÜKSEK → insan onayı kapısı (AGENT_APPROVE_DESIGN)
+    ▼ /task plan — tasarımı .agent/tasks/*.md dosyalarına böl
+    │   her dosya: durum, kabul kriterleri, bağımlılıklar
     ▼
-    ▼ /loop her görev için:
-    │   uygula → /docs → test → başarısız? → /debug (maks deneme) → eskalasyon
+    ▼ /loop her görev için (.agent/tasks/ mevcutsa okur):
+    │   /task next → uygula → /docs → test → /task done → sonraki görev
+    │   başarısız? → /debug (maks deneme) → eskalasyon
     ▼ Belgelendirme senkronizasyonu (koşullu):
     │   apiChanges → /doc-api diff · schemaChanges → /doc-schema migrations
     ▼ /qa — lint + tipler + kapsam + güvenlik

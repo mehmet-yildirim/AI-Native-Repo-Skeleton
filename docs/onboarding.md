@@ -120,6 +120,10 @@ All 25 custom commands (type `/` to see them):
 # --- Human-guided development ---
 /requirements  — analyze requirements → user stories, tasks, DoD
 /architect     — design before writing a single line of code
+/task plan     — break design into tracked .agent/tasks/*.md files (one per PR)
+/task next     — get the next actionable task (respects dependencies)
+/task done <id> — mark a task complete and unblock dependents
+/task list     — show all tasks and current status
 /implement     — structured bottom-up implementation with tests
 /security-audit — OWASP + CVE + secret scan (run before every PR)
 /qa            — full quality gates: lint, types, tests, coverage
@@ -178,7 +182,10 @@ git checkout -b feat/PROJ-42-feature-name
 # --- AI-assisted development loop ---
 /requirements Add payment retry logic     # 1. Analyze and decompose
 /architect                                # 2. Design (for tasks > 50 lines)
-/implement TASK-001: ...                  # 3. Implement one task at a time
+/task plan                                # 3. Create .agent/tasks/*.md files
+/task next                                # 4. Get the first task
+/implement TASK-001: ...                  # 5. Implement one task at a time
+/task done TASK-001                       # 6. Mark done, get next
 /docs src/payments/retry.service.ts       # 4. Document new code
 /security-audit diff                      # 5. Security check (ALWAYS before PR)
 /qa                                       # 6. Quality gates
@@ -326,7 +333,8 @@ Once setup is complete:
 1. Pick up a `good-first-issue` ticket from the backlog
 2. `/requirements <issue description>` — analyze and decompose
 3. `/architect <issue description>` — design the implementation
-4. Implement following the checklist — one task per commit, `/docs` after each
+4. `/task plan` — create task files from the design output
+5. Implement task by task: `/task next` → `/implement TASK-XXX` → `/task done TASK-XXX`
 5. `/security-audit diff` — fix any CRITICAL/HIGH findings
 6. `/qa` — fix any blocking quality issues
 7. `/review` — address any feedback

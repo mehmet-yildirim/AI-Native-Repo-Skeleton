@@ -16,10 +16,11 @@ Before starting development:
 Approved Spec
     │
     ├─ Step 1: Design          /architect → design doc
-    ├─ Step 2: Implement       /implement → code + tests
-    ├─ Step 3: QA              /qa → quality gates
-    ├─ Step 4: Self-Review     /review → final check
-    └─ Step 5: PR & Merge      → deployed to staging
+    ├─ Step 2: Task Planning   /task plan → .agent/tasks/*.md
+    ├─ Step 3: Implement       /implement per task → code + tests
+    ├─ Step 4: QA              /qa → quality gates
+    ├─ Step 5: Self-Review     /review → final check
+    └─ Step 6: PR & Merge      → deployed to staging
 ```
 
 ## Step 1: Design (/architect)
@@ -38,17 +39,55 @@ Review the design output. Approve before coding:
 
 **Rule**: Do not write production code until the design is approved.
 
-## Step 2: Implement (/implement)
+## Step 2: Task Planning (/task plan)
+
+After the design is approved, materialize the implementation checklist into individual task files:
 
 ```
-/implement <paste the approved design checklist>
+/task plan <paste the design output or provide the design file path>
+```
+
+This creates `.agent/tasks/TASK-001-*.md` files — one file per task — each with:
+- Status (`todo` / `in_progress` / `done`)
+- Acceptance criteria
+- Files to change
+- Dependencies (which tasks must be done first)
+
+**Why this step matters:**
+- Gives you a clear, trackable work breakdown before touching code
+- Enables bit-by-bit implementation — complete one task, commit, then move to the next
+- Allows resuming mid-feature: check `status` to see where you left off
+- In autonomous mode, the `/loop` command reads task files to drive execution
+
+```bash
+# After planning, inspect what was created
+/task list
+
+# Get the first task to work on
+/task next
+```
+
+**Rule**: For features with ≥ 3 tasks, always create task files before implementing.
+Single-task fixes may skip this step.
+
+## Step 3: Implement (/implement) — Per Task
+
+Work through tasks one at a time in dependency order:
+
+```
+/task next                          # find the next actionable task
+/implement TASK-001: <task title>   # implement that specific task
+/task done TASK-001                 # mark it complete
+/task next                          # get the next one
 ```
 
 ### Implementation discipline
 - Implement bottom-up: types → domain logic → data access → service → API/UI
+- Work task by task — do not start the next task until the current one compiles and its tests pass
 - Write tests for each layer as you implement it — do not defer testing
 - Keep each step small enough to compile and run tests
-- Commit each logical unit: `git commit -m "feat(users): add CreateUser use case"`
+- Commit each completed task: `git commit -m "feat(users): add CreateUser use case"`
+- After each commit: `/task done TASK-XXX`
 
 ### Working with AI during implementation
 - Give AI one task at a time — not the entire feature at once
@@ -62,7 +101,7 @@ Review the design output. Approve before coding:
 in the service. Re-implement the UserService using the UserRepository interface."
 ```
 
-## Step 3: QA (/qa)
+## Step 4: QA (/qa)
 
 Before creating a PR, run the full QA cycle:
 
@@ -79,7 +118,7 @@ This checks: lint, type safety, test coverage, security, code quality, API contr
 - Coverage dropped below threshold
 - Any CRITICAL security finding
 
-## Step 4: Self-Review (/review)
+## Step 5: Self-Review (/review)
 
 ```
 /review
@@ -97,7 +136,7 @@ Ask yourself for each change:
 - Would I be comfortable explaining this in a code review?
 - Is this the simplest solution?
 
-## Step 5: PR Creation
+## Step 6: PR Creation
 
 ```bash
 gh pr create --fill

@@ -71,7 +71,13 @@ Update task state: `branchName = <branch>`.
 
 ## Phase 4: Implement (Task Loop)
 
-For each task in the requirements output (in dependency order):
+**Determine task source:**
+1. If `.agent/tasks/` directory exists and contains `*.md` files → use task files as source
+   - Run `/task next` to get the next `todo` task respecting dependencies
+   - After each successful implementation + commit → run `/task done <TASK-ID>`
+2. Otherwise → parse tasks from `.agent/outputs/<task-id>-requirements.json`
+
+For each task (in dependency order):
 
 ```
 TASK: <task-id> — <task-title>
