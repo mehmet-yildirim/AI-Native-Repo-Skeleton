@@ -19,6 +19,18 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.1 — Fix sync-skeleton.sh bash 3.2 compatibility
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** PATCH
+
+### Updated Files (skeleton-owned — auto-applied)
+- `scripts/sync-skeleton.sh` — Replaced `mapfile` (bash 4+ only) with `while read` loops
+  so the script runs on macOS default bash (3.2) without `command not found: mapfile`
+
+---
+
 ## v1.0.0 — Initial Release
 
 **Date:** 2025
