@@ -158,9 +158,12 @@ fi
 # ---------------------------------------------------------------------------
 # Read file ownership lists
 # ---------------------------------------------------------------------------
-mapfile -t SKELETON_OWNED < <(jq -r '.fileOwnership.skeleton_owned[]' "$SKELETON_JSON")
-mapfile -t PROJECT_OWNED  < <(jq -r '.fileOwnership.project_owned[]' "$SKELETON_JSON")
-mapfile -t MERGE_REQUIRED < <(jq -r '.fileOwnership.merge_required[]' "$SKELETON_JSON")
+SKELETON_OWNED=()
+while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(jq -r '.fileOwnership.skeleton_owned[]' "$SKELETON_JSON")
+PROJECT_OWNED=()
+while IFS= read -r line; do PROJECT_OWNED+=("$line"); done < <(jq -r '.fileOwnership.project_owned[]' "$SKELETON_JSON")
+MERGE_REQUIRED=()
+while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(jq -r '.fileOwnership.merge_required[]' "$SKELETON_JSON")
 
 # ---------------------------------------------------------------------------
 # Get list of changed files in skeleton since last sync
