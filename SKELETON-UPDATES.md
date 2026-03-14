@@ -19,6 +19,18 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.4 — Branch check as Step 0 in /implement
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/implement.md` — Added Step 0: Branch Check; agent verifies it is on a feature branch and hard-stops if on `main`/`develop` before writing any code
+- `.cursor/prompts/implement.md` — Same branch check added for Cursor users
+
+---
+
 ## v1.0.3 — Enforce feature branch before implementation
 
 **Date:** 2026-03-14
