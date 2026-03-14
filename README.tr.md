@@ -328,7 +328,8 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/skeleton-s
 | Belge | İçerik |
 |-------|--------|
 | [docs/ai-workflow.tr.md](docs/ai-workflow.tr.md) | Tam AI-native geliştirme iş akışı referansı |
-| [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu |
+| [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
+| [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [docs/skeleton-sync.md](docs/skeleton-sync.md) | İskelet güncellemelerini projeye aktarma |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |

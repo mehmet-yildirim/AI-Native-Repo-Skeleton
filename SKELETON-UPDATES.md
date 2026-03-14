@@ -19,6 +19,22 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.10 — Add Turkish onboarding documentation
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+- `docs/onboarding.tr.md` — Full Turkish translation of `docs/onboarding.md`. Covers prerequisites, initial setup (macOS/Linux/Windows), understanding the project, all 27 AI commands with Turkish descriptions, development workflow, autonomous agent setup, security checklist, and getting help with `/help`.
+
+### Updated Files (merge-required — review before applying)
+- `docs/onboarding.md` — Turkish cross-reference updated to point to new `onboarding.tr.md`.
+- `README.md` — Added `docs/onboarding.tr.md` to Further Reading table.
+- `README.tr.md` — Added `docs/onboarding.tr.md` to Further Reading table with both language labels.
+
+---
+
 ## v1.0.9 — Surface /help in README, onboarding, and agent redirect behavior
 
 **Date:** 2026-03-14

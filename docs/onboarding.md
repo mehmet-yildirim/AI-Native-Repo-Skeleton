@@ -2,7 +2,7 @@
 
 Welcome to the project. This guide gets you from zero to productive as quickly as possible.
 
-> **Turkish / Türkçe:** See [docs/ai-workflow.tr.md](ai-workflow.tr.md) for the Turkish developer guide.
+> **Turkish / Türkçe:** [docs/onboarding.tr.md](onboarding.tr.md) — Türkçe başlangıç kılavuzu
 
 ---
 

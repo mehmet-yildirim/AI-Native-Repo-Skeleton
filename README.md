@@ -397,6 +397,7 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide, including
 |----------|---------|
 | [docs/ai-workflow.md](docs/ai-workflow.md) | Full AI-Native development workflow reference |
 | [docs/onboarding.md](docs/onboarding.md) | New developer setup guide |
+| [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [docs/skeleton-sync.md](docs/skeleton-sync.md) | How to apply skeleton updates to your project |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
