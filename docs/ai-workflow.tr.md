@@ -288,6 +288,16 @@ AI üretilen kodda şunları görürseniz duraksayın ve dikkatlice inceleyin:
 
 ## Tüm Komutlar — Hızlı Referans
 
+### Yardım ve Navigasyon
+
+| Komut | Amaç | Ne Zaman |
+|-------|------|---------|
+| `/help` | Tüm komutları ve tipik iş akışını göster | Ne yapacağından emin olmadığında her zaman |
+| `/help <soru>` | "Yeni bir özelliğe nasıl başlarım?" → doğru komutu göster | Hangi komutu kullanacağından emin olmadığında |
+| `/help <konu>` | "Testleri nasıl yazarım?" → konuyu komuta eşler | Belirli bir konu hakkında yönlendirme istediğinde |
+
+> **İpucu:** `/help`, ne yapacağından emin olmadığın her durumda ilk başvurman gereken komuttur. Durumunu sade bir dille anlat — AI seni doğru iş akışına ve komutlara yönlendirir.
+
 ### İnsan Destekli Komutlar
 
 | Komut | Amaç | Ne Zaman |

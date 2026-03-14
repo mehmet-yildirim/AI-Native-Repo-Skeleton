@@ -12,7 +12,7 @@
 
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 25 slash komutu, olay hook'ları |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 27 slash komutu, olay hook'ları |
 | **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + prompt dosyaları |
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
@@ -47,6 +47,8 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ```
 /requirements <ilk özelliğin>   →  /architect  →  /task plan  →  /implement  →  /qa  →  /deploy
 ```
+
+> **Projeye yeni misiniz veya ne yapacağınızdan emin değil misiniz?** Claude Code'da `/help` yazın (ya da Cursor'da `@.cursor/prompts/help.md` kullanın) — AI sizi durumunuza uygun komuta yönlendirir.
 
 ---
 
@@ -85,7 +87,8 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
-│   ├── commands/                       # 25 slash komutu (Claude Code'da / yazarak erişilir)
+│   ├── commands/                       # 27 slash komutu (Claude Code'da / yazarak erişilir)
+│   │   ├── help.md                     # /help — komutlara ve iş akışlarına rehberlik
 │   │   ├── init.md                     # /init — proje kurulum sihirbazı
 │   │   ├── requirements.md … docs.md   # İnsan destekli komutlar (16 adet)
 │   │   ├── doc-api.md                  # /doc-api — OpenAPI spec üretimi
@@ -131,6 +134,16 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ---
 
 ## Slash Komutları Referansı
+
+### Yardım ve Navigasyon
+
+| Komut | Amaç |
+|-------|------|
+| `/help` | Tüm mevcut komutları ve tipik iş akışını göster |
+| `/help <soru>` | Belirli durumunuz için doğru komuta yönlendir |
+| `/help <faz>` | "Bir özelliğe nasıl başlarım?" — o faz için adım adım komut dizisi |
+
+> **Yeni geliştirici ipucu:** Sırada ne yapacağınızdan emin olmadığınızda `/help` her zaman ilk komutunuzdur. Durumunuzu sade bir dille anlatın, AI sizi doğru iş akışı ve komutlara yönlendirir.
 
 ### Başlatma
 
