@@ -4,6 +4,24 @@ Follow this workflow strictly. Do not skip phases.
 
 ---
 
+## Step 0: Branch Check
+
+Before writing any code, confirm you are on a feature branch:
+
+```bash
+git branch --show-current
+```
+
+- If on `main` or `develop`: **stop** and create a branch first:
+  ```bash
+  git checkout -b feat/<feature-slug>
+  ```
+- Branch name must match the task type prefix: `feat/`, `fix/`, `chore/`
+- Derive the slug from the task title or feature name (kebab-case, max 40 chars)
+- Never commit implementation work directly to `main` or `develop`
+
+---
+
 ## Step 1: Orient
 
 Before writing any code:
