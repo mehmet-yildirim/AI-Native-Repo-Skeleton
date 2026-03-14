@@ -397,6 +397,7 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide, including
 |----------|---------|
 | [docs/ai-workflow.md](docs/ai-workflow.md) | Full AI-Native development workflow reference |
 | [docs/team.md](docs/team.md) | Team roles, structure, and optimization for AI-native development |
+| [docs/team.tr.md](docs/team.tr.md) | Ekip rolleri ve optimizasyon kılavuzu (Türkçe) |
 | [docs/onboarding.md](docs/onboarding.md) | New developer setup guide |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [docs/skeleton-sync.md](docs/skeleton-sync.md) | How to apply skeleton updates to your project |

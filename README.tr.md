@@ -328,7 +328,7 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/skeleton-s
 | Belge | İçerik |
 |-------|--------|
 | [docs/ai-workflow.tr.md](docs/ai-workflow.tr.md) | Tam AI-native geliştirme iş akışı referansı |
-| [docs/team.md](docs/team.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
+| [docs/team.tr.md](docs/team.tr.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
 | [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [docs/skeleton-sync.md](docs/skeleton-sync.md) | İskelet güncellemelerini projeye aktarma |

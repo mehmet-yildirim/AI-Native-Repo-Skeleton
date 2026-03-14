@@ -2,6 +2,8 @@
 
 This guide defines how human teams should be structured and optimized when working with this AI-native skeleton. The AI tools handle boilerplate, repetition, and mechanical reasoning — the team's job is judgment, context, and oversight.
 
+> **Turkish / Türkçe:** [docs/team.tr.md](team.tr.md) — Türkçe takım oluşturma kılavuzu
+
 > **Fill in the TODO sections** with your project-specific people and contacts.
 
 ---

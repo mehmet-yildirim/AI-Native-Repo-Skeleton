@@ -19,6 +19,23 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.14 — Add Turkish translation of team formation guide
+
+**Date:** 2026-03-15
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+- `docs/team.tr.md` — Full Turkish translation of the team formation guide covering all roles, decision authority matrix, team size recommendations, and anti-patterns.
+
+### Updated Files (merge-required — review before applying)
+- `docs/onboarding.md` — Added `docs/team.tr.md` cross-reference.
+- `docs/onboarding.tr.md` — Updated team.md reference to point to Turkish version.
+- `README.md` — Added `docs/team.tr.md` to Further Reading.
+- `README.tr.md` — Same in Turkish.
+
+---
+
 ## v1.0.13 — Add team formation guide for AI-native development
 
 **Date:** 2026-03-15

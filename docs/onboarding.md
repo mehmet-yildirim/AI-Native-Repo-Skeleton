@@ -93,6 +93,7 @@ Read these documents in order before writing any code:
 | `docs/context/domain-glossary.md` | Business terminology — read before naming anything |
 | `docs/context/domain-boundaries.md` | Scope definition (critical for autonomous agent) |
 | `docs/team.md` | Who owns what, escalation chain, decision authority |
+| `docs/team.tr.md` | Turkish / Türkçe version of the team guide |
 
 ---
 
