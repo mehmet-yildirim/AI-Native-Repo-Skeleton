@@ -45,7 +45,7 @@ jobs:
       #     go-version: '1.23'
       # - uses: golangci/golangci-lint-action@v6
 
-      - run: echo "TODO: configure lint step for your stack"
+      - run: echo "TODO - configure lint step for your stack"
 
   # ---------------------------------------------------------------------------
   # Tests
@@ -96,7 +96,7 @@ jobs:
       # - run: go test -race -coverprofile=coverage.out ./...
       # - uses: codecov/codecov-action@v4
 
-      - run: echo "TODO: configure test step for your stack"
+      - run: echo "TODO - configure test step for your stack"
 
     env:
       # TODO: Add required environment variables
@@ -128,7 +128,7 @@ jobs:
       # - run: go install golang.org/x/vuln/cmd/govulncheck@latest
       # - run: govulncheck ./...
 
-      - run: echo "TODO: configure security audit for your stack"
+      - run: echo "TODO - configure security audit for your stack"
 
   # ---------------------------------------------------------------------------
   # Build (optional — for compiled languages or bundled apps)
@@ -151,4 +151,4 @@ jobs:
       # - uses: actions/setup-go@v5
       # - run: go build ./...
 
-      - run: echo "TODO: configure build step for your stack"
+      - run: echo "TODO - configure build step for your stack"
