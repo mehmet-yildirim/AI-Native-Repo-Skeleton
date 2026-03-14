@@ -19,6 +19,22 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.9 — Surface /help in README, onboarding, and agent redirect behavior
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (merge-required — review before applying)
+- `README.md` — Added "Help & Navigation" section to Slash Commands Reference, `/help` tip after Quick Start, updated command count to 27, added `help.md` to repo tree.
+- `docs/onboarding.md` — Added `/help` as first entry in Claude Code commands list, added prominent "Getting Help" block with examples, added tip callout at top of "Setting Up AI Tools".
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/help.md` — Added redirect guidance: when a developer asks a general "what should I do?" question outside of `/help`, the agent responds by directing them to run `/help` instead of answering inline.
+- `.cursor/prompts/help.md` — Same redirect guidance for Cursor.
+
+---
+
 ## v1.0.8 — Add /help command for developer guidance
 
 **Date:** 2026-03-14

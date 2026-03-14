@@ -12,7 +12,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 
 | Layer | Config | Purpose |
 |-------|--------|---------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 25 slash commands, event hooks |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 27 slash commands, event hooks |
 | **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 6 base rules + 22 skill rules (auto-activate by file type) + prompt files |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
@@ -47,6 +47,8 @@ After setup, code with the AI loop:
 ```
 /requirements <your first feature>   →  /architect  →  /task plan  →  /implement  →  /qa  →  /deploy
 ```
+
+> **New to the project or unsure what to do?** Type `/help` in Claude Code (or `@.cursor/prompts/help.md` in Cursor) — the AI will guide you to the right command for your situation.
 
 ---
 
@@ -85,7 +87,8 @@ After setup, code with the AI loop:
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
-│   ├── commands/                       # 26 slash commands (type / in Claude Code)
+│   ├── commands/                       # 27 slash commands (type / in Claude Code)
+│   │   ├── help.md                     # /help — guide to commands and workflows
 │   │   ├── init.md                     # /init — project setup wizard
 │   │   ├── requirements.md             # /requirements
 │   │   ├── architect.md                # /architect
@@ -198,6 +201,16 @@ After setup, code with the AI loop:
 ---
 
 ## Slash Commands Reference
+
+### Help & Navigation
+
+| Command | Purpose |
+|---------|---------|
+| `/help` | Show all available commands and the typical workflow |
+| `/help <question>` | Get directed to the right command for your specific situation |
+| `/help <phase>` | "how do I start a feature?" — prints the step-by-step command sequence for that phase |
+
+> **Tip for newcomers:** `/help` is always your first command when you're unsure what to do next. Describe your situation in plain language and the AI will point you to the right workflow and commands.
 
 ### Initialization
 

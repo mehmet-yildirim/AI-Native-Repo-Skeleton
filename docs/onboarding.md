@@ -97,6 +97,8 @@ Read these documents in order before writing any code:
 
 ## Setting Up AI Tools
 
+> **Tip:** Once your AI tool is set up, `/help` is always your starting point when you don't know which command to use. Describe your situation and the AI will direct you.
+
 ### Claude Code
 
 ```bash
@@ -107,9 +109,14 @@ npm install -g @anthropic-ai/claude-code
 claude
 ```
 
-All 25 custom commands (type `/` to see them):
+All 27 custom commands (type `/` to see them):
 
 ```
+# --- Help & navigation (start here if you're unsure) ---
+/help                — show all commands and the typical feature workflow
+/help <question>     — "how do I start a feature?" → directed to the right commands
+/help <topic>        — "how do I write tests?" → maps topic to the right command
+
 # --- Project initialization ---
 /init          — populate all TODO files from a free-form project description
 /init domain:  — generate domain boundaries and agent scope keywords
@@ -317,8 +324,25 @@ bun build         # Production build
 
 ## Getting Help
 
+**Not sure what to do next? Ask the AI.**
+
+In Claude Code, type `/help` and describe your situation in plain language:
+
+```
+/help                              # show all commands and the full workflow
+/help how do I start a new feature?
+/help how do I write tests for this module?
+/help I'm getting a type error in the service layer
+/help what should I do before opening a PR?
+```
+
+In Cursor, use `@.cursor/prompts/help.md` in the chat followed by your question.
+
+The `/help` command will identify where you are in the workflow, map your question to the right command(s), and give you a clear next step — without writing any code.
+
 | Need | Resource |
 |------|---------|
+| Don't know what to do | `/help` in Claude Code — or `@.cursor/prompts/help.md` in Cursor |
 | Project questions | `#<channel>` on Slack / Teams |
 | AI workflow guidance | [`docs/ai-workflow.md`](ai-workflow.md) |
 | Autonomous agent issues | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |

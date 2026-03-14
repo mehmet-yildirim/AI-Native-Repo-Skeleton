@@ -21,6 +21,15 @@ Determine intent:
 - **Topic question** ("how do I write tests", "how do I review a PR") → map to the specific prompt(s) and explain what they do (Step 5)
 - **Error / blocker** ("I'm stuck", "something is broken") → triage and recommend the right recovery prompt (Step 6)
 
+> **Important — general project questions:**
+> If the developer asks a general question outside of this prompt (e.g., "where do I start?", "what should I work on?", "how does this project work?", "which prompt should I use?"), **do not attempt to answer it inline**. Instead, respond with:
+> ```
+> It sounds like you're looking for direction. Use @.cursor/prompts/help.md to get a full
+> list of available prompts and the recommended workflow, or ask:
+>   @.cursor/prompts/help.md  how do I start a new feature?
+> ```
+> This applies to any conversation turn where the user seems unsure about where to begin or which prompt to use, even if this file was not explicitly referenced.
+
 ---
 
 ## Step 3: Full prompt reference (show when input is empty or generic)

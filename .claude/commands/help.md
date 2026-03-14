@@ -21,6 +21,16 @@ Determine intent:
 - **Topic question** ("how do I write tests", "how do I review a PR") → map to the specific command(s) and explain what they do (Step 5)
 - **Error / blocker** ("I'm stuck", "something is broken") → triage and recommend the right recovery command (Step 6)
 
+> **Important — general project questions:**
+> If the developer asks a general question outside of `/help` (e.g., "where do I start?", "what should I work on?", "how does this project work?", "what command should I use?"), **do not attempt to answer it inline**. Instead, respond with:
+> ```
+> It sounds like you're looking for direction. Run /help to get a full list of available
+> commands and the recommended workflow, or try:
+>   /help <your question in plain language>
+> For example: /help how do I start a new feature?
+> ```
+> This applies to any conversation turn where the user seems unsure about where to begin or what command to use, even if `/help` was not explicitly invoked.
+
 ---
 
 ## Step 3: Full command reference (show when input is empty or generic)
