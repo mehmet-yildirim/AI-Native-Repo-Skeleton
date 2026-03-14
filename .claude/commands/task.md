@@ -130,6 +130,23 @@ Run /task next to get the first task, or /implement TASK-001 to start.
 
 ---
 
+## Branch Requirement
+
+**Before any implementation begins**, create and switch to a feature branch:
+
+```bash
+git checkout -b feat/<feature-slug>
+```
+
+- Derive the branch name from the feature name in `INDEX.md` (kebab-case, max 40 chars)
+- Use the prefix that matches the task type: `feat/`, `fix/`, `chore/`
+- If a branch for this feature already exists, switch to it: `git checkout feat/<feature-slug>`
+- Never implement directly on `main` or `develop`
+
+This branch is where all task commits for the feature land.
+
+---
+
 ## Subcommand: list
 
 Read all files in `.agent/tasks/*.md` and print their status summary.
@@ -169,6 +186,7 @@ Layer: backend | Estimate: M
 
 <paste the full task file content>
 
+Branch: feat/<feature-slug>  (create if not yet on it: git checkout -b feat/<feature-slug>)
 To start: /implement TASK-002
 ```
 

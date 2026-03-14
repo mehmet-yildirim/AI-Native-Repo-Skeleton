@@ -19,6 +19,18 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.3 — Enforce feature branch before implementation
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/task.md` — Added Branch Requirement section: agent must create and switch to `feat/<slug>` branch before any implementation; also shown in `/task next` output
+- `.cursor/prompts/task.md` — Same branch requirement added for Cursor users
+
+---
+
 ## v1.0.2 — Fix sync-skeleton.sh sync logic
 
 **Date:** 2026-03-14
