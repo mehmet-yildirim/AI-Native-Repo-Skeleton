@@ -19,6 +19,23 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.13 — Add team formation guide for AI-native development
+
+**Date:** 2026-03-15
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+- `docs/team.md` — Comprehensive team formation guide covering: roles (Tech Lead, Domain Owner, Developer, AI Workflow Coordinator, Security Champion), decision authority matrix, team size recommendations (1–3 / 3–6 / 7–15 people), new member onboarding steps, and common anti-patterns.
+
+### Updated Files (merge-required — review before applying)
+- `docs/onboarding.md` — Added `docs/team.md` to the "Understanding the Project" reading list.
+- `docs/onboarding.tr.md` — Same addition in Turkish.
+- `README.md` — Added `docs/team.md` to Further Reading.
+- `README.tr.md` — Same in Turkish.
+
+---
+
 ## v1.0.12 — Add hexagonal architecture preference and design pattern guidance
 
 **Date:** 2026-03-15

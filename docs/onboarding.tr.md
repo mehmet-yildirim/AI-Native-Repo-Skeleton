@@ -91,6 +91,7 @@ Herhangi bir kod yazmadan önce bu belgeleri sırayla oku:
 | `docs/architecture/overview.md` | Sistemin nasıl yapılandırıldığı |
 | `CLAUDE.md` | Kodlama kuralları, temel komutlar, mimari özeti |
 | `docs/context/domain-glossary.md` | İş terminolojisi — herhangi bir şeyi adlandırmadan önce oku |
+| `docs/team.md` | Kimin neye sahip olduğu, eskalasyon zinciri, karar yetkisi |
 | `docs/context/domain-boundaries.md` | Kapsam tanımı (otonom ajan için kritik) |
 
 ---
