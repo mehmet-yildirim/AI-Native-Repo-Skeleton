@@ -19,6 +19,18 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.5 — Update task status after implementation
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/implement.md` — Added Step 6: Update Task Status; after implementation the agent marks the task file `done`, updates `INDEX.md` status, and reports the next unblocked task
+- `.cursor/prompts/implement.md` — Same task status update step added for Cursor users
+
+---
+
 ## v1.0.4 — Branch check as Step 0 in /implement
 
 **Date:** 2026-03-14

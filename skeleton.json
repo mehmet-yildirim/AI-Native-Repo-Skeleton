@@ -2,7 +2,7 @@
   "_comment": "This file tracks which version of the AI-Native skeleton this project is based on. Update it after running scripts/sync-skeleton.sh.",
   "skeleton": {
     "repository": "https://github.com/mehmet-yildirim/AI-Native-Repo-Skeleton",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "commit": "TODO: set by sync-skeleton.sh",
     "syncedAt": "TODO: set by sync-skeleton.sh",
     "releaseNotesUrl": "https://github.com/mehmet-yildirim/AI-Native-Repo-Skeleton/blob/main/SKELETON-UPDATES.md"

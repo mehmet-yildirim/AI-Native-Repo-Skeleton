@@ -104,7 +104,27 @@ Before declaring complete, review your own output:
 
 ---
 
-## Step 6: Summarize Changes
+## Step 6: Update Task Status
+
+If this implementation was for a tracked task in `.agent/tasks/`:
+
+1. **Mark the task done** — update the task file's frontmatter:
+   ```
+   status: done
+   completed: <ISO date>
+   ```
+2. **Update the task index** — in `.agent/tasks/INDEX.md`, update the task row's Status column to `done` and note any newly unblocked tasks
+3. **Report** — print:
+   ```
+   ✅ TASK-XXX marked done.
+   Next unblocked: TASK-YYY — <title>  (or "All tasks complete. Run /qa.")
+   ```
+
+Skip this step only if no `.agent/tasks/` directory exists for this feature.
+
+---
+
+## Step 7: Summarize Changes
 
 Produce a concise summary:
 
@@ -124,6 +144,8 @@ Produce a concise summary:
 - [Anything NOT completed and why]
 - [Follow-up tasks needed]
 ```
+
+---
 
 ---
 
