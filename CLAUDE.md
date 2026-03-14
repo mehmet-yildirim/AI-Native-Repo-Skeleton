@@ -134,6 +134,24 @@ See `docs/architecture/overview.md` for the full architecture document.
 - Squash merge to keep main branch history clean
 - Never force-push to `main` or `develop`
 
+### Branch Before Any Code Change
+
+**Before writing or modifying any code — even for a small fix or an inline request — always create and switch to a feature branch first.**
+
+This applies regardless of how the request is made:
+- Via a slash command (`/implement`, `/debug`, `/fix`, etc.)
+- As a direct instruction ("fix this bug", "change this function", "update this file")
+- As an inline edit request in chat
+
+```bash
+git branch --show-current           # confirm you are NOT on main or develop
+git checkout -b fix/<short-slug>    # for bug fixes
+git checkout -b feat/<short-slug>   # for features
+git checkout -b chore/<short-slug>  # for config/tooling changes
+```
+
+If already on a feature branch (not `main` or `develop`), proceed without creating a new one.
+
 See `.github/PULL_REQUEST_TEMPLATE.md` for the PR checklist.
 
 ---

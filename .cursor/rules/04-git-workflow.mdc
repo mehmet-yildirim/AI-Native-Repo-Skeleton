@@ -6,6 +6,26 @@ alwaysApply: false
 
 # Git Workflow
 
+## Branch Before Any Code Change
+
+**Before writing or modifying any code — regardless of whether a slash command was used — always create and switch to a feature branch first.**
+
+This rule applies to all change requests:
+- Slash commands (`/implement`, `/debug`, `/fix`, etc.)
+- Direct instructions in chat ("fix this bug", "change this function", "update this file")
+- Inline edit requests
+
+```bash
+git branch --show-current   # verify you are NOT on main or develop
+git checkout -b fix/<slug>   # for bug fixes
+git checkout -b feat/<slug>  # for features or new code
+git checkout -b chore/<slug> # for config or tooling changes
+```
+
+If already on a feature branch (not `main` or `develop`), proceed. Never commit implementation work directly to `main` or `develop`.
+
+---
+
 ## Branching Strategy
 
 ### Branch types

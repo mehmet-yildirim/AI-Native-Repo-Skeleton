@@ -19,6 +19,22 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.11 — Enforce branch-before-change rule across all entry points
+
+**Date:** 2026-03-15
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (project-owned — review and apply manually)
+- `CLAUDE.md` — Added "Branch Before Any Code Change" subsection to "Git & PR Workflow". Rule explicitly covers slash commands, direct chat instructions, and inline edit requests — not just structured commands.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/debug.md` — Added Step 0: Branch Check before diagnosis begins, matching the pattern already in `/implement`.
+- `.cursor/prompts/debug.md` — Same Step 0 added for Cursor.
+- `.cursor/rules/04-git-workflow.mdc` — Added "Branch Before Any Code Change" section at the top of the rule file so it loads as a standing constraint in every Cursor session.
+
+---
+
 ## v1.0.10 — Add Turkish onboarding documentation
 
 **Date:** 2026-03-14
