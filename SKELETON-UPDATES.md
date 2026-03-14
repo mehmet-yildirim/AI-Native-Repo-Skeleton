@@ -19,6 +19,21 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.12 — Add hexagonal architecture preference and design pattern guidance
+
+**Date:** 2026-03-15
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (project-owned — review and merge manually)
+- `CLAUDE.md` — Added "Architectural Constraints" subsection to the Architecture section: hexagonal preference, adapter pattern requirement for external integrations, and a design pattern reference table.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.cursor/rules/02-architecture.mdc` — Added "Standing Rules" block at the top (before the existing project-specific section): hexagonal default, adapter pattern for all external integrations, and design pattern reference table.
+- `.continue/rules/02-architecture.md` — Same standing rules added.
+
+---
+
 ## v1.0.11 — Enforce branch-before-change rule across all entry points
 
 **Date:** 2026-03-15

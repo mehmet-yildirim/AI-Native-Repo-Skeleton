@@ -84,6 +84,36 @@ TODO: Describe the high-level architecture in 3–5 bullet points.
 
 See `docs/architecture/overview.md` for the full architecture document.
 
+### Architectural Constraints (apply to all code changes)
+
+**Prefer Hexagonal Architecture (Ports & Adapters) wherever applicable.**
+
+- The **domain layer** contains pure business logic — no framework dependencies, no I/O, no imports from infra or interface layers.
+- The **application layer** (use cases / services) orchestrates domain objects. It depends only on domain interfaces (ports), never on concrete infrastructure.
+- The **infrastructure layer** implements the ports defined by the domain — databases, HTTP clients, queues, file systems.
+- The **interface layer** (controllers, CLI handlers) depends only on the application layer.
+- Dependencies always point inward. Outer layers know about inner layers, never the reverse.
+
+**External integrations must use the Adapter pattern.**
+
+Wrap every external system (third-party APIs, payment gateways, email services, message brokers, etc.) behind an interface defined in the domain or application layer. The concrete implementation lives in the infrastructure layer and is injected at runtime. The domain never imports from a third-party SDK directly.
+
+**Apply suitable design patterns throughout.**
+
+Choose patterns that fit the problem:
+
+| Situation | Preferred pattern(s) |
+|-----------|---------------------|
+| External system integration | Adapter, Gateway |
+| Multiple interchangeable implementations | Strategy |
+| Object construction complexity | Factory, Builder |
+| Decoupled side effects / events | Observer, Event Bus |
+| Repeated cross-cutting logic | Decorator, Middleware |
+| Expensive resource access | Repository, Proxy |
+| Complex conditional flows | Chain of Responsibility, State |
+
+Use patterns where they reduce coupling or clarify intent — never force a pattern onto simple code.
+
 ---
 
 ## Coding Conventions

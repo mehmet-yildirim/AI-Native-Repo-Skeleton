@@ -8,7 +8,45 @@ alwaysApply: false
 
 > See `docs/architecture/overview.md` for the full architecture document with diagrams.
 
-## Architectural Pattern
+## Standing Rules (apply to every code change)
+
+### 1 — Prefer Hexagonal Architecture
+
+**Default to Hexagonal (Ports & Adapters) unless the project's architecture doc specifies a different pattern.**
+
+- **Domain layer**: Pure business logic. No framework, no I/O, no dependencies on outer layers.
+- **Application layer**: Use cases / services. Orchestrates domain objects. Depends only on domain interfaces (ports), never on concrete infrastructure.
+- **Infrastructure layer**: DB, HTTP clients, message queues, file system. Implements domain ports — the domain never imports from a third-party SDK directly.
+- **Interface layer**: Controllers, CLI handlers, gRPC servers. Depends on application layer only.
+
+**Dependency rule**: Dependencies point inward only. Domain never imports from infra or interface.
+
+### 2 — Adapter Pattern for All External Integrations
+
+Before calling any external system (third-party API, payment gateway, email, SMS, queue, cloud storage, feature flags, analytics, etc.):
+
+1. Define an interface in the domain or application layer describing what is needed.
+2. Implement it in the infrastructure layer using the vendor SDK.
+3. Inject the implementation at runtime — never call external SDKs from domain or application code directly.
+
+### 3 — Apply Suitable Design Patterns
+
+Choose the pattern that best reduces coupling and clarifies intent. Never force a pattern onto simple code.
+
+| Situation | Preferred pattern(s) |
+|-----------|---------------------|
+| External system integration | **Adapter**, Gateway |
+| Multiple interchangeable algorithms | **Strategy** |
+| Object construction complexity | **Factory**, Builder |
+| Decoupled side effects / domain events | **Observer**, Event Bus |
+| Cross-cutting concerns (logging, auth, retry) | **Decorator**, Middleware |
+| Controlled access to expensive resources | **Repository**, Proxy |
+| Complex multi-step conditional logic | **Chain of Responsibility**, State |
+| Single entry point to a subsystem | **Facade** |
+
+---
+
+## Project-Specific Architectural Pattern
 
 TODO: Describe your chosen pattern and link to docs.
 

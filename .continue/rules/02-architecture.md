@@ -1,5 +1,37 @@
 # Architecture Guidelines
 
+## Standing Rules (apply to every code change)
+
+### Prefer Hexagonal Architecture
+Default to Hexagonal (Ports & Adapters) unless the project's `docs/architecture/overview.md` specifies otherwise.
+- **Domain**: pure business logic — no framework, no I/O, no outer-layer imports
+- **Application**: use cases / services — depends only on domain interfaces (ports)
+- **Infrastructure**: implements ports — DB, HTTP clients, queues. Domain never imports vendor SDKs directly.
+- **Interface**: controllers, CLI handlers — depends only on application layer
+- Dependency rule: always point inward.
+
+### Adapter Pattern for External Integrations
+For every external system (third-party API, payment, email, SMS, queue, cloud storage, analytics):
+1. Define an interface in the domain or application layer.
+2. Implement it in infrastructure using the vendor SDK.
+3. Inject the implementation — never call vendor SDKs from domain or application code.
+
+### Apply Suitable Design Patterns
+| Situation | Pattern(s) |
+|-----------|-----------|
+| External system integration | **Adapter**, Gateway |
+| Multiple interchangeable algorithms | **Strategy** |
+| Object construction complexity | **Factory**, Builder |
+| Decoupled side effects / events | **Observer**, Event Bus |
+| Cross-cutting concerns | **Decorator**, Middleware |
+| Expensive resource access | **Repository**, Proxy |
+| Complex conditional flows | **Chain of Responsibility**, State |
+| Single entry point to subsystem | **Facade** |
+
+Use patterns where they reduce coupling or clarify intent — never force a pattern onto simple code.
+
+---
+
 ## Layer Discipline
 - Dependencies point inward: Interface → Application → Domain → (no external deps)
 - Domain layer: pure business logic, no framework or I/O dependencies
