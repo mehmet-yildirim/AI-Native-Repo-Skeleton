@@ -19,6 +19,19 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.6 — Fix skeleton.json: add 36 missing file ownership entries
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** PATCH
+
+### Updated Files (skeleton-owned — auto-applied)
+- `skeleton.json` — Added all previously unclassified files to ownership lists:
+  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.bat`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `SKELETON-UPDATES.md`, `docs/skeleton-sync.md`
+  - **project_owned**: `README.tr.md`, `docs/ai-workflow.tr.md`
+
+---
+
 ## v1.0.5 — Update task status after implementation
 
 **Date:** 2026-03-14
