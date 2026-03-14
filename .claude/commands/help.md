@@ -1,0 +1,155 @@
+Guide the developer to the right commands and workflows for their question or situation.
+
+**Do not write, edit, or delete any code or files.** Your role here is purely to orient and advise.
+
+---
+
+## Step 1: Read context
+
+Read `CLAUDE.md` to understand the project's name, stack, and conventions so your guidance is specific to this project.
+
+---
+
+## Step 2: Parse the input
+
+The developer has written: `$ARGUMENTS`
+
+Determine intent:
+
+- **Empty / generic** ("help", "what can you do") → show the full command reference (Step 3)
+- **Phase question** ("how do I start a feature", "what should I do first") → identify the workflow phase and recommend the command sequence (Step 4)
+- **Topic question** ("how do I write tests", "how do I review a PR") → map to the specific command(s) and explain what they do (Step 5)
+- **Error / blocker** ("I'm stuck", "something is broken") → triage and recommend the right recovery command (Step 6)
+
+---
+
+## Step 3: Full command reference (show when input is empty or generic)
+
+Print this reference, replacing the header with the actual project name from `CLAUDE.md`:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  <Project Name> — Available Commands
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SETUP
+  /init             Populate all TODO placeholders from your project description.
+                    Run this once after cloning the skeleton.
+
+PLANNING & DESIGN
+  /requirements     Decompose a raw feature idea into a structured spec.
+  /architect        Design the implementation before writing any code.
+  /task plan        Break a design into tracked task files in .agent/tasks/.
+  /sprint           Plan a development sprint from the backlog.
+
+DEVELOPMENT
+  /task next        Show the next actionable task.
+  /implement        Execute a task with a structured bottom-up workflow.
+  /task done <ID>   Mark a task complete and update the index.
+  /task list        List all tasks and their statuses.
+  /task status      Dashboard view of feature progress.
+  /loop             Autonomous dev loop — implement the full task list hands-free.
+
+QUALITY & REVIEW
+  /test             Generate comprehensive tests for a module or function.
+  /qa               Full quality cycle: tests, lint, type-check, self-review.
+  /review           Code review against project standards and OWASP top 10.
+  /security-audit   Deep security scan: OWASP, CVE, secret detection.
+
+DOCUMENTATION
+  /docs             Generate API docs, architecture docs, or user guides.
+  /doc-api          Produce a full OpenAPI 3.x spec.
+  /doc-schema       Document the database schema with ER diagrams.
+  /doc-site         Scaffold or regenerate the documentation website.
+  /doc-changelog    Generate or update CHANGELOG.md from git history.
+
+DATABASE
+  /migrate          Plan and execute a safe DB migration (Expand-Contract).
+  /db               DB change management: init, migrations, seeds, DML.
+
+INFRASTRUCTURE & DEPLOYMENT
+  /infra            Scaffold Terraform, Kubernetes, or CI/CD configs.
+  /deploy           Pre-deploy checklist, execution, and monitoring plan.
+
+OPERATIONS
+  /standup          Generate a concise standup from recent git activity.
+  /debug            Systematically diagnose and fix a bug or error.
+  /triage           Score whether an issue belongs to this project's domain.
+  /groom            Batch-process backlog issues through triage + requirements.
+  /escalate         Raise a structured escalation when you are blocked.
+  /sync-skeleton    Pull the latest skeleton updates into this project.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Typical feature workflow:
+  /requirements → /architect → /task plan → /implement → /qa → /review
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## Step 4: Phase guidance (show when developer asks "how do I start / what's next")
+
+Map their situation to the correct workflow stage and print a short, numbered sequence:
+
+| Situation | Recommended sequence |
+|-----------|---------------------|
+| Starting a brand-new project from the skeleton | `/init` → fill in `CLAUDE.md` → `/requirements` |
+| Starting a new feature | `/requirements` → `/architect` → `/task plan` → `/implement` → `/qa` → `/review` |
+| Picking up an in-progress feature | `/task list` → `/task next` → `/implement <TASK-ID>` |
+| Fixing a bug | `/debug` → `/implement <fix>` → `/test` → `/qa` |
+| Preparing for a sprint | `/groom` → `/sprint` |
+| Opening a PR | `/qa` → `/review` → create PR |
+| Deploying | `/deploy <env>` |
+
+State which stage you believe they are in, then print the sequence with a one-line description of each step.
+
+---
+
+## Step 5: Topic guidance (show when developer asks about a specific topic)
+
+Map their question to the right command(s), then explain:
+1. What the command does
+2. How to invoke it (with a concrete example using the project context)
+3. What output to expect
+
+Topic → command mapping:
+
+| Topic keywords | Command(s) |
+|----------------|-----------|
+| requirements, spec, user story, feature idea | `/requirements` |
+| design, architecture, approach, plan | `/architect` |
+| tasks, breakdown, work items | `/task plan` |
+| implement, code, build, write | `/task next` + `/implement` |
+| test, unit test, coverage | `/test` |
+| quality, QA, check | `/qa` |
+| review, PR, pull request, code review | `/review` |
+| security, vulnerability, OWASP | `/security-audit` |
+| database, migration, schema | `/migrate` or `/db` |
+| docs, documentation, API spec | `/docs`, `/doc-api`, `/doc-schema` |
+| deploy, release, production | `/deploy` |
+| infra, terraform, kubernetes, CI | `/infra` |
+| bug, error, broken, crash | `/debug` |
+| standup, daily, progress update | `/standup` |
+| skeleton, updates, sync | `/sync-skeleton` |
+| stuck, blocked, escalate | `/escalate` |
+| sprint, planning, backlog | `/sprint` or `/groom` |
+
+---
+
+## Step 6: Recovery guidance (show when developer is stuck or has an error)
+
+1. Ask (or infer from context) what phase they were in when they got stuck.
+2. Recommend:
+   - `/debug` if there is a code error or unexpected behavior
+   - `/escalate` if the blocker requires a human decision or external dependency
+   - `/qa` if tests or CI are failing
+   - `/review` if the issue surfaced in a code review
+3. Never suggest force-pushes, skipping tests, or bypassing CI.
+
+---
+
+## Output rules
+
+- Be concise. Bullet points and tables over prose.
+- Always end with a clear "next step" the developer can take right now.
+- Do not modify any files. Do not write any code. Advisory only.

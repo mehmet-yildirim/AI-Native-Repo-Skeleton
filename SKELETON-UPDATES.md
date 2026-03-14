@@ -19,6 +19,18 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.8 — Add /help command for developer guidance
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+- `.claude/commands/help.md` — `/help` command for Claude Code. When invoked with no arguments it prints the full command reference. When given a question or topic it maps the developer to the right command(s) and workflow stage. Never writes code.
+- `.cursor/prompts/help.md` — Cursor equivalent of `/help`. Same logic: full reference, phase guidance, topic mapping, and recovery advice. Never writes code.
+
+---
+
 ## v1.0.7 — sync-skeleton.sh: add missing skeleton-owned files
 
 **Date:** 2026-03-14
