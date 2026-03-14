@@ -19,6 +19,17 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.7 — sync-skeleton.sh: add missing skeleton-owned files
+
+**Date:** 2026-03-14
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `scripts/sync-skeleton.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to the skeleton whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
+
+---
+
 ## v1.0.6 — Fix skeleton.json: add 36 missing file ownership entries
 
 **Date:** 2026-03-14

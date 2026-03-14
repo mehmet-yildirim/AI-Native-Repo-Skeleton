@@ -223,6 +223,41 @@ for file in $CHANGED_FILES; do
 done
 
 # ---------------------------------------------------------------------------
+# Add skeleton_owned files that are missing locally
+# (new files added to the skeleton that don't appear in a normal diff
+#  because the derived project never had them, or were accidentally deleted)
+# ---------------------------------------------------------------------------
+heading "Adding Missing Skeleton-Owned Files"
+
+ADDED_NEW=0
+for file in "${SKELETON_OWNED[@]}"; do
+  # Skip directory entries (trailing slash)
+  [[ "${file: -1}" == "/" ]] && continue
+  # Skip files that already exist locally
+  [ -f "$file" ] && continue
+  # Skip files that don't exist in the skeleton (e.g. stale entries)
+  if ! git show "$SKELETON_REMOTE/main:$file" &>/dev/null; then
+    continue
+  fi
+
+  if [ "$DRY_RUN" = true ]; then
+    echo -e "  ${GREEN}[DRY-RUN WOULD ADD]${NC} $file"
+    APPLIED=$((APPLIED + 1))
+    ADDED_NEW=$((ADDED_NEW + 1))
+  else
+    mkdir -p "$(dirname "$file")"
+    git show "$SKELETON_REMOTE/main:$file" > "$file"
+    success "  Added (new): $file"
+    APPLIED=$((APPLIED + 1))
+    ADDED_NEW=$((ADDED_NEW + 1))
+  fi
+done
+
+if [ "$ADDED_NEW" -eq 0 ]; then
+  info "No missing skeleton-owned files."
+fi
+
+# ---------------------------------------------------------------------------
 # Identify merge_required files that changed
 # ---------------------------------------------------------------------------
 heading "Merge-Required Files (manual review needed)"
