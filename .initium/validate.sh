@@ -167,20 +167,20 @@ check_exists "docs/architecture/overview.md"
 
 # --- Initium sync ---
 check_exists "initium.json"
-check_exists "INITIUM-UPDATES.md"
-check_exists "scripts/sync-initium.sh"
-check_exists "scripts/sync-initium.ps1"
-check_exists "scripts/sync-initium.cmd"
-check_exists "docs/initium-sync.md"
+check_exists ".initium/UPDATES.md"
+check_exists ".initium/sync.sh"
+check_exists ".initium/sync.ps1"
+check_exists ".initium/sync.cmd"
+check_exists ".initium/sync-guide.md"
 check_exists ".claude/commands/sync-initium.md"
 
 # --- Scripts ---
-check_exists "scripts/setup.sh"
-check_exists "scripts/setup.ps1"
-check_exists "scripts/setup.cmd"
-check_exists "scripts/init.sh"
-check_exists "scripts/init.ps1"
-check_exists "scripts/init.cmd"
+check_exists ".initium/setup.sh"
+check_exists ".initium/setup.ps1"
+check_exists ".initium/setup.cmd"
+check_exists ".initium/init.sh"
+check_exists ".initium/init.ps1"
+check_exists ".initium/init.cmd"
 
 # ---------------------------------------------------------------------------
 # Customization checks (look for TODO placeholders)

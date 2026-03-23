@@ -1,17 +1,17 @@
 @echo off
 :: =============================================================================
-:: sync-initium.cmd — Apply Initium updates to your derived project (Windows)
+:: sync.cmd — Apply Initium updates to your derived project (Windows)
 :: =============================================================================
-:: Delegates to sync-initium.ps1 via PowerShell 7 (pwsh) or
+:: Delegates to sync.ps1 via PowerShell 7 (pwsh) or
 :: Windows PowerShell 5.1 (powershell.exe) — both are built into Windows.
 :: No bash, WSL, or any additional tool required.
 ::
 :: Usage:
-::   scripts\sync-initium.cmd              Interactive mode
-::   scripts\sync-initium.cmd --auto       Auto-apply skeleton-owned files
-::   scripts\sync-initium.cmd --dry-run    Preview changes; apply nothing
-::   scripts\sync-initium.cmd --check      Check if update is available
-::   scripts\sync-initium.cmd --help       Show help
+::   .initium\sync.cmd              Interactive mode
+::   .initium\sync.cmd --auto       Auto-apply skeleton-owned files
+::   .initium\sync.cmd --dry-run    Preview changes; apply nothing
+::   .initium\sync.cmd --check      Check if update is available
+::   .initium\sync.cmd --help       Show help
 :: =============================================================================
 
 setlocal
@@ -19,13 +19,13 @@ setlocal
 :: Show help
 if /I "%~1"=="--help" (
     echo.
-    echo  sync-initium.cmd -- Apply upstream Initium updates to this project
+    echo  sync.cmd -- Apply upstream Initium updates to this project
     echo.
     echo  Usage:
-    echo    scripts\sync-initium.cmd              Interactive mode
-    echo    scripts\sync-initium.cmd --auto       Auto-apply skeleton-owned files
-    echo    scripts\sync-initium.cmd --dry-run    Preview only; no changes applied
-    echo    scripts\sync-initium.cmd --check      Check for update availability
+    echo    .initium\sync.cmd              Interactive mode
+    echo    .initium\sync.cmd --auto       Auto-apply skeleton-owned files
+    echo    .initium\sync.cmd --dry-run    Preview only; no changes applied
+    echo    .initium\sync.cmd --check      Check for update availability
     echo.
     echo  What it does:
     echo    1. Adds the upstream Initium repo as a git remote ^(once^)
@@ -66,7 +66,7 @@ shift
 goto parse_args
 
 :run
-set PS_SCRIPT=%~dp0sync-initium.ps1
+set PS_SCRIPT=%~dp0sync.ps1
 
 :: ---------------------------------------------------------------------------
 :: Attempt 1: PowerShell 7+ (pwsh) — preferred, ships with Windows 11 / 10

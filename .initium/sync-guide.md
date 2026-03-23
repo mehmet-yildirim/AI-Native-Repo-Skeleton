@@ -36,7 +36,7 @@ Examples:
 - All `.cursor/rules/skills/*.mdc` — language/framework skill rules
 - All `.continue/rules/skills/*.md` — Continue skill rules
 - `docs/agent/` — autonomous agent documentation and schemas
-- `scripts/validate-ai-config.sh` — configuration validator
+- `.initium/validate.sh` — configuration validator
 - `.agent-templates/` — runtime templates
 
 **You can still extend these in your project** — just know they will be overwritten on sync.
@@ -78,10 +78,10 @@ if Initium was updated (so you can read the new guidance):
 
 **macOS / Linux / Git Bash (WSL):**
 ```bash
-bash scripts/sync-initium.sh           # Interactive
-bash scripts/sync-initium.sh --auto    # Auto-apply skeleton-owned files
-bash scripts/sync-initium.sh --dry-run # Preview only
-bash scripts/sync-initium.sh --check   # Check for updates
+bash .initium/sync.sh           # Interactive
+bash .initium/sync.sh --auto    # Auto-apply skeleton-owned files
+bash .initium/sync.sh --dry-run # Preview only
+bash .initium/sync.sh --check   # Check for updates
 ```
 
 **Windows — PowerShell (recommended on Windows):**
@@ -89,10 +89,10 @@ bash scripts/sync-initium.sh --check   # Check for updates
 # One-time: allow script execution if not already set
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-.\scripts\sync-initium.ps1            # Interactive
-.\scripts\sync-initium.ps1 -Auto     # Auto-apply
-.\scripts\sync-initium.ps1 -DryRun   # Preview only
-.\scripts\sync-initium.ps1 -Check    # Check for updates
+.\.initium\sync.ps1            # Interactive
+.\.initium\sync.ps1 -Auto     # Auto-apply
+.\.initium\sync.ps1 -DryRun   # Preview only
+.\.initium\sync.ps1 -Check    # Check for updates
 ```
 
 > **PowerShell advantage on Windows:** No `jq` required — uses built-in
@@ -101,10 +101,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **Windows — CMD (no bash or WSL required):**
 ```bat
-scripts\sync-initium.cmd
-scripts\sync-initium.cmd --auto
-scripts\sync-initium.cmd --dry-run
-scripts\sync-initium.cmd --check
+.initium\sync.cmd
+.initium\sync.cmd --auto
+.initium\sync.cmd --dry-run
+.initium\sync.cmd --check
 ```
 
 > `sync-initium.cmd` delegates to `sync-initium.ps1` via `pwsh` or
@@ -299,5 +299,5 @@ Or `git stash` before sync to have a quick escape hatch.
 
 **Q: What if the Initium validator count increases after sync?**
 New files were added to Initium. The updated validator checks for them.
-Run `bash scripts/validate-ai-config.sh` — any FAILs indicate missing new files.
+Run `bash .initium/validate.sh` — any FAILs indicate missing new files.
 The sync should have applied them; if not, apply manually.

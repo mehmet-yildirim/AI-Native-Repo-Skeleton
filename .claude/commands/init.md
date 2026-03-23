@@ -259,7 +259,7 @@ For each file, write the populated content back. Report each write:
 
 After writing all files, run:
 ```bash
-bash scripts/validate-ai-config.sh 2>/dev/null | grep -E "FAIL|WARN.*TODO"
+bash .initium/validate.sh 2>/dev/null | grep -E "FAIL|WARN.*TODO"
 ```
 
 Report remaining TODO items grouped by file.
@@ -280,7 +280,7 @@ Report remaining TODO items grouped by file.
 ║  1. Review generated content — AI inference is not perfect  ║
 ║  2. Fill remaining TODOs (listed above)                     ║
 ║  3. Add API keys to .env and .continue/config.yaml          ║
-║  4. Run: bash scripts/validate-ai-config.sh                 ║
+║  4. Run: bash .initium/validate.sh                 ║
 ║  5. Start coding: /requirements <your first feature>        ║
 ╚══════════════════════════════════════════════════════════════╝
 ```

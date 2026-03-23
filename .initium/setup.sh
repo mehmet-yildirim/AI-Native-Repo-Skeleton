@@ -83,7 +83,7 @@ check_file ".cursor/rules/00-project-overview.mdc" "Cursor project overview"
 check_file ".continue/config.yaml"        "Continue config"
 
 if [ "$MISSING_CONFIG" = true ]; then
-  warn "Some AI config files are missing. Run: bash scripts/validate-ai-config.sh"
+  warn "Some AI config files are missing. Run: bash .initium/validate.sh"
 fi
 
 # ---------------------------------------------------------------------------
@@ -95,7 +95,7 @@ echo "  Next Steps"
 echo "========================================"
 echo ""
 echo "  STEP 1 — Run the initialization wizard:"
-echo "  bash scripts/init.sh"
+echo "  bash .initium/init.sh"
 echo "  (configures project name, stack, tracker, and domain keywords)"
 echo ""
 echo "  STEP 2 — AI-powered content generation:"
@@ -111,7 +111,7 @@ echo "  STEP 3 — Finish setup:"
 echo "  * Edit .continue/config.yaml (add API keys)"
 echo "  * Add git remote:  git remote add origin <url>"
 echo "  * Install dependencies: [from CLAUDE.md after /init]"
-echo "  * Validate: bash scripts/validate-ai-config.sh"
+echo "  * Validate: bash .initium/validate.sh"
 echo "  * Read the AI workflow: docs/ai-workflow.md"
 echo ""
 echo "  AI commands available in Claude Code (type / to invoke):"

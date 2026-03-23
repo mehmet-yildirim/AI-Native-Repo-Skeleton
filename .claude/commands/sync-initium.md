@@ -15,7 +15,7 @@ Read `initium.json` from the project root:
 - `skeleton.version` — Initium version string
 
 If `initium.json` doesn't exist, this project was not initialized from Initium
-with proper tracking. Add it manually (see `docs/initium-sync.md`).
+with proper tracking. Add it manually (see `.initium/sync-guide.md`).
 
 ---
 
@@ -40,7 +40,7 @@ Otherwise, show the changes:
 git log --oneline "$CURRENT_COMMIT..skeleton/main"
 ```
 
-And point to `INITIUM-UPDATES.md` on the Initium repo for the full migration guide.
+And point to `.initium/UPDATES.md` on the Initium repo for the full migration guide.
 
 ---
 
@@ -159,7 +159,7 @@ jq --arg commit "$LATEST_COMMIT" \
 ## Step 8: Run Validator
 
 ```bash
-bash scripts/validate-ai-config.sh
+bash .initium/validate.sh
 ```
 
 All PASS counts should be ≥ what they were before the sync. Any new FAILs indicate

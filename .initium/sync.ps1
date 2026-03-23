@@ -17,10 +17,10 @@
     Report whether an Initium update is available, then exit.
 
 .EXAMPLE
-    .\scripts\sync-initium.ps1
-    .\scripts\sync-initium.ps1 -Auto
-    .\scripts\sync-initium.ps1 -DryRun
-    .\scripts\sync-initium.ps1 -Check
+    .\.initium\sync.ps1
+    .\.initium\sync.ps1 -Auto
+    .\.initium\sync.ps1 -DryRun
+    .\.initium\sync.ps1 -Check
 #>
 
 [CmdletBinding()]
@@ -134,7 +134,7 @@ if ($CurrentCommit -eq $LatestCommit) {
 
 if ($Check) {
     Write-Host ''
-    Write-Host "Run '.\scripts\sync-initium.ps1' to apply updates."
+    Write-Host "Run '.\.initium\sync.ps1' to apply updates."
     exit 0
 }
 
@@ -150,7 +150,7 @@ try {
     git log --oneline "$SkeletonRemote/main" --max-count=20
 }
 Write-Host ''
-Write-Info "Full migration notes: $SkeletonRepo/blob/main/INITIUM-UPDATES.md"
+Write-Info "Full migration notes: $SkeletonRepo/blob/main/.initium/UPDATES.md"
 Write-Host ''
 
 if (-not $Auto) {
@@ -338,7 +338,7 @@ if (-not $DryRun -and $applied -gt 0) {
     Write-Heading 'Updating initium.json'
 
     try {
-        $updates = git show "${SkeletonRemote}/main:INITIUM-UPDATES.md" 2>$null
+        $updates = git show "${SkeletonRemote}/main:.initium/UPDATES.md" 2>$null
         $versionLine = $updates -split "`n" | Where-Object { $_ -match '^## v' } | Select-Object -First 1
         $skeletonVersion = if ($versionLine) { ($versionLine -replace '^## v', '').Split(' ')[0] } else { 'unknown' }
     } catch {
@@ -360,9 +360,9 @@ if (-not $DryRun -and $applied -gt 0) {
 # ---------------------------------------------------------------------------
 if (-not $DryRun -and $applied -gt 0) {
     Write-Heading 'Validating Configuration'
-    if (Test-Path 'scripts\validate-ai-config.ps1') {
+    if (Test-Path '.initium\validate.ps1') {
         try {
-            & .\scripts\validate-ai-config.ps1
+            & .\.initium\validate.ps1
         } catch {
             Write-Warn 'Validator found issues — review above'
         }

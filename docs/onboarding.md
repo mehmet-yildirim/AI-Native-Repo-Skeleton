@@ -27,17 +27,17 @@ git clone <repo-url>
 cd <project-name>
 
 # 2. Initialize (git, .env, config checks)
-./scripts/setup.sh
+./.initium/setup.sh
 
 # 3. Run interactive wizard — fills project name, stack, tracker keys
-bash scripts/init.sh
+bash .initium/init.sh
 
 # 4. Let AI populate all remaining TODO files
 claude
 /init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
 
 # 5. Verify everything is in place
-bash scripts/validate-ai-config.sh   # expect: all PASS, no FAIL
+bash .initium/validate.sh   # expect: all PASS, no FAIL
 ```
 
 ### Windows (PowerShell — recommended)
@@ -46,18 +46,18 @@ bash scripts/validate-ai-config.sh   # expect: all PASS, no FAIL
 # One-time: allow script execution
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-.\scripts\setup.ps1
-.\scripts\init.ps1
+.\.initium\setup.ps1
+.\.initium\init.ps1
 # Then open Claude Code and run /init as above
-.\scripts\validate-ai-config.ps1
+.\.initium\validate.ps1
 ```
 
 ### Windows (Batch — no permissions needed)
 
 ```bat
-scripts\setup.cmd
-scripts\init.cmd
-scripts\validate-ai-config.cmd
+.initium\setup.cmd
+.initium\init.cmd
+.initium\validate.cmd
 ```
 
 ### After the wizard — fill in manually
@@ -283,17 +283,17 @@ When the team updates Initium (new commands, improved skill rules, security fixe
 
 ```bash
 # macOS / Linux
-bash scripts/sync-initium.sh --check    # check if update available
-bash scripts/sync-initium.sh            # apply updates interactively
+bash .initium/sync.sh --check    # check if update available
+bash .initium/sync.sh            # apply updates interactively
 ```
 
 ```powershell
 # Windows
-.\scripts\sync-initium.ps1 -Check
-.\scripts\sync-initium.ps1
+.\.initium\sync.ps1 -Check
+.\.initium\sync.ps1
 ```
 
-The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`docs/initium-sync.md`](initium-sync.md) for details.
+The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`.initium/sync-guide.md`](initium-sync.md) for details.
 
 ---
 

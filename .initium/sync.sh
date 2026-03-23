@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # =============================================================================
-# sync-initium.sh — Apply Initium updates to your derived project
+# sync.sh — Apply Initium updates to your derived project
 # =============================================================================
 # Run this when Initium has been updated and you want to
 # pull in improvements without overwriting your project-specific files.
 #
 # Usage:
-#   bash scripts/sync-initium.sh                  # Interactive mode
-#   bash scripts/sync-initium.sh --auto           # Apply skeleton_owned files without prompting
-#   bash scripts/sync-initium.sh --dry-run        # Show what would change, apply nothing
-#   bash scripts/sync-initium.sh --check          # Just report version status, exit
+#   bash .initium/sync.sh                  # Interactive mode
+#   bash .initium/sync.sh --auto           # Apply skeleton_owned files without prompting
+#   bash .initium/sync.sh --dry-run        # Show what would change, apply nothing
+#   bash .initium/sync.sh --check          # Just report version status, exit
 #
 # What it does:
 #   1. Fetches the Initium repo (adds as 'skeleton' remote if needed)
@@ -66,7 +66,7 @@ for arg in "$@"; do
     --dry-run)  DRY_RUN=true ;;
     --check)    CHECK_ONLY=true ;;
     --help|-h)
-      echo "Usage: bash scripts/sync-initium.sh [--auto|--dry-run|--check]"
+      echo "Usage: bash .initium/sync.sh [--auto|--dry-run|--check]"
       echo ""
       echo "  --auto      Apply all skeleton_owned files without prompting"
       echo "  --dry-run   Show what would change; apply nothing"
@@ -147,7 +147,7 @@ fi
 
 if [ "$CHECK_ONLY" = true ]; then
   echo ""
-  echo "Run 'bash scripts/sync-initium.sh' to apply updates."
+  echo "Run 'bash .initium/sync.sh' to apply updates."
   exit 0
 fi
 
@@ -162,7 +162,7 @@ git log --oneline "$CURRENT_COMMIT..$SKELETON_REMOTE/main" 2>/dev/null || \
   git log --oneline "$SKELETON_REMOTE/main" --max-count=20
 
 echo ""
-info "Full migration notes: $SKELETON_REPO/blob/main/INITIUM-UPDATES.md"
+info "Full migration notes: $SKELETON_REPO/blob/main/.initium/UPDATES.md"
 echo ""
 if [ "$AUTO" = false ]; then
   read -r -p "Continue with sync? [Y/n] " confirm
@@ -390,7 +390,7 @@ fi
 # ---------------------------------------------------------------------------
 if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
   heading "Updating initium.json"
-  SKELETON_VERSION=$(git show "$SKELETON_REMOTE/main:INITIUM-UPDATES.md" 2>/dev/null | \
+  SKELETON_VERSION=$(git show "$SKELETON_REMOTE/main:.initium/UPDATES.md" 2>/dev/null | \
     grep -m1 "^## v" | sed 's/^## v//' | awk '{print $1}' || echo "unknown")
   TODAY=$(date +%Y-%m-%d)
 
@@ -409,8 +409,8 @@ fi
 # ---------------------------------------------------------------------------
 if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
   heading "Validating Configuration"
-  if [ -f "scripts/validate-ai-config.sh" ]; then
-    bash scripts/validate-ai-config.sh || warn "Validator found issues — review above"
+  if [ -f ".initium/validate.sh" ]; then
+    bash .initium/validate.sh || warn "Validator found issues — review above"
   fi
 fi
 

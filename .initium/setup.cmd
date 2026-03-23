@@ -6,7 +6,7 @@
 :: No special permissions required -- runs on any Windows system.
 ::
 :: Usage:
-::   scripts\setup.cmd
+::   .initium\setup.cmd
 :: =============================================================================
 
 setlocal enabledelayedexpansion
@@ -72,7 +72,7 @@ call :check_file ".cursor\rules\00-project-overview.mdc" "Cursor project overvie
 call :check_file ".continue\config.yaml" "Continue config"
 
 if !MISSING_CONFIG! equ 1 (
-    echo [WARN] Some AI config files are missing. Run: scripts\validate-ai-config.cmd
+    echo [WARN] Some AI config files are missing. Run: .initium\validate.cmd
 )
 
 :: ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ echo   Next Steps
 echo ========================================
 echo.
 echo   STEP 1 - Run the initialization wizard:
-echo   scripts\init.cmd
+echo   .initium\init.cmd
 echo   (configures project name, stack, tracker, and domain keywords)
 echo.
 echo   STEP 2 - AI-powered content generation:
@@ -100,7 +100,7 @@ echo   STEP 3 - Finish setup:
 echo     * Edit .continue\config.yaml (add API keys)
 echo     * Add git remote:  git remote add origin ^<url^>
 echo     * Install dependencies: [from CLAUDE.md after /init]
-echo     * Validate: scripts\validate-ai-config.cmd
+echo     * Validate: .initium\validate.cmd
 echo     * Read the AI workflow: docs\ai-workflow.md
 echo.
 echo   AI commands available in Claude Code (type / to invoke):
