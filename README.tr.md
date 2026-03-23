@@ -4,7 +4,7 @@
 
 [Cursor](https://cursor.sh), [Continue](https://continue.dev) ve [Claude Code](https://claude.ai/code) araçlarını kutudan çıkar çıkmaz destekler.
 
-> **English:** [README.md](README.md) · **AI İş Akışı:** [docs/ai-workflow.tr.md](docs/ai-workflow.tr.md)
+> **English:** [README.md](README.md) · **AI İş Akışı:** [docs/guides/ai-workflow.tr.md](docs/guides/ai-workflow.tr.md)
 
 ---
 
@@ -15,7 +15,7 @@
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 27 slash komutu, olay hook'ları |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + paylaşılan slash komutları |
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
-| **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
+| **Otonom Ajan** | `agent.config.yaml`, `docs/guides/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
 | **Initium senkronizasyonu** | `.initium/initium.json`, `.initium/scripts/sync.{sh,ps1,cmd}` | Özelleştirmelerin üzerine yazmadan Initium güncellemelerini projelerinize aktarma |
 
@@ -329,14 +329,14 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [.initium/docs/s
 
 | Belge | İçerik |
 |-------|--------|
-| [docs/ai-workflow.tr.md](docs/ai-workflow.tr.md) | Tam AI-native geliştirme iş akışı referansı |
-| [docs/team.tr.md](docs/team.tr.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
-| [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
-| [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
+| [docs/guides/ai-workflow.tr.md](docs/guides/ai-workflow.tr.md) | Tam AI-native geliştirme iş akışı referansı |
+| [docs/guides/team.tr.md](docs/guides/team.tr.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
+| [docs/guides/onboarding.md](docs/guides/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
+| [docs/guides/onboarding.tr.md](docs/guides/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) | Initium güncellemelerini projeye aktarma |
-| [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
-| [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
-| [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
-| [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
+| [docs/guides/agent/autonomous-workflow.md](docs/guides/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
+| [docs/guides/agent/jira-server-setup.md](docs/guides/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
+| [docs/guides/agent/security-evaluator.md](docs/guides/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
+| [docs/guides/agent/documentation-agent.md](docs/guides/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
 | [skills/README.md](skills/README.md) | Tam beceri indeksi ve aktivasyon kılavuzu |
 | [.initium/docs/UPDATES.md](.initium/docs/UPDATES.md) | Initium sürümleri için değişiklik kaydı |

@@ -74,7 +74,7 @@ git show skeleton/main:<file> > <file>
 These files are safe to overwrite because they contain no project-specific content:
 - All `.claude/commands/` slash commands
 - All `.cursor/rules/skills/` and `.continue/rules/skills/` files
-- All `docs/agent/` documentation
+- All `docs/guides/agent/` documentation
 - All `scripts/` utility scripts
 
 **Exception:** Check if any file in `skeleton_owned` was deleted in Initium.
@@ -119,7 +119,7 @@ Initium may fix or add CI steps. Merge strategy:
 - Keep your project-specific job configurations
 - Adopt Initium improvements to existing job structure
 
-### `docs/ai-workflow.md` and `docs/onboarding.md`
+### `docs/guides/ai-workflow.md` and `docs/guides/onboarding.md`
 Initium adds new command references. Merge strategy:
 - Keep your project-specific workflows and examples
 - Add new command rows to the reference tables

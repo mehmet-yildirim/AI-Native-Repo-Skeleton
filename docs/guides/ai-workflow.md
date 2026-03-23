@@ -3,7 +3,7 @@
 This document describes how to work effectively with AI tools in this project.
 Following this workflow produces faster, higher-quality results.
 
-> **Türkçe:** [docs/ai-workflow.tr.md](ai-workflow.tr.md) — Türkçe sürüm için bakın.
+> **Türkçe:** [docs/guides/ai-workflow.tr.md](ai-workflow.tr.md) — Türkçe sürüm için bakın.
 
 ---
 
@@ -178,7 +178,7 @@ Also update:
 ## Autonomous Agent Workflow
 
 The agent drives the full loop without manual intervention for each step.
-See `docs/agent/autonomous-workflow.md` for the full state machine.
+See `docs/guides/agent/autonomous-workflow.md` for the full state machine.
 
 ### Starting the agent
 

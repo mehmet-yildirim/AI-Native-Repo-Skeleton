@@ -30,6 +30,29 @@ An ordered, actionable checklist of steps ready to execute. Each step should be 
 Ambiguities or decisions that need clarification before or during implementation. Tag with who should answer.
 
 ---
+
+## Output
+
+After completing all sections above, save the design document to:
+
+```
+docs/architecture/decisions/NNNN-<kebab-case-feature-name>.md
+```
+
+Where `NNNN` is the next available number in that directory (check existing files to determine it).
+
+Use this file header:
+
+```markdown
+# NNNN — <Feature Name>
+
+**Date:** YYYY-MM-DD
+**Status:** Draft
+**Deciders:** TODO
+```
+
+Then append all sections (1–9) below the header.
+
 Do NOT write implementation code yet. This is a design phase. Ask clarifying questions if the requirement is unclear.
 
 Feature to design: $ARGUMENTS

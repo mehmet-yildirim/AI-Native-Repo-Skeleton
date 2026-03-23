@@ -324,7 +324,7 @@ cat > llms.txt << 'EOF'
 
 ## Key Resources
 - [Architecture](/docs/architecture/overview.md): System design
-- [Getting Started](/docs/onboarding.md): Developer setup guide
+- [Getting Started](/docs/guides/onboarding.md): Developer setup guide
 - [Domain Glossary](/docs/context/domain-glossary.md): Business terms
 - [Changelog](/CHANGELOG.md): Release history
 

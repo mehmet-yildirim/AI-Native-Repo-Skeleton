@@ -2,7 +2,7 @@
 
 Projeye hoş geldin. Bu kılavuz seni sıfırdan verimli bir şekilde çalışmaya mümkün olan en kısa sürede kavuşturmak için hazırlandı.
 
-> **English:** İngilizce sürüm için [docs/onboarding.md](onboarding.md) dosyasına bakın.
+> **English:** İngilizce sürüm için [docs/guides/onboarding.md](onboarding.md) dosyasına bakın.
 
 ---
 
@@ -91,7 +91,7 @@ Herhangi bir kod yazmadan önce bu belgeleri sırayla oku:
 | `docs/architecture/overview.md` | Sistemin nasıl yapılandırıldığı |
 | `CLAUDE.md` | Kodlama kuralları, temel komutlar, mimari özeti |
 | `docs/context/domain-glossary.md` | İş terminolojisi — herhangi bir şeyi adlandırmadan önce oku |
-| `docs/team.tr.md` | Kimin neye sahip olduğu, eskalasyon zinciri, karar yetkisi |
+| `docs/guides/team.tr.md` | Kimin neye sahip olduğu, eskalasyon zinciri, karar yetkisi |
 | `docs/context/domain-boundaries.md` | Kapsam tanımı (otonom ajan için kritik) |
 
 ---
@@ -204,7 +204,7 @@ git commit -m "feat(payments): ödeme yeniden deneme mantığı ekle"
 gh pr create --fill
 ```
 
-**Tam iş akışı kılavuzu:** [`docs/ai-workflow.tr.md`](ai-workflow.tr.md)
+**Tam iş akışı kılavuzu:** [`docs/guides/ai-workflow.tr.md`](ai-workflow.tr.md)
 
 ---
 
@@ -225,7 +225,7 @@ issue_tracker:
     project_key: "PROJE_ANAHTARIN"
 ```
 
-Şirket içi Jira Server için: `docs/agent/jira-server-setup.md` dosyasına bak.
+Şirket içi Jira Server için: `docs/guides/agent/jira-server-setup.md` dosyasına bak.
 
 ### 2. Proje domain'ini tanımla
 
@@ -258,7 +258,7 @@ curl -H "Authorization: Bearer $JIRA_API_TOKEN" \
 /loop PROJE-1
 ```
 
-Tam belgeler: `docs/agent/autonomous-workflow.md`
+Tam belgeler: `docs/guides/agent/autonomous-workflow.md`
 
 ---
 
@@ -272,7 +272,7 @@ Herhangi bir PR açmadan önce `/security-audit diff` çalıştır:
 - [ ] Veri erişiminden önce yetkilendirme kontrol ediliyor
 - [ ] CVSS ≥ 7.0 olan bağımlılık CVE'si yok
 
-Tam güvenlik iş akışı için: [`docs/workflows/05-security-evaluation.md`](workflows/05-security-evaluation.md)
+Tam güvenlik iş akışı için: [`docs/guides/workflows/05-security-evaluation.md`](workflows/05-security-evaluation.md)
 
 ---
 
@@ -345,8 +345,8 @@ Cursor'da sohbette `/help` yazıp ardından sorunuzu ekleyin — `.claude/comman
 |---------|--------|
 | Ne yapacağını bilmiyorum | Claude Code veya Cursor'da `/help` |
 | Proje soruları | Slack / Teams'de `#<kanal>` |
-| AI iş akışı rehberliği | [`docs/ai-workflow.tr.md`](ai-workflow.tr.md) |
-| Otonom ajan sorunları | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
+| AI iş akışı rehberliği | [`docs/guides/ai-workflow.tr.md`](ai-workflow.tr.md) |
+| Otonom ajan sorunları | [`docs/guides/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
 | Initium hatası veya iyileştirme | Initium deposunda issue aç |
 
 ---

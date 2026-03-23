@@ -35,7 +35,7 @@ Examples:
 - All `.claude/commands/*.md` — slash command definitions
 - All `.cursor/rules/skills/*.mdc` — language/framework skill rules
 - All `.continue/rules/skills/*.md` — Continue skill rules
-- `docs/agent/` — autonomous agent documentation and schemas
+- `docs/guides/agent/` — autonomous agent documentation and schemas
 - `.initium/scripts/validate.sh` — configuration validator
 - `.agent-templates/` — runtime templates
 
@@ -53,8 +53,8 @@ The sync script shows you a diff and lets you decide what to adopt.
 | `.cursor/mcp.json` | You've enabled servers; Initium adds new server entries |
 | `.claude/settings.json` | You may have added permissions; Initium adds hook entries |
 | `.github/workflows/ci.yml` | Your stack's CI steps; Initium fixes or adds generic steps |
-| `docs/ai-workflow.md` | Your project workflow notes; Initium adds new command references |
-| `docs/onboarding.md` | Your project-specific setup; Initium adds new sections |
+| `docs/guides/ai-workflow.md` | Your project workflow notes; Initium adds new command references |
+| `docs/guides/onboarding.md` | Your project-specific setup; Initium adds new sections |
 | `.gitignore` | Your project ignores; Initium adds new generated-file patterns |
 
 ### `project_owned` — Never overwrite

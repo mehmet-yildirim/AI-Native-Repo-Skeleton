@@ -1,6 +1,6 @@
 # Contributing to Initium
 
-This guide is for contributors who want to improve **Initium itself** — the rules, skills, prompts, scripts, and documentation that ship with this template. If you are customizing Initium for your own project, see the [README](README.md) and [docs/ai-workflow.md](docs/ai-workflow.md) instead.
+This guide is for contributors who want to improve **Initium itself** — the rules, skills, prompts, scripts, and documentation that ship with this template. If you are customizing Initium for your own project, see the [README](README.md) and [docs/guides/ai-workflow.md](docs/guides/ai-workflow.md) instead.
 
 ## Who This Is For
 

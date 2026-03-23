@@ -280,7 +280,7 @@ actionlint .github/workflows/*.yml 2>/dev/null || true
 Produce a structured report in two formats:
 
 ### JSON (machine-readable — saved to `.agent/audit/<date>-security-report.json`)
-Use the schema at `docs/agent/schemas/security-report.json`.
+Use the schema at `docs/guides/agent/schemas/security-report.json`.
 
 ### Markdown Summary (human-readable output)
 

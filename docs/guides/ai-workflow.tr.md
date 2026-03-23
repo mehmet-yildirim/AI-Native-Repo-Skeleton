@@ -3,7 +3,7 @@
 Bu belge, projede AI araçlarıyla etkili çalışmayı tanımlar.
 Bu iş akışını takip etmek daha hızlı ve daha yüksek kaliteli sonuçlar üretir.
 
-> **English:** [docs/ai-workflow.md](ai-workflow.md) — for the English version.
+> **English:** [docs/guides/ai-workflow.md](ai-workflow.md) — for the English version.
 
 ---
 
@@ -188,7 +188,7 @@ Ayrıca güncelleyin:
 ## Otonom Ajan İş Akışı
 
 Ajan her adım için manuel müdahale olmaksızın tam döngüyü yönetir.
-Tam durum makinesi için `docs/agent/autonomous-workflow.md` dosyasına bakın.
+Tam durum makinesi için `docs/guides/agent/autonomous-workflow.md` dosyasına bakın.
 
 ### Ajanı başlatma
 

@@ -2,7 +2,7 @@
 
 This guide defines how human teams should be structured and optimized when working with Initium. The AI tools handle boilerplate, repetition, and mechanical reasoning — the team's job is judgment, context, and oversight.
 
-> **Turkish / Türkçe:** [docs/team.tr.md](team.tr.md) — Türkçe takım oluşturma kılavuzu
+> **Turkish / Türkçe:** [docs/guides/team.tr.md](team.tr.md) — Türkçe takım oluşturma kılavuzu
 
 > **Fill in the TODO sections** with your project-specific people and contacts.
 
@@ -41,7 +41,7 @@ The ratio of senior to junior engineers shifts: **prefer senior or mid-level eng
 **AI-native responsibilities:**
 - Set `AGENT_APPROVE_DESIGN` on JIRA/GitHub when the autonomous agent escalates architecture decisions
 - Block merges of AI-generated code that violates layer boundaries or introduces inappropriate patterns
-- Review the agent's `docs/agent/` configuration and tuning
+- Review the agent's `docs/guides/agent/` configuration and tuning
 
 **TODO: Assigned to:** `<name>`
 
@@ -80,7 +80,7 @@ The ratio of senior to junior engineers shifts: **prefer senior or mid-level eng
 - Run `/security-audit diff` on every PR without exception
 - Run `/qa` before opening PRs; do not open PRs with failing gates
 - When AI output is wrong, fix the code AND update the relevant rule in `.cursor/rules/` or CLAUDE.md so the error doesn't recur
-- Share effective prompt patterns in `docs/ai-workflow.md` under "Effective Prompt Patterns"
+- Share effective prompt patterns in `docs/guides/ai-workflow.md` under "Effective Prompt Patterns"
 
 **TODO: Team members:** `<list names or link to team roster>`
 
@@ -176,7 +176,7 @@ Clear ownership prevents the agent from proceeding without the right human appro
 For new engineers to become productive quickly:
 
 1. **Day 1 — Context reading:** Read `docs/context/project-brief.md`, `docs/context/tech-stack.md`, `docs/architecture/overview.md`, and this file. Then `CLAUDE.md`.
-2. **Day 1 — AI tools setup:** Follow `docs/onboarding.md` to install Claude Code, configure Cursor or Continue. Verify with `bash .initium/scripts/validate.sh`.
+2. **Day 1 — AI tools setup:** Follow `docs/guides/onboarding.md` to install Claude Code, configure Cursor or Continue. Verify with `bash .initium/scripts/validate.sh`.
 3. **Day 2 — First `/help`:** Run `/help how do I pick up my first task?` and follow the instructions. Don't start writing code before completing the AI workflow setup.
 4. **First week — shadowed PR:** New engineer implements a `good-first-issue` using the full AI loop (`/requirements` → `/architect` → `/task plan` → `/implement` → `/qa` → `/review`). A senior dev reviews every step, not just the final diff.
 5. **First month — no autonomous mode:** New engineers use human-guided commands only. Autonomous mode (`/loop`) after they can confidently review AI output.
@@ -204,9 +204,9 @@ For new engineers to become productive quickly:
 | Document | Contents |
 |----------|---------|
 | `CLAUDE.md` | Project conventions — the AI's primary instruction file |
-| `docs/ai-workflow.md` | Full AI-native development workflow reference |
-| `docs/onboarding.md` | Step-by-step setup for new developers |
+| `docs/guides/ai-workflow.md` | Full AI-native development workflow reference |
+| `docs/guides/onboarding.md` | Step-by-step setup for new developers |
 | `docs/context/domain-boundaries.md` | What the autonomous agent will and will not work on |
-| `docs/agent/autonomous-workflow.md` | Agent state machine, escalation gates, resume logic |
-| `docs/agent/escalation-protocol.md` | Escalation severity levels and human response procedures |
+| `docs/guides/agent/autonomous-workflow.md` | Agent state machine, escalation gates, resume logic |
+| `docs/guides/agent/escalation-protocol.md` | Escalation severity levels and human response procedures |
 | `agent.config.yaml` | Autonomous agent configuration — mode, thresholds, tracker keys |

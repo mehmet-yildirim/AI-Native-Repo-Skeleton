@@ -157,7 +157,7 @@ Generate the documentation structure by pulling from existing project files:
 ```
 docs-site/docs/          (Docusaurus)  or  docs/  (MkDocs)
 ├── intro.md             ← generate from docs/context/project-brief.md
-├── onboarding.md        ← copy from docs/onboarding.md
+├── onboarding.md        ← copy from docs/guides/onboarding.md
 ├── architecture/
 │   ├── overview.md      ← copy from docs/architecture/overview.md
 │   ├── diagrams.md      ← generate Mermaid diagrams
@@ -256,7 +256,7 @@ Create `docs-site/static/llms.txt` (AI-readable sitemap for LLMs):
 > <One-sentence project description from project-brief.md>
 
 ## Documentation
-- [Getting Started](/docs/onboarding): Developer onboarding guide
+- [Getting Started](/docs/guides/onboarding): Developer onboarding guide
 - [Architecture](/docs/architecture/overview): System design and patterns
 - [API Reference](/api/reference): Full REST API documentation
 - [Domain Glossary](/docs/context/domain-glossary): Business terminology

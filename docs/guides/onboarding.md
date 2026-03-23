@@ -2,7 +2,7 @@
 
 Welcome to the project. This guide gets you from zero to productive as quickly as possible.
 
-> **Turkish / Türkçe:** [docs/onboarding.tr.md](onboarding.tr.md) — Türkçe başlangıç kılavuzu
+> **Turkish / Türkçe:** [docs/guides/onboarding.tr.md](onboarding.tr.md) — Türkçe başlangıç kılavuzu
 
 ---
 
@@ -92,8 +92,8 @@ Read these documents in order before writing any code:
 | `CLAUDE.md` | Coding conventions, key commands, architecture summary |
 | `docs/context/domain-glossary.md` | Business terminology — read before naming anything |
 | `docs/context/domain-boundaries.md` | Scope definition (critical for autonomous agent) |
-| `docs/team.md` | Who owns what, escalation chain, decision authority |
-| `docs/team.tr.md` | Turkish / Türkçe version of the team guide |
+| `docs/guides/team.md` | Who owns what, escalation chain, decision authority |
+| `docs/guides/team.tr.md` | Turkish / Türkçe version of the team guide |
 
 ---
 
@@ -205,7 +205,7 @@ git commit -m "feat(payments): add retry logic"
 gh pr create --fill
 ```
 
-**Full workflow guide:** [`docs/ai-workflow.md`](ai-workflow.md)
+**Full workflow guide:** [`docs/guides/ai-workflow.md`](ai-workflow.md)
 
 ---
 
@@ -226,7 +226,7 @@ issue_tracker:
     project_key: "YOUR_KEY"
 ```
 
-For on-premise Jira Server: see `docs/agent/jira-server-setup.md`.
+For on-premise Jira Server: see `docs/guides/agent/jira-server-setup.md`.
 
 ### 2. Define the project domain
 
@@ -259,7 +259,7 @@ curl -H "Authorization: Bearer $JIRA_API_TOKEN" \
 /loop YOUR-PROJECT-1
 ```
 
-Full documentation: `docs/agent/autonomous-workflow.md`
+Full documentation: `docs/guides/agent/autonomous-workflow.md`
 
 ---
 
@@ -273,7 +273,7 @@ Run `/security-audit diff` before opening any PR:
 - [ ] Authorization checked before data access
 - [ ] No dependency CVEs with CVSS ≥ 7.0
 
-See [`docs/workflows/05-security-evaluation.md`](workflows/05-security-evaluation.md) for the full security workflow.
+See [`docs/guides/workflows/05-security-evaluation.md`](workflows/05-security-evaluation.md) for the full security workflow.
 
 ---
 
@@ -346,8 +346,8 @@ The `/help` command will identify where you are in the workflow, map your questi
 |------|---------|
 | Don't know what to do | `/help` in Claude Code or Cursor |
 | Project questions | `#<channel>` on Slack / Teams |
-| AI workflow guidance | [`docs/ai-workflow.md`](ai-workflow.md) |
-| Autonomous agent issues | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
+| AI workflow guidance | [`docs/guides/ai-workflow.md`](ai-workflow.md) |
+| Autonomous agent issues | [`docs/guides/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
 | Initium bug or improvement | Open an issue in the Initium repository |
 
 ---

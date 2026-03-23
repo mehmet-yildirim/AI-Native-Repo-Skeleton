@@ -206,7 +206,7 @@ for file in $CHANGED_FILES; do
   # Check if this file is skeleton_owned
   is_skeleton_owned=false
   for owned in "${SKELETON_OWNED[@]}"; do
-    # Support directory prefix matching (e.g., "docs/agent/schemas/")
+    # Support directory prefix matching (e.g., "docs/guides/agent/schemas/")
     if [[ "$file" == "$owned" ]] || [[ "$file" == "$owned"* && "${owned: -1}" == "/" ]]; then
       is_skeleton_owned=true
       break

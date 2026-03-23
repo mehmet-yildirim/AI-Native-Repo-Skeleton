@@ -4,7 +4,7 @@ Bu kılavuz, Initium ile çalışırken insan takımlarının nasıl yapılandı
 
 > **TODO bölümlerini doldurun** — projeye özgü kişiler ve iletişim bilgileriyle.
 
-> **English:** İngilizce sürüm için [docs/team.md](team.md) dosyasına bakın.
+> **English:** İngilizce sürüm için [docs/guides/team.md](team.md) dosyasına bakın.
 
 ---
 
@@ -41,7 +41,7 @@ Kıdemli-acemi mühendis oranı değişir: **kıdemli veya orta seviye mühendis
 **AI-native sorumluluklar:**
 - Otonom ajan mimari kararları artırdığında JIRA/GitHub'da `AGENT_APPROVE_DESIGN` ayarlar
 - Katman sınırlarını ihlal eden veya uygunsuz desenler içeren AI tarafından üretilen kod birleştirmelerini engeller
-- Ajanın `docs/agent/` yapılandırmasını ve ayarlamalarını inceler
+- Ajanın `docs/guides/agent/` yapılandırmasını ve ayarlamalarını inceler
 
 **TODO: Atanan kişi:** `<isim>`
 
@@ -80,7 +80,7 @@ Kıdemli-acemi mühendis oranı değişir: **kıdemli veya orta seviye mühendis
 - Her PR'da istisnasız `/security-audit diff` çalıştırır
 - PR açmadan önce `/qa` çalıştırır; başarısız kapıları olan PR'lar açmaz
 - AI çıktısı yanlış olduğunda, kodu düzeltir VE ilgili kuralı `.cursor/rules/` veya CLAUDE.md'de günceller — hatanın tekrarlanmaması için
-- `docs/ai-workflow.md`'de "Etkili Prompt Kalıpları" altında etkili prompt kalıplarını paylaşır
+- `docs/guides/ai-workflow.md`'de "Etkili Prompt Kalıpları" altında etkili prompt kalıplarını paylaşır
 
 **TODO: Takım üyeleri:** `<isimler veya takım listesi linki>`
 
@@ -176,7 +176,7 @@ Net sahiplik, ajanın doğru insanın doğru kararı onaylaması olmadan ilerlem
 Yeni mühendislerin hızla verimli hale gelmesi için:
 
 1. **1. Gün — Bağlam okuma:** `docs/context/project-brief.md`, `docs/context/tech-stack.md`, `docs/architecture/overview.md` ve bu dosyayı okuyun. Ardından `CLAUDE.md`'yi okuyun.
-2. **1. Gün — AI araç kurulumu:** Claude Code'u yüklemek, Cursor veya Continue'yu yapılandırmak için `docs/onboarding.tr.md`'yi takip edin. `bash .initium/scripts/validate.sh` ile doğrulayın.
+2. **1. Gün — AI araç kurulumu:** Claude Code'u yüklemek, Cursor veya Continue'yu yapılandırmak için `docs/guides/onboarding.tr.md`'yi takip edin. `bash .initium/scripts/validate.sh` ile doğrulayın.
 3. **2. Gün — İlk `/help`:** `/help ilk görevimi nasıl alırım?` çalıştırın ve talimatları izleyin. AI iş akışı kurulumunu tamamlamadan kod yazmaya başlamayın.
 4. **İlk hafta — Gölgelendirilen PR:** Yeni mühendis, tam AI döngüsünü kullanarak bir `good-first-issue` uygular (`/requirements` → `/architect` → `/task plan` → `/implement` → `/qa` → `/review`). Kıdemli bir geliştirici yalnızca son diff'i değil her adımı inceler.
 5. **İlk ay — otonom mod yok:** Yeni mühendisler yalnızca insan destekli komutları kullanır. AI çıktısını güvenle inceleyebildikten sonra otonom mod (`/loop`).
@@ -204,9 +204,9 @@ Yeni mühendislerin hızla verimli hale gelmesi için:
 | Belge | İçerik |
 |-------|--------|
 | `CLAUDE.md` | Proje kuralları — AI'nın birincil talimat dosyası |
-| `docs/ai-workflow.tr.md` | Tam AI-native geliştirme iş akışı referansı |
-| `docs/onboarding.tr.md` | Yeni geliştiriciler için adım adım kurulum |
+| `docs/guides/ai-workflow.tr.md` | Tam AI-native geliştirme iş akışı referansı |
+| `docs/guides/onboarding.tr.md` | Yeni geliştiriciler için adım adım kurulum |
 | `docs/context/domain-boundaries.md` | Otonom ajanın üzerinde çalışacağı ve çalışmayacağı şeyler |
-| `docs/agent/autonomous-workflow.md` | Ajan durum makinesi, artırma kapıları, devam etme mantığı |
-| `docs/agent/escalation-protocol.md` | Artırma önem seviyeleri ve insan yanıt prosedürleri |
+| `docs/guides/agent/autonomous-workflow.md` | Ajan durum makinesi, artırma kapıları, devam etme mantığı |
+| `docs/guides/agent/escalation-protocol.md` | Artırma önem seviyeleri ve insan yanıt prosedürleri |
 | `agent.config.yaml` | Otonom ajan yapılandırması — mod, eşikler, tracker anahtarları |

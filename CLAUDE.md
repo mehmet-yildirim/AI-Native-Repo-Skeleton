@@ -133,4 +133,4 @@ When a developer asks an open-ended question like "what should I do?", "where do
 
 - TODO: API docs, design docs, Notion/Confluence, Jira, Figma, etc.
 - Architecture overview: `docs/architecture/overview.md`
-- AI workflow guide: `docs/ai-workflow.md`
+- AI workflow guide: `docs/guides/ai-workflow.md`

@@ -132,7 +132,7 @@ concurrency:
 - Automated rollback trigger: error rate > threshold for N minutes
 - Database migrations must be backward compatible (deployed before code change)
 - Keep previous image tag available for at least 48 hours
-- Runbook in `docs/workflows/deployment.md`
+- Runbook in `docs/guides/workflows/deployment.md`
 
 ## Environment Promotion
 ```

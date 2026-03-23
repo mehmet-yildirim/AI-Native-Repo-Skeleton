@@ -4,7 +4,7 @@ A production-ready starter for **AI-Native agentic development** — from intera
 
 Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Claude Code](https://claude.ai/code) out of the box.
 
-> **Turkish / Türkçe:** [README.tr.md](README.tr.md) · **AI Workflow:** [docs/ai-workflow.md](docs/ai-workflow.md)
+> **Turkish / Türkçe:** [README.tr.md](README.tr.md) · **AI Workflow:** [docs/guides/ai-workflow.md](docs/guides/ai-workflow.md)
 
 ---
 
@@ -15,7 +15,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 27 slash commands, event hooks |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 base rules + 22 skill rules (auto-activate by file type) + shared slash commands |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
-| **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
+| **Autonomous Agent** | `agent.config.yaml`, `docs/guides/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow template |
 | **Initium sync** | `.initium/initium.json`, `.initium/scripts/sync.{sh,ps1,cmd}` | Pull improvements from upstream Initium without overwriting customizations |
 
@@ -399,15 +399,15 @@ See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guid
 
 | Document | Contents |
 |----------|---------|
-| [docs/ai-workflow.md](docs/ai-workflow.md) | Full AI-Native development workflow reference |
-| [docs/team.md](docs/team.md) | Team roles, structure, and optimization for AI-native development |
-| [docs/team.tr.md](docs/team.tr.md) | Ekip rolleri ve optimizasyon kılavuzu (Türkçe) |
-| [docs/onboarding.md](docs/onboarding.md) | New developer setup guide |
-| [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
+| [docs/guides/ai-workflow.md](docs/guides/ai-workflow.md) | Full AI-Native development workflow reference |
+| [docs/guides/team.md](docs/guides/team.md) | Team roles, structure, and optimization for AI-native development |
+| [docs/guides/team.tr.md](docs/guides/team.tr.md) | Ekip rolleri ve optimizasyon kılavuzu (Türkçe) |
+| [docs/guides/onboarding.md](docs/guides/onboarding.md) | New developer setup guide |
+| [docs/guides/onboarding.tr.md](docs/guides/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) | How to apply Initium updates to your project |
-| [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
-| [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
-| [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Security evaluation architecture |
-| [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Documentation generation tools and pipeline |
+| [docs/guides/agent/autonomous-workflow.md](docs/guides/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
+| [docs/guides/agent/jira-server-setup.md](docs/guides/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
+| [docs/guides/agent/security-evaluator.md](docs/guides/agent/security-evaluator.md) | Security evaluation architecture |
+| [docs/guides/agent/documentation-agent.md](docs/guides/agent/documentation-agent.md) | Documentation generation tools and pipeline |
 | [skills/README.md](skills/README.md) | Complete skills index and activation guide |
 | [.initium/docs/UPDATES.md](.initium/docs/UPDATES.md) | Changelog for Initium versions |

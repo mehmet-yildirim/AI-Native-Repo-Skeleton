@@ -91,7 +91,7 @@ or
 
 The security audit outputs:
 1. **Human-readable report** in the terminal (markdown table)
-2. **JSON report** at `.agent/audit/<date>-security-report.json` (schema: `docs/agent/schemas/security-report.json`)
+2. **JSON report** at `.agent/audit/<date>-security-report.json` (schema: `docs/guides/agent/schemas/security-report.json`)
 
 ### Reading the overall verdict
 
