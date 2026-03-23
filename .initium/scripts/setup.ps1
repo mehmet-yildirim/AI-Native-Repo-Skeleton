@@ -5,7 +5,7 @@
 # Requires PowerShell 5.1+ (built-in on Windows 10/11) or PowerShell 7+.
 #
 # Usage:
-#   .\.initium\setup.ps1
+#   .\.initium\scripts\setup.ps1
 #
 # If blocked by execution policy, run once as Administrator:
 #   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -80,7 +80,7 @@ Check-File ".cursor\rules\00-project-overview.mdc"   "Cursor project overview"
 Check-File ".continue\config.yaml"                   "Continue config"
 
 if ($missingConfig) {
-    Write-Warn "Some AI config files are missing. Run: .\.initium\validate.ps1"
+    Write-Warn "Some AI config files are missing. Run: .\.initium\scripts\validate.ps1"
 }
 
 # ---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ Write-Host "  Next Steps"
 Write-Host "========================================"
 Write-Host ""
 Write-Host "  STEP 1 - Run the initialization wizard:"
-Write-Host "  .\.initium\init.ps1"
+Write-Host "  .\.initium\scripts\init.ps1"
 Write-Host "  (configures project name, stack, tracker, and domain keywords)"
 Write-Host ""
 Write-Host "  STEP 2 - AI-powered content generation:"
@@ -108,7 +108,7 @@ Write-Host "  STEP 3 - Finish setup:"
 Write-Host "  * Edit .continue\config.yaml (add API keys)"
 Write-Host "  * Add git remote:  git remote add origin <url>"
 Write-Host "  * Install dependencies: [from CLAUDE.md after /init]"
-Write-Host "  * Validate: .\.initium\validate.ps1"
+Write-Host "  * Validate: .\.initium\scripts\validate.ps1"
 Write-Host "  * Read the AI workflow: docs\ai-workflow.md"
 Write-Host ""
 Write-Host "  AI commands available in Claude Code (type / to invoke):"

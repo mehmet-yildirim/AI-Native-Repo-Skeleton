@@ -176,7 +176,7 @@ Clear ownership prevents the agent from proceeding without the right human appro
 For new engineers to become productive quickly:
 
 1. **Day 1 — Context reading:** Read `docs/context/project-brief.md`, `docs/context/tech-stack.md`, `docs/architecture/overview.md`, and this file. Then `CLAUDE.md`.
-2. **Day 1 — AI tools setup:** Follow `docs/onboarding.md` to install Claude Code, configure Cursor or Continue. Verify with `bash .initium/validate.sh`.
+2. **Day 1 — AI tools setup:** Follow `docs/onboarding.md` to install Claude Code, configure Cursor or Continue. Verify with `bash .initium/scripts/validate.sh`.
 3. **Day 2 — First `/help`:** Run `/help how do I pick up my first task?` and follow the instructions. Don't start writing code before completing the AI workflow setup.
 4. **First week — shadowed PR:** New engineer implements a `good-first-issue` using the full AI loop (`/requirements` → `/architect` → `/task plan` → `/implement` → `/qa` → `/review`). A senior dev reviews every step, not just the final diff.
 5. **First month — no autonomous mode:** New engineers use human-guided commands only. Autonomous mode (`/loop`) after they can confidently review AI output.

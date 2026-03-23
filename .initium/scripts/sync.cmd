@@ -7,11 +7,11 @@
 :: No bash, WSL, or any additional tool required.
 ::
 :: Usage:
-::   .initium\sync.cmd              Interactive mode
-::   .initium\sync.cmd --auto       Auto-apply skeleton-owned files
-::   .initium\sync.cmd --dry-run    Preview changes; apply nothing
-::   .initium\sync.cmd --check      Check if update is available
-::   .initium\sync.cmd --help       Show help
+::   .initium\scripts\sync.cmd              Interactive mode
+::   .initium\scripts\sync.cmd --auto       Auto-apply skeleton-owned files
+::   .initium\scripts\sync.cmd --dry-run    Preview changes; apply nothing
+::   .initium\scripts\sync.cmd --check      Check if update is available
+::   .initium\scripts\sync.cmd --help       Show help
 :: =============================================================================
 
 setlocal
@@ -22,10 +22,10 @@ if /I "%~1"=="--help" (
     echo  sync.cmd -- Apply upstream Initium updates to this project
     echo.
     echo  Usage:
-    echo    .initium\sync.cmd              Interactive mode
-    echo    .initium\sync.cmd --auto       Auto-apply skeleton-owned files
-    echo    .initium\sync.cmd --dry-run    Preview only; no changes applied
-    echo    .initium\sync.cmd --check      Check for update availability
+    echo    .initium\scripts\sync.cmd              Interactive mode
+    echo    .initium\scripts\sync.cmd --auto       Auto-apply skeleton-owned files
+    echo    .initium\scripts\sync.cmd --dry-run    Preview only; no changes applied
+    echo    .initium\scripts\sync.cmd --check      Check for update availability
     echo.
     echo  What it does:
     echo    1. Adds the upstream Initium repo as a git remote ^(once^)
@@ -33,17 +33,17 @@ if /I "%~1"=="--help" (
     echo    3. skeleton_owned files  -^> applied automatically ^(safe^)
     echo    4. merge_required files  -^> shown as diff; you choose per file
     echo    5. project_owned files   -^> never touched ^(your customisations^)
-    echo    6. Updates initium.json with the new version and commit SHA
+    echo    6. Updates .initium/initium.json with the new version and commit SHA
     echo.
-    echo  File ownership is defined in initium.json at the repo root.
-    echo  Full guide: docs\initium-sync.md
+    echo  File ownership is defined in .initium\initium.json.
+    echo  Full guide: .initium\docs\sync-guide.md
     echo.
     exit /b 0
 )
 
 :: Verify initium.json exists
-if not exist "initium.json" (
-    echo [ERROR] initium.json not found. Is this an Initium-based project?
+if not exist ".initium\initium.json" (
+    echo [ERROR] .initium\initium.json not found. Is this an Initium-based project?
     exit /b 1
 )
 
@@ -102,6 +102,6 @@ echo    Option B - Install PowerShell 7:
 echo      https://aka.ms/powershell
 echo.
 echo    Option C - Manual sync ^(no tools required^):
-echo      See docs\initium-sync.md for step-by-step instructions.
+echo      See .initium\docs\sync-guide.md for step-by-step instructions.
 echo.
 exit /b 1

@@ -8,14 +8,14 @@ This command orchestrates the full sync: fetch → classify → apply → valida
 
 ## Step 1: Read Current Sync State
 
-Read `initium.json` from the project root:
+Read `.initium/initium.json`:
 - `skeleton.repository` — the upstream Initium URL
 - `skeleton.commit` — the commit this project last synced from
 - `skeleton.syncedAt` — when the last sync ran
 - `skeleton.version` — Initium version string
 
-If `initium.json` doesn't exist, this project was not initialized from Initium
-with proper tracking. Add it manually (see `.initium/sync-guide.md`).
+If `.initium/initium.json` doesn't exist, this project was not initialized from Initium
+with proper tracking. Add it manually (see `.initium/docs/sync-guide.md`).
 
 ---
 
@@ -24,13 +24,13 @@ with proper tracking. Add it manually (see `.initium/sync-guide.md`).
 ```bash
 # Add skeleton remote if not present
 git remote get-url skeleton 2>/dev/null || \
-  git remote add skeleton "$(jq -r '.skeleton.repository' initium.json)"
+  git remote add skeleton "$(jq -r '.skeleton.repository' .initium/initium.json)"
 
 # Fetch latest
 git fetch skeleton --quiet
 
 LATEST_COMMIT=$(git rev-parse skeleton/main)
-CURRENT_COMMIT=$(jq -r '.skeleton.commit' initium.json)
+CURRENT_COMMIT=$(jq -r '.skeleton.commit' .initium/initium.json)
 ```
 
 If `LATEST_COMMIT == CURRENT_COMMIT`, report "Already up to date" and stop.
@@ -40,13 +40,13 @@ Otherwise, show the changes:
 git log --oneline "$CURRENT_COMMIT..skeleton/main"
 ```
 
-And point to `.initium/UPDATES.md` on the Initium repo for the full migration guide.
+And point to `.initium/docs/UPDATES.md` on the Initium repo for the full migration guide.
 
 ---
 
 ## Step 3: Classify Changed Files
 
-Read the ownership lists from `initium.json`:
+Read the ownership lists from `.initium/initium.json`:
 
 | Category | Behaviour |
 |----------|-----------|
@@ -59,7 +59,7 @@ Get files changed since last sync:
 git diff --name-only "$CURRENT_COMMIT" skeleton/main
 ```
 
-For each changed file, determine its category from `initium.json`.
+For each changed file, determine its category from `.initium/initium.json`.
 
 ---
 
@@ -142,7 +142,7 @@ Do NOT apply these files automatically.
 
 ---
 
-## Step 7: Update initium.json
+## Step 7: Update .initium/initium.json
 
 After applying changes, update the tracking fields:
 
@@ -151,7 +151,7 @@ jq --arg commit "$LATEST_COMMIT" \
    --arg date "$(date +%Y-%m-%d)" \
    --arg ver "$NEW_VERSION" \
    '.skeleton.commit = $commit | .skeleton.syncedAt = $date | .skeleton.version = $ver' \
-   initium.json > tmp && mv tmp initium.json
+   .initium/initium.json > tmp && mv tmp .initium/initium.json
 ```
 
 ---
@@ -159,7 +159,7 @@ jq --arg commit "$LATEST_COMMIT" \
 ## Step 8: Run Validator
 
 ```bash
-bash .initium/validate.sh
+bash .initium/scripts/validate.sh
 ```
 
 All PASS counts should be ≥ what they were before the sync. Any new FAILs indicate

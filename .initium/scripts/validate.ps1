@@ -4,7 +4,7 @@
 # Requires PowerShell 5.1+ (built-in on Windows 10/11) or PowerShell 7+.
 #
 # Usage:
-#   .\.initium\validate.ps1
+#   .\.initium\scripts\validate.ps1
 #
 # If blocked by execution policy, run once as Administrator:
 #   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -159,12 +159,12 @@ Check-Exists "docs/context/domain-glossary.md"
 Check-Exists "docs/architecture/overview.md"
 
 # Scripts
-Check-Exists ".initium/setup.sh"
-Check-Exists ".initium/setup.ps1"
-Check-Exists ".initium/setup.cmd"
-Check-Exists ".initium/init.sh"
-Check-Exists ".initium/init.ps1"
-Check-Exists ".initium/init.cmd"
+Check-Exists ".initium/scripts/setup.sh"
+Check-Exists ".initium/scripts/setup.ps1"
+Check-Exists ".initium/scripts/setup.cmd"
+Check-Exists ".initium/scripts/init.sh"
+Check-Exists ".initium/scripts/init.ps1"
+Check-Exists ".initium/scripts/init.cmd"
 
 # ---------------------------------------------------------------------------
 # Customization checks (look for TODO placeholders)

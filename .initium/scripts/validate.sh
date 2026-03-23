@@ -166,21 +166,21 @@ check_exists "docs/context/domain-glossary.md"
 check_exists "docs/architecture/overview.md"
 
 # --- Initium sync ---
-check_exists "initium.json"
-check_exists ".initium/UPDATES.md"
-check_exists ".initium/sync.sh"
-check_exists ".initium/sync.ps1"
-check_exists ".initium/sync.cmd"
-check_exists ".initium/sync-guide.md"
+check_exists ".initium/initium.json"
+check_exists ".initium/docs/UPDATES.md"
+check_exists ".initium/scripts/sync.sh"
+check_exists ".initium/scripts/sync.ps1"
+check_exists ".initium/scripts/sync.cmd"
+check_exists ".initium/docs/sync-guide.md"
 check_exists ".claude/commands/sync-initium.md"
 
 # --- Scripts ---
-check_exists ".initium/setup.sh"
-check_exists ".initium/setup.ps1"
-check_exists ".initium/setup.cmd"
-check_exists ".initium/init.sh"
-check_exists ".initium/init.ps1"
-check_exists ".initium/init.cmd"
+check_exists ".initium/scripts/setup.sh"
+check_exists ".initium/scripts/setup.ps1"
+check_exists ".initium/scripts/setup.cmd"
+check_exists ".initium/scripts/init.sh"
+check_exists ".initium/scripts/init.ps1"
+check_exists ".initium/scripts/init.cmd"
 
 # ---------------------------------------------------------------------------
 # Customization checks (look for TODO placeholders)
@@ -203,7 +203,7 @@ check_customized() {
 }
 
 check_customized "CLAUDE.md"
-check_customized "initium.json"
+check_customized ".initium/initium.json"
 check_customized ".cursor/rules/00-project-overview.mdc"
 check_customized "docs/context/project-brief.md"
 check_customized "docs/context/tech-stack.md"

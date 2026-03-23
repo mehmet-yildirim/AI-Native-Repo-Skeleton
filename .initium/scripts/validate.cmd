@@ -5,7 +5,7 @@
 :: No special permissions required -- runs on any Windows system.
 ::
 :: Usage:
-::   .initium\validate.cmd
+::   .initium\scripts\validate.cmd
 :: =============================================================================
 
 setlocal enabledelayedexpansion
@@ -140,10 +140,10 @@ call :chk "docs\context\domain-glossary.md"
 call :chk "docs\architecture\overview.md"
 
 :: Scripts
-call :chk ".initium\setup.sh"
-call :chk ".initium\setup.cmd"
-call :chk ".initium\init.sh"
-call :chk ".initium\init.cmd"
+call :chk ".initium\scripts\setup.sh"
+call :chk ".initium\scripts\setup.cmd"
+call :chk ".initium\scripts\init.sh"
+call :chk ".initium\scripts\init.cmd"
 
 :: ---------------------------------------------------------------------------
 :: Customization checks (look for TODO placeholders)

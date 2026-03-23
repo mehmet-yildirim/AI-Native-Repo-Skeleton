@@ -17,7 +17,7 @@
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
-| **Initium senkronizasyonu** | `initium.json`, `.initium/sync.{sh,ps1,cmd}` | Özelleştirmelerin üzerine yazmadan Initium güncellemelerini projelerinize aktarma |
+| **Initium senkronizasyonu** | `.initium/initium.json`, `.initium/scripts/sync.{sh,ps1,cmd}` | Özelleştirmelerin üzerine yazmadan Initium güncellemelerini projelerinize aktarma |
 
 ---
 
@@ -28,19 +28,19 @@
 git clone <bu-repo-url> benim-projem && cd benim-projem
 
 # 2. Başlat (git, .env, kontroller)
-./.initium/setup.sh          # macOS/Linux
-# .initium\setup.cmd         # Windows (Batch)
-# .\.initium\setup.ps1       # Windows (PowerShell)
+./.initium/scripts/setup.sh          # macOS/Linux
+# .initium\scripts\setup.cmd         # Windows (Batch)
+# .\.initium\scripts\setup.ps1       # Windows (PowerShell)
 
 # 3. Etkileşimli sihirbazı çalıştır — proje adı, teknoloji yığını, tracker anahtarlarını doldurur
-bash .initium/init.sh
+bash .initium/scripts/init.sh
 
 # 4. AI'nın kalan TODO dosyalarını doldurmasına izin ver
 claude
 /init <tür> için <kullanıcılar> amacıyla <ad> adlı bir proje geliştiriyorum. Yığın: <dil, framework, DB>.
 
 # 5. Doğrula
-bash .initium/validate.sh   # beklenen: tüm PASS, FAIL yok
+bash .initium/scripts/validate.sh   # beklenen: tüm PASS, FAIL yok
 ```
 
 Kurulumun ardından AI döngüsüyle kodlamaya başla:
@@ -54,7 +54,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 
 ## Özelleştirme Kontrol Listesi
 
-### `.initium/init.sh` + `/init` tarafından otomatik doldurulanlar
+### `.initium/scripts/init.sh` + `/init` tarafından otomatik doldurulanlar
 
 | Dosya | Nasıl dolduruluyor |
 |-------|--------------------|
@@ -82,8 +82,10 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 .
 ├── CLAUDE.md                           # ← DÜZENLE — Claude Code proje talimatları
 ├── agent.config.yaml                   # ← DÜZENLE — otonom ajan yapılandırması
-├── initium.json                       # Bu projenin hangi Initium sürümünü baz aldığını takip eder
-├── .initium/UPDATES.md                 # Initium yükseltmeleri için taşıma notları
+├── .initium/
+│   ├── initium.json                   # Bu projenin hangi Initium sürümünü baz aldığını takip eder
+│   ├── scripts/                       # Initium yaşam döngüsü betikleri (setup, sync, validate)
+│   └── docs/                          # Initium belgeleri (sync kılavuzu, güncelleme notları)
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
@@ -283,31 +285,31 @@ Initium yeni komutlar, güncellenmiş beceri kuralları veya güvenlik düzeltme
 
 ```bash
 # macOS / Linux / Git Bash
-bash .initium/sync.sh          # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
-bash .initium/sync.sh --auto   # etkileşimsiz: tüm Initium-owned dosyaları uygula
-bash .initium/sync.sh --check  # sadece güncelleme mevcut mu kontrol et
+bash .initium/scripts/sync.sh          # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
+bash .initium/scripts/sync.sh --auto   # etkileşimsiz: tüm Initium-owned dosyaları uygula
+bash .initium/scripts/sync.sh --check  # sadece güncelleme mevcut mu kontrol et
 ```
 
 ```powershell
 # Windows (PowerShell — önerilir)
-.\.initium\sync.ps1            # etkileşimli
-.\.initium\sync.ps1 -Auto     # etkileşimsiz
-.\.initium\sync.ps1 -Check    # sadece kontrol et
+.\.initium\scripts\sync.ps1            # etkileşimli
+.\.initium\scripts\sync.ps1 -Auto     # etkileşimsiz
+.\.initium\scripts\sync.ps1 -Check    # sadece kontrol et
 ```
 
 ```bat
 :: Windows (Batch — PowerShell'e otomatik yönlendirir)
-.initium\sync.cmd
-.initium\sync.cmd --auto
-.initium\sync.cmd --check
+.initium\scripts\sync.cmd
+.initium\scripts\sync.cmd --auto
+.initium\scripts\sync.cmd --check
 ```
 
-Senkronizasyon betiği `initium.json` kullanarak her dosyayı sınıflandırır:
+Senkronizasyon betiği `.initium/initium.json` kullanarak her dosyayı sınıflandırır:
 - **Initium-owned** (komutlar, beceri kuralları, ajan belgeleri) → güvenle otomatik uygulanır
 - **birleştirme gerekli** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → diff olarak gösterilir, sen karar verirsin
 - **proje-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → asla dokunulmaz
 
-Tam rehber ve her dosya türü için birleştirme stratejileri: [.initium/sync-guide.md](.initium/sync-guide.md)
+Tam rehber ve her dosya türü için birleştirme stratejileri: [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md)
 
 ---
 
@@ -331,10 +333,10 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [.initium/sync-g
 | [docs/team.tr.md](docs/team.tr.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
 | [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
-| [.initium/sync-guide.md](.initium/sync-guide.md) | Initium güncellemelerini projeye aktarma |
+| [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) | Initium güncellemelerini projeye aktarma |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
 | [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
 | [skills/README.md](skills/README.md) | Tam beceri indeksi ve aktivasyon kılavuzu |
-| [.initium/UPDATES.md](.initium/UPDATES.md) | Initium sürümleri için değişiklik kaydı |
+| [.initium/docs/UPDATES.md](.initium/docs/UPDATES.md) | Initium sürümleri için değişiklik kaydı |

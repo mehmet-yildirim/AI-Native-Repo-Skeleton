@@ -27,17 +27,17 @@ git clone <repo-url>
 cd <project-name>
 
 # 2. Initialize (git, .env, config checks)
-./.initium/setup.sh
+./.initium/scripts/setup.sh
 
 # 3. Run interactive wizard — fills project name, stack, tracker keys
-bash .initium/init.sh
+bash .initium/scripts/init.sh
 
 # 4. Let AI populate all remaining TODO files
 claude
 /init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
 
 # 5. Verify everything is in place
-bash .initium/validate.sh   # expect: all PASS, no FAIL
+bash .initium/scripts/validate.sh   # expect: all PASS, no FAIL
 ```
 
 ### Windows (PowerShell — recommended)
@@ -46,18 +46,18 @@ bash .initium/validate.sh   # expect: all PASS, no FAIL
 # One-time: allow script execution
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-.\.initium\setup.ps1
-.\.initium\init.ps1
+.\.initium\scripts\setup.ps1
+.\.initium\scripts\init.ps1
 # Then open Claude Code and run /init as above
-.\.initium\validate.ps1
+.\.initium\scripts\validate.ps1
 ```
 
 ### Windows (Batch — no permissions needed)
 
 ```bat
-.initium\setup.cmd
-.initium\init.cmd
-.initium\validate.cmd
+.initium\scripts\setup.cmd
+.initium\scripts\init.cmd
+.initium\scripts\validate.cmd
 ```
 
 ### After the wizard — fill in manually
@@ -283,17 +283,17 @@ When the team updates Initium (new commands, improved skill rules, security fixe
 
 ```bash
 # macOS / Linux
-bash .initium/sync.sh --check    # check if update available
-bash .initium/sync.sh            # apply updates interactively
+bash .initium/scripts/sync.sh --check    # check if update available
+bash .initium/scripts/sync.sh            # apply updates interactively
 ```
 
 ```powershell
 # Windows
-.\.initium\sync.ps1 -Check
-.\.initium\sync.ps1
+.\.initium\scripts\sync.ps1 -Check
+.\.initium\scripts\sync.ps1
 ```
 
-The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`.initium/sync-guide.md`](initium-sync.md) for details.
+The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`.initium/docs/sync-guide.md`](initium-sync.md) for details.
 
 ---
 

@@ -18,14 +18,14 @@ This guide is for contributors who want to improve **Initium itself** — the ru
    ```
 
 2. Run the setup script for your platform:
-   - **macOS / Linux**: `./.initium/setup.sh`
-   - **Windows PowerShell**: `./.initium/setup.ps1`
-   - **Windows (no PowerShell execution policy)**: `.initium\setup.cmd`
+   - **macOS / Linux**: `./.initium/scripts/setup.sh`
+   - **Windows PowerShell**: `./.initium/scripts/setup.ps1`
+   - **Windows (no PowerShell execution policy)**: `.initium\scripts\setup.cmd`
 
 3. Run the init wizard if you want to test the full flow:
-   - **macOS / Linux**: `./.initium/init.sh`
-   - **Windows PowerShell**: `./.initium/init.ps1`
-   - **Windows Batch**: `.initium\init.cmd`
+   - **macOS / Linux**: `./.initium/scripts/init.sh`
+   - **Windows PowerShell**: `./.initium/scripts/init.ps1`
+   - **Windows Batch**: `.initium\scripts\init.cmd`
 
 ## What Can Be Contributed
 
@@ -53,7 +53,7 @@ File names must match across tools (e.g., `lang-go.mdc` ↔ `lang-go.md`).
 1. Create `.cursor/rules/skills/<name>.mdc` with frontmatter and content
 2. Create `.continue/rules/skills/<name>.md` with the same content (strip frontmatter)
 3. Add `# - .continue/rules/skills/<name>.md` to `.continue/config.yaml` in the correct section
-4. Run `.initium/validate.sh` (or `.ps1` / `.cmd`) — all checks must pass
+4. Run `.initium/scripts/validate.sh` (or `.ps1` / `.cmd`) — all checks must pass
 5. Update `skills/README.md` and `README.md` if the skill table needs a new row
 
 ## Naming Conventions
@@ -75,13 +75,13 @@ Run the validation script for your platform:
 
 ```bash
 # macOS / Linux
-./.initium/validate.sh
+./.initium/scripts/validate.sh
 
 # Windows PowerShell
-./.initium/validate.ps1
+./.initium/scripts/validate.ps1
 
 # Windows Batch
-.initium\validate.cmd
+.initium\scripts\validate.cmd
 ```
 
 Expected output: `PASS` for all checks. Fix any `FAIL` before opening a PR.

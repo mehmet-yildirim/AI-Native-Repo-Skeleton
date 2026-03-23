@@ -24,7 +24,7 @@ would overwrite everything you've customised.
 
 ## File Ownership Model
 
-Every file in Initium is classified into one of three categories, defined in `initium.json`:
+Every file in Initium is classified into one of three categories, defined in `.initium/initium.json`:
 
 ### `skeleton_owned` — Safe to overwrite
 
@@ -36,7 +36,7 @@ Examples:
 - All `.cursor/rules/skills/*.mdc` — language/framework skill rules
 - All `.continue/rules/skills/*.md` — Continue skill rules
 - `docs/agent/` — autonomous agent documentation and schemas
-- `.initium/validate.sh` — configuration validator
+- `.initium/scripts/validate.sh` — configuration validator
 - `.agent-templates/` — runtime templates
 
 **You can still extend these in your project** — just know they will be overwritten on sync.
@@ -68,7 +68,7 @@ if Initium was updated (so you can read the new guidance):
 - `docs/context/` — your project brief, tech stack, domain glossary
 - `docs/architecture/` — your system architecture and ADRs
 - `.env`, `.env.example` — your environment variables
-- `initium.json` — version tracking (updated by sync script only)
+- `.initium/initium.json` — version tracking (updated by sync script only)
 
 ---
 
@@ -78,10 +78,10 @@ if Initium was updated (so you can read the new guidance):
 
 **macOS / Linux / Git Bash (WSL):**
 ```bash
-bash .initium/sync.sh           # Interactive
-bash .initium/sync.sh --auto    # Auto-apply skeleton-owned files
-bash .initium/sync.sh --dry-run # Preview only
-bash .initium/sync.sh --check   # Check for updates
+bash .initium/scripts/sync.sh           # Interactive
+bash .initium/scripts/sync.sh --auto    # Auto-apply skeleton-owned files
+bash .initium/scripts/sync.sh --dry-run # Preview only
+bash .initium/scripts/sync.sh --check   # Check for updates
 ```
 
 **Windows — PowerShell (recommended on Windows):**
@@ -89,10 +89,10 @@ bash .initium/sync.sh --check   # Check for updates
 # One-time: allow script execution if not already set
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-.\.initium\sync.ps1            # Interactive
-.\.initium\sync.ps1 -Auto     # Auto-apply
-.\.initium\sync.ps1 -DryRun   # Preview only
-.\.initium\sync.ps1 -Check    # Check for updates
+.\.initium\scripts\sync.ps1            # Interactive
+.\.initium\scripts\sync.ps1 -Auto     # Auto-apply
+.\.initium\scripts\sync.ps1 -DryRun   # Preview only
+.\.initium\scripts\sync.ps1 -Check    # Check for updates
 ```
 
 > **PowerShell advantage on Windows:** No `jq` required — uses built-in
@@ -101,10 +101,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **Windows — CMD (no bash or WSL required):**
 ```bat
-.initium\sync.cmd
-.initium\sync.cmd --auto
-.initium\sync.cmd --dry-run
-.initium\sync.cmd --check
+.initium\scripts\sync.cmd
+.initium\scripts\sync.cmd --auto
+.initium\scripts\sync.cmd --dry-run
+.initium\scripts\sync.cmd --check
 ```
 
 > `sync-initium.cmd` delegates to `sync-initium.ps1` via `pwsh` or
@@ -140,7 +140,7 @@ done
 # 5. Review a merge-required file
 git diff skeleton/main:.continue/config.yaml .continue/config.yaml
 
-# 6. Update initium.json manually
+# 6. Update .initium/initium.json manually
 # Edit skeleton.commit and skeleton.syncedAt fields
 ```
 
@@ -216,7 +216,7 @@ Initium improves the generic CI template. Your version has stack-specific steps.
 
 ## Tracking Which Initium Version You're On
 
-After each sync, `initium.json` is updated:
+After each sync, `.initium/initium.json` is updated:
 
 ```json
 {
@@ -229,7 +229,7 @@ After each sync, `initium.json` is updated:
 }
 ```
 
-Commit `initium.json` after every sync so your team can see when the project was last
+Commit `.initium/initium.json` after every sync so your team can see when the project was last
 updated and from which Initium version.
 
 ---
@@ -256,7 +256,7 @@ to a skill rule), the sync will overwrite it. Solutions:
 ```
 
 **Option B — Move to merge_required**
-Edit `initium.json` → `fileOwnership.merge_required` to add your file.
+Edit `.initium/initium.json` → `fileOwnership.merge_required` to add your file.
 The sync script will then prompt before overwriting.
 
 ### When an Initium file is removed
@@ -288,7 +288,7 @@ No. The sync only touches AI configuration files (`.claude/`, `.cursor/`, `.cont
 
 **Q: What if I've modified a skeleton_owned file?**
 Your modification will be overwritten. Either move your additions to a separate file,
-or reclassify the file as `merge_required` in `initium.json`.
+or reclassify the file as `merge_required` in `.initium/initium.json`.
 
 **Q: Can I sync a specific file only?**
 Yes: `git show skeleton/main:.claude/commands/loop.md > .claude/commands/loop.md`
@@ -299,5 +299,5 @@ Or `git stash` before sync to have a quick escape hatch.
 
 **Q: What if the Initium validator count increases after sync?**
 New files were added to Initium. The updated validator checks for them.
-Run `bash .initium/validate.sh` — any FAILs indicate missing new files.
+Run `bash .initium/scripts/validate.sh` — any FAILs indicate missing new files.
 The sync should have applied them; if not, apply manually.

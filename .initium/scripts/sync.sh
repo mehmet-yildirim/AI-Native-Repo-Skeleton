@@ -6,10 +6,10 @@
 # pull in improvements without overwriting your project-specific files.
 #
 # Usage:
-#   bash .initium/sync.sh                  # Interactive mode
-#   bash .initium/sync.sh --auto           # Apply skeleton_owned files without prompting
-#   bash .initium/sync.sh --dry-run        # Show what would change, apply nothing
-#   bash .initium/sync.sh --check          # Just report version status, exit
+#   bash .initium/scripts/sync.sh                  # Interactive mode
+#   bash .initium/scripts/sync.sh --auto           # Apply skeleton_owned files without prompting
+#   bash .initium/scripts/sync.sh --dry-run        # Show what would change, apply nothing
+#   bash .initium/scripts/sync.sh --check          # Just report version status, exit
 #
 # What it does:
 #   1. Fetches the Initium repo (adds as 'skeleton' remote if needed)
@@ -25,7 +25,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-SKELETON_JSON="initium.json"
+SKELETON_JSON=".initium/initium.json"
 SKELETON_REMOTE="skeleton"
 
 # Colours
@@ -66,7 +66,7 @@ for arg in "$@"; do
     --dry-run)  DRY_RUN=true ;;
     --check)    CHECK_ONLY=true ;;
     --help|-h)
-      echo "Usage: bash .initium/sync.sh [--auto|--dry-run|--check]"
+      echo "Usage: bash .initium/scripts/sync.sh [--auto|--dry-run|--check]"
       echo ""
       echo "  --auto      Apply all skeleton_owned files without prompting"
       echo "  --dry-run   Show what would change; apply nothing"
@@ -81,7 +81,7 @@ done
 # ---------------------------------------------------------------------------
 heading "Pre-flight Checks"
 
-[ -f "$SKELETON_JSON" ] || error "initium.json not found. Is this a skeleton-based project?"
+[ -f "$SKELETON_JSON" ] || error ".initium/initium.json not found. Is this an Initium-based project?"
 command -v git >/dev/null 2>&1 || error "git is required but not found"
 
 # Check working tree is clean
@@ -147,7 +147,7 @@ fi
 
 if [ "$CHECK_ONLY" = true ]; then
   echo ""
-  echo "Run 'bash .initium/sync.sh' to apply updates."
+  echo "Run 'bash .initium/scripts/sync.sh' to apply updates."
   exit 0
 fi
 
@@ -162,7 +162,7 @@ git log --oneline "$CURRENT_COMMIT..$SKELETON_REMOTE/main" 2>/dev/null || \
   git log --oneline "$SKELETON_REMOTE/main" --max-count=20
 
 echo ""
-info "Full migration notes: $SKELETON_REPO/blob/main/.initium/UPDATES.md"
+info "Full migration notes: $SKELETON_REPO/blob/main/.initium/docs/UPDATES.md"
 echo ""
 if [ "$AUTO" = false ]; then
   read -r -p "Continue with sync? [Y/n] " confirm
@@ -174,7 +174,7 @@ fi
 # added files in the latest Initium version are included, regardless of
 # what the local initium.json says.
 # ---------------------------------------------------------------------------
-REMOTE_SKELETON_JSON=$(git show "$SKELETON_REMOTE/main:initium.json")
+REMOTE_SKELETON_JSON=$(git show "$SKELETON_REMOTE/main:.initium/initium.json")
 
 SKELETON_OWNED=()
 while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(printf '%s\n' "$REMOTE_SKELETON_JSON" | _json_array "skeleton_owned")
@@ -390,7 +390,7 @@ fi
 # ---------------------------------------------------------------------------
 if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
   heading "Updating initium.json"
-  SKELETON_VERSION=$(git show "$SKELETON_REMOTE/main:.initium/UPDATES.md" 2>/dev/null | \
+  SKELETON_VERSION=$(git show "$SKELETON_REMOTE/main:.initium/docs/UPDATES.md" 2>/dev/null | \
     grep -m1 "^## v" | sed 's/^## v//' | awk '{print $1}' || echo "unknown")
   TODAY=$(date +%Y-%m-%d)
 
@@ -409,8 +409,8 @@ fi
 # ---------------------------------------------------------------------------
 if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
   heading "Validating Configuration"
-  if [ -f ".initium/validate.sh" ]; then
-    bash .initium/validate.sh || warn "Validator found issues — review above"
+  if [ -f ".initium/scripts/validate.sh" ]; then
+    bash .initium/scripts/validate.sh || warn "Validator found issues — review above"
   fi
 fi
 

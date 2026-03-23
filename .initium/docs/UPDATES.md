@@ -12,10 +12,10 @@ Derived projects reference this file to decide what to apply.
 
 ```bash
 # One command — handles classification, diff, and selective application
-bash .initium/sync.sh
+bash .initium/scripts/sync.sh
 ```
 
-See [.initium/sync-guide.md](.initium/sync-guide.md) for the full guide.
+See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guide.
 
 ---
 
@@ -40,12 +40,12 @@ list is now obtained with `git ls-tree -r --name-only` instead of
 `git show --name-only`.
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `.initium/sync.cmd` — rewritten to call `sync-initium.ps1` directly
-- `.initium/sync.ps1` — fixed first-sync `git ls-tree` call
-- `.initium/sync-guide.md` — updated Windows CMD section
+- `.initium/scripts/sync.cmd` — rewritten to call `sync-initium.ps1` directly
+- `.initium/scripts/sync.ps1` — fixed first-sync `git ls-tree` call
+- `.initium/docs/sync-guide.md` — updated Windows CMD section
 
 ### Migration
-No action needed. Run `.initium/sync.cmd` as before — it now
+No action needed. Run `.initium/scripts/sync.cmd` as before — it now
 works on any Windows machine without installing bash or WSL.
 
 ---
@@ -63,18 +63,18 @@ the same behaviour as `.bat` but signals more clearly that the file is a
 Windows command script rather than a legacy DOS batch file.
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `.initium/setup.cmd` (was `setup.bat`)
-- `.initium/init.cmd` (was `init.bat`)
-- `.initium/validate.cmd` (was `validate-ai-config.bat`)
-- `.initium/sync.cmd` (was `sync-initium.bat`)
-- `.initium/validate.ps1` — updated internal path references
-- `.initium/validate.sh` — updated path checks
+- `.initium/scripts/setup.cmd` (was `setup.bat`)
+- `.initium/scripts/init.cmd` (was `init.bat`)
+- `.initium/scripts/validate.cmd` (was `validate-ai-config.bat`)
+- `.initium/scripts/sync.cmd` (was `sync-initium.bat`)
+- `.initium/scripts/validate.ps1` — updated internal path references
+- `.initium/scripts/validate.sh` — updated path checks
 - `initium.json` — ownership entries updated + version bumped to 1.0.19
 - All documentation files updated.
 
 ### Migration
 If you already have the old `.bat` files in your derived project:
-1. Rename them to `.cmd` (or re-run `.initium/sync.cmd` after
+1. Rename them to `.cmd` (or re-run `.initium/scripts/sync.cmd` after
    adding the new files from Initium).
 2. Update any scripts or CI steps that invoke the old `.bat` names.
 
@@ -87,12 +87,12 @@ If you already have the old `.bat` files in your derived project:
 **Severity:** MINOR
 
 ### What Changed
-`.initium/sync.sh` no longer requires `jq`. All JSON parsing is now
+`.initium/scripts/sync.sh` no longer requires `jq`. All JSON parsing is now
 done with `grep`, `sed`, and `awk`, which are available in Git Bash for Windows
 without any extra tooling.
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `.initium/sync.sh` — replaced all four `jq` call-sites with a
+- `.initium/scripts/sync.sh` — replaced all four `jq` call-sites with a
   `_json_array` awk helper and `grep`/`sed` one-liners. No behavioural change.
 - `initium.json` — version bumped to 1.0.18.
 
@@ -276,7 +276,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 **Severity:** MINOR
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `.initium/sync.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to Initium whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
+- `.initium/scripts/sync.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to Initium whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
 
 ---
 
@@ -288,7 +288,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ### Updated Files (skeleton-owned — auto-applied)
 - `initium.json` — Added all previously unclassified files to ownership lists:
-  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `.initium/UPDATES.md`, `.initium/sync-guide.md`
+  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `.initium/docs/UPDATES.md`, `.initium/docs/sync-guide.md`
   - **project_owned**: `README.tr.md`, `docs/ai-workflow.tr.md`
 
 ---
@@ -336,11 +336,11 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 **Severity:** PATCH
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `.initium/sync.sh` — Three bugs fixed:
+- `.initium/scripts/sync.sh` — Three bugs fixed:
   - `((APPLIED++))` / `((SKIPPED++))` with `set -e` silently exited after first file; replaced with `APPLIED=$((APPLIED + 1))`
   - File ownership was read from local (potentially stale) `initium.json`; now reads from `skeleton/main:initium.json` so newly added files are always included
   - First-sync file list used `git show` (single commit diff) instead of `git ls-tree -r` (full tree)
-- `initium.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-initium` commands, `toon.mjs` hook, workflows `06`/`07`, `.initium/init.sh`
+- `initium.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-initium` commands, `toon.mjs` hook, workflows `06`/`07`, `.initium/scripts/init.sh`
 
 ---
 
@@ -351,7 +351,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 **Severity:** PATCH
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `.initium/sync.sh` — Replaced `mapfile` (bash 4+ only) with `while read` loops
+- `.initium/scripts/sync.sh` — Replaced `mapfile` (bash 4+ only) with `while read` loops
   so the script runs on macOS default bash (3.2) without `command not found: mapfile`
 
 ---
@@ -389,7 +389,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ### New Features (opt-in)
 - **New file:** `.claude/commands/new-command.md`
-  **Action:** Run `bash .initium/sync.sh` — auto-applied (skeleton_owned)
+  **Action:** Run `bash .initium/scripts/sync.sh` — auto-applied (skeleton_owned)
 
 ### Updated Files (skeleton-owned — auto-applied)
 - `.cursor/rules/skills/lang-java.mdc` — Updated for Java 22 virtual thread patterns

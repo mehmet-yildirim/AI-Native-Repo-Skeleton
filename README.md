@@ -17,7 +17,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow template |
-| **Initium sync** | `initium.json`, `.initium/sync.{sh,ps1,cmd}` | Pull improvements from upstream Initium without overwriting customizations |
+| **Initium sync** | `.initium/initium.json`, `.initium/scripts/sync.{sh,ps1,cmd}` | Pull improvements from upstream Initium without overwriting customizations |
 
 ---
 
@@ -28,19 +28,19 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 git clone <this-repo> my-project && cd my-project
 
 # 2. Initialize (git, .env, checks)
-./.initium/setup.sh          # macOS/Linux
-# .initium\setup.cmd         # Windows (Batch)
-# .\.initium\setup.ps1       # Windows (PowerShell)
+./.initium/scripts/setup.sh          # macOS/Linux
+# .initium\scripts\setup.cmd         # Windows (Batch)
+# .\.initium\scripts\setup.ps1       # Windows (PowerShell)
 
 # 3. Run interactive wizard — fills project name, stack, tracker keys
-bash .initium/init.sh
+bash .initium/scripts/init.sh
 
 # 4. Let AI populate all remaining TODO files
 claude
 /init I'm building a <type> called <name> for <users>. Stack: <language, framework, DB>.
 
 # 5. Verify
-bash .initium/validate.sh   # expect: all PASS, no FAIL
+bash .initium/scripts/validate.sh   # expect: all PASS, no FAIL
 ```
 
 After setup, code with the AI loop:
@@ -54,7 +54,7 @@ After setup, code with the AI loop:
 
 ## Customization Checklist
 
-### Automated by `.initium/init.sh` + `/init`
+### Automated by `.initium/scripts/init.sh` + `/init`
 
 | File | How it's populated |
 |------|--------------------|
@@ -82,8 +82,10 @@ After setup, code with the AI loop:
 .
 ├── CLAUDE.md                           # ← CUSTOMIZE — project instructions for Claude Code
 ├── agent.config.yaml                   # ← CUSTOMIZE — autonomous agent configuration
-├── initium.json                       # Tracks which Initium version this project is based on
-├── .initium/UPDATES.md                 # Migration notes for Initium upgrades
+├── .initium/
+│   ├── initium.json                   # Tracks which Initium version this project is based on
+│   ├── scripts/                       # Initium lifecycle scripts (setup, sync, validate)
+│   └── docs/                          # Initium documentation (sync guide, update notes)
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
@@ -353,31 +355,31 @@ When Initium receives improvements (new commands, updated skill rules, security 
 
 ```bash
 # macOS / Linux / Git Bash
-bash .initium/sync.sh          # interactive: shows diff, auto-applies safe files
-bash .initium/sync.sh --auto   # non-interactive: apply all skeleton-owned files
-bash .initium/sync.sh --check  # just check if an update is available
+bash .initium/scripts/sync.sh          # interactive: shows diff, auto-applies safe files
+bash .initium/scripts/sync.sh --auto   # non-interactive: apply all skeleton-owned files
+bash .initium/scripts/sync.sh --check  # just check if an update is available
 ```
 
 ```powershell
 # Windows (PowerShell — recommended)
-.\.initium\sync.ps1            # interactive
-.\.initium\sync.ps1 -Auto     # non-interactive
-.\.initium\sync.ps1 -Check    # check only
+.\.initium\scripts\sync.ps1            # interactive
+.\.initium\scripts\sync.ps1 -Auto     # non-interactive
+.\.initium\scripts\sync.ps1 -Check    # check only
 ```
 
 ```bat
 :: Windows (Batch — delegates to PowerShell automatically)
-.initium\sync.cmd
-.initium\sync.cmd --auto
-.initium\sync.cmd --check
+.initium\scripts\sync.cmd
+.initium\scripts\sync.cmd --auto
+.initium\scripts\sync.cmd --check
 ```
 
-The sync script uses `initium.json` to classify every file:
+The sync script uses `.initium/initium.json` to classify every file:
 - **Initium-owned** (commands, skill rules, agent docs) → auto-applied safely
 - **merge-required** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → shown as diff, you decide
 - **project-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → never touched
 
-See [.initium/sync-guide.md](.initium/sync-guide.md) for the full guide, including merge strategies for each file type and how to maintain an organizational fork.
+See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guide, including merge strategies for each file type and how to maintain an organizational fork.
 
 ---
 
@@ -402,10 +404,10 @@ See [.initium/sync-guide.md](.initium/sync-guide.md) for the full guide, includi
 | [docs/team.tr.md](docs/team.tr.md) | Ekip rolleri ve optimizasyon kılavuzu (Türkçe) |
 | [docs/onboarding.md](docs/onboarding.md) | New developer setup guide |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
-| [.initium/sync-guide.md](.initium/sync-guide.md) | How to apply Initium updates to your project |
+| [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) | How to apply Initium updates to your project |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Security evaluation architecture |
 | [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Documentation generation tools and pipeline |
 | [skills/README.md](skills/README.md) | Complete skills index and activation guide |
-| [.initium/UPDATES.md](.initium/UPDATES.md) | Changelog for Initium versions |
+| [.initium/docs/UPDATES.md](.initium/docs/UPDATES.md) | Changelog for Initium versions |

@@ -176,7 +176,7 @@ Net sahiplik, ajanın doğru insanın doğru kararı onaylaması olmadan ilerlem
 Yeni mühendislerin hızla verimli hale gelmesi için:
 
 1. **1. Gün — Bağlam okuma:** `docs/context/project-brief.md`, `docs/context/tech-stack.md`, `docs/architecture/overview.md` ve bu dosyayı okuyun. Ardından `CLAUDE.md`'yi okuyun.
-2. **1. Gün — AI araç kurulumu:** Claude Code'u yüklemek, Cursor veya Continue'yu yapılandırmak için `docs/onboarding.tr.md`'yi takip edin. `bash .initium/validate.sh` ile doğrulayın.
+2. **1. Gün — AI araç kurulumu:** Claude Code'u yüklemek, Cursor veya Continue'yu yapılandırmak için `docs/onboarding.tr.md`'yi takip edin. `bash .initium/scripts/validate.sh` ile doğrulayın.
 3. **2. Gün — İlk `/help`:** `/help ilk görevimi nasıl alırım?` çalıştırın ve talimatları izleyin. AI iş akışı kurulumunu tamamlamadan kod yazmaya başlamayın.
 4. **İlk hafta — Gölgelendirilen PR:** Yeni mühendis, tam AI döngüsünü kullanarak bir `good-first-issue` uygular (`/requirements` → `/architect` → `/task plan` → `/implement` → `/qa` → `/review`). Kıdemli bir geliştirici yalnızca son diff'i değil her adımı inceler.
 5. **İlk ay — otonom mod yok:** Yeni mühendisler yalnızca insan destekli komutları kullanır. AI çıktısını güvenle inceleyebildikten sonra otonom mod (`/loop`).
