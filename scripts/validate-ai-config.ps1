@@ -161,10 +161,10 @@ Check-Exists "docs/architecture/overview.md"
 # Scripts
 Check-Exists "scripts/setup.sh"
 Check-Exists "scripts/setup.ps1"
-Check-Exists "scripts/setup.bat"
+Check-Exists "scripts/setup.cmd"
 Check-Exists "scripts/init.sh"
 Check-Exists "scripts/init.ps1"
-Check-Exists "scripts/init.bat"
+Check-Exists "scripts/init.cmd"
 
 # ---------------------------------------------------------------------------
 # Customization checks (look for TODO placeholders)

@@ -20,12 +20,12 @@ This guide is for contributors who want to improve the **skeleton itself** — t
 2. Run the setup script for your platform:
    - **macOS / Linux**: `./scripts/setup.sh`
    - **Windows PowerShell**: `./scripts/setup.ps1`
-   - **Windows (no PowerShell execution policy)**: `scripts\setup.bat`
+   - **Windows (no PowerShell execution policy)**: `scripts\setup.cmd`
 
 3. Run the init wizard if you want to test the full flow:
    - **macOS / Linux**: `./scripts/init.sh`
    - **Windows PowerShell**: `./scripts/init.ps1`
-   - **Windows Batch**: `scripts\init.bat`
+   - **Windows Batch**: `scripts\init.cmd`
 
 ## What Can Be Contributed
 
@@ -53,7 +53,7 @@ File names must match across tools (e.g., `lang-go.mdc` ↔ `lang-go.md`).
 1. Create `.cursor/rules/skills/<name>.mdc` with frontmatter and content
 2. Create `.continue/rules/skills/<name>.md` with the same content (strip frontmatter)
 3. Add `# - .continue/rules/skills/<name>.md` to `.continue/config.yaml` in the correct section
-4. Run `scripts/validate-ai-config.sh` (or `.ps1` / `.bat`) — all checks must pass
+4. Run `scripts/validate-ai-config.sh` (or `.ps1` / `.cmd`) — all checks must pass
 5. Update `skills/README.md` and `README.md` if the skill table needs a new row
 
 ## Naming Conventions
@@ -65,7 +65,7 @@ File names must match across tools (e.g., `lang-go.mdc` ↔ `lang-go.md`).
 ## PR Guidelines
 
 - Use the checklist in [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md)
-- Ensure `validate-ai-config.sh` / `.ps1` / `.bat` passes before opening a PR
+- Ensure `validate-ai-config.sh` / `.ps1` / `.cmd` passes before opening a PR
 - Keep PRs focused — one concern per PR
 - Aim for &lt; 400 lines changed when possible
 
@@ -81,7 +81,7 @@ Run the validation script for your platform:
 ./scripts/validate-ai-config.ps1
 
 # Windows Batch
-scripts\validate-ai-config.bat
+scripts\validate-ai-config.cmd
 ```
 
 Expected output: `PASS` for all checks. Fix any `FAIL` before opening a PR.

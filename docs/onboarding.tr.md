@@ -55,9 +55,9 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### Windows (Batch — izin gerekmez)
 
 ```bat
-scripts\setup.bat
-scripts\init.bat
-scripts\validate-ai-config.bat
+scripts\setup.cmd
+scripts\init.cmd
+scripts\validate-ai-config.cmd
 ```
 
 ### Sihirbazdan sonra — manuel olarak doldur

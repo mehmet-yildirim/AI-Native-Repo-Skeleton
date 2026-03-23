@@ -170,17 +170,17 @@ check_exists "skeleton.json"
 check_exists "SKELETON-UPDATES.md"
 check_exists "scripts/sync-skeleton.sh"
 check_exists "scripts/sync-skeleton.ps1"
-check_exists "scripts/sync-skeleton.bat"
+check_exists "scripts/sync-skeleton.cmd"
 check_exists "docs/skeleton-sync.md"
 check_exists ".claude/commands/sync-skeleton.md"
 
 # --- Scripts ---
 check_exists "scripts/setup.sh"
 check_exists "scripts/setup.ps1"
-check_exists "scripts/setup.bat"
+check_exists "scripts/setup.cmd"
 check_exists "scripts/init.sh"
 check_exists "scripts/init.ps1"
-check_exists "scripts/init.bat"
+check_exists "scripts/init.cmd"
 
 # ---------------------------------------------------------------------------
 # Customization checks (look for TODO placeholders)

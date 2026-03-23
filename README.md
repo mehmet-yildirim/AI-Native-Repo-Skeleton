@@ -29,7 +29,7 @@ git clone <this-repo> my-project && cd my-project
 
 # 2. Initialize (git, .env, checks)
 ./scripts/setup.sh          # macOS/Linux
-# scripts\setup.bat         # Windows (Batch)
+# scripts\setup.cmd         # Windows (Batch)
 # .\scripts\setup.ps1       # Windows (PowerShell)
 
 # 3. Run interactive wizard — fills project name, stack, tracker keys
@@ -365,9 +365,9 @@ bash scripts/sync-skeleton.sh --check  # just check if an update is available
 
 ```bat
 :: Windows (Batch — delegates to PowerShell automatically)
-scripts\sync-skeleton.bat
-scripts\sync-skeleton.bat --auto
-scripts\sync-skeleton.bat --check
+scripts\sync-skeleton.cmd
+scripts\sync-skeleton.cmd --auto
+scripts\sync-skeleton.cmd --check
 ```
 
 The sync script uses `skeleton.json` to classify every file:

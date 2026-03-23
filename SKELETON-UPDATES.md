@@ -19,6 +19,36 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.19 — Rename Windows batch scripts from .bat to .cmd
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### What Changed
+All four Windows batch scripts have been renamed from `.bat` to `.cmd`.
+`.cmd` is the modern Windows script extension — it runs in CMD.EXE with
+the same behaviour as `.bat` but signals more clearly that the file is a
+Windows command script rather than a legacy DOS batch file.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `scripts/setup.cmd` (was `setup.bat`)
+- `scripts/init.cmd` (was `init.bat`)
+- `scripts/validate-ai-config.cmd` (was `validate-ai-config.bat`)
+- `scripts/sync-skeleton.cmd` (was `sync-skeleton.bat`)
+- `scripts/validate-ai-config.ps1` — updated internal path references
+- `scripts/validate-ai-config.sh` — updated path checks
+- `skeleton.json` — ownership entries updated + version bumped to 1.0.19
+- All documentation files updated.
+
+### Migration
+If you already have the old `.bat` files in your derived project:
+1. Rename them to `.cmd` (or re-run `scripts/sync-skeleton.cmd` after
+   adding the new files from the skeleton).
+2. Update any scripts or CI steps that invoke the old `.bat` names.
+
+---
+
 ## v1.0.18 — Remove jq dependency from sync-skeleton.sh
 
 **Date:** 2026-03-23
@@ -227,7 +257,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ### Updated Files (skeleton-owned — auto-applied)
 - `skeleton.json` — Added all previously unclassified files to ownership lists:
-  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.bat`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `SKELETON-UPDATES.md`, `docs/skeleton-sync.md`
+  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `SKELETON-UPDATES.md`, `docs/skeleton-sync.md`
   - **project_owned**: `README.tr.md`, `docs/ai-workflow.tr.md`
 
 ---

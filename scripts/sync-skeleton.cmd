@@ -1,16 +1,16 @@
 @echo off
 :: =============================================================================
-:: sync-skeleton.bat — Apply skeleton updates to your derived project (Windows)
+:: sync-skeleton.cmd — Apply skeleton updates to your derived project (Windows)
 :: =============================================================================
 :: Runs sync-skeleton.sh via Git Bash or WSL (preferred).
 :: Falls back to sync-skeleton.ps1 via PowerShell only if bash is unavailable.
 ::
 :: Usage:
-::   scripts\sync-skeleton.bat              Interactive mode
-::   scripts\sync-skeleton.bat --auto       Auto-apply skeleton-owned files
-::   scripts\sync-skeleton.bat --dry-run    Preview changes; apply nothing
-::   scripts\sync-skeleton.bat --check      Check if update is available
-::   scripts\sync-skeleton.bat --help       Show help
+::   scripts\sync-skeleton.cmd              Interactive mode
+::   scripts\sync-skeleton.cmd --auto       Auto-apply skeleton-owned files
+::   scripts\sync-skeleton.cmd --dry-run    Preview changes; apply nothing
+::   scripts\sync-skeleton.cmd --check      Check if update is available
+::   scripts\sync-skeleton.cmd --help       Show help
 :: =============================================================================
 
 setlocal
@@ -18,13 +18,13 @@ setlocal
 :: Show help
 if /I "%~1"=="--help" (
     echo.
-    echo  sync-skeleton.bat -- Apply upstream skeleton updates to this project
+    echo  sync-skeleton.cmd -- Apply upstream skeleton updates to this project
     echo.
     echo  Usage:
-    echo    scripts\sync-skeleton.bat              Interactive mode
-    echo    scripts\sync-skeleton.bat --auto       Auto-apply skeleton-owned files
-    echo    scripts\sync-skeleton.bat --dry-run    Preview only; no changes applied
-    echo    scripts\sync-skeleton.bat --check      Check for update availability
+    echo    scripts\sync-skeleton.cmd              Interactive mode
+    echo    scripts\sync-skeleton.cmd --auto       Auto-apply skeleton-owned files
+    echo    scripts\sync-skeleton.cmd --dry-run    Preview only; no changes applied
+    echo    scripts\sync-skeleton.cmd --check      Check for update availability
     echo.
     echo  What it does:
     echo    1. Adds the upstream skeleton repo as a git remote ^(once^)

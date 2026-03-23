@@ -29,7 +29,7 @@ git clone <bu-repo-url> benim-projem && cd benim-projem
 
 # 2. Başlat (git, .env, kontroller)
 ./scripts/setup.sh          # macOS/Linux
-# scripts\setup.bat         # Windows (Batch)
+# scripts\setup.cmd         # Windows (Batch)
 # .\scripts\setup.ps1       # Windows (PowerShell)
 
 # 3. Etkileşimli sihirbazı çalıştır — proje adı, teknoloji yığını, tracker anahtarlarını doldurur
@@ -127,7 +127,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── skills/README.md                   # Beceri indeksi ve aktivasyon rehberi
 ├── .agent-templates/webhook-receiver.mjs
 └── scripts/
-    ├── setup / init / validate        # Her biri için .sh, .bat, .ps1 sürümleri
+    ├── setup / init / validate        # Her biri için .sh, .cmd, .ps1 sürümleri
     └── sync-skeleton.{sh,ps1,bat}     # İskelet güncellemelerini uygula
 ```
 
@@ -297,9 +297,9 @@ bash scripts/sync-skeleton.sh --check  # sadece güncelleme mevcut mu kontrol et
 
 ```bat
 :: Windows (Batch — PowerShell'e otomatik yönlendirir)
-scripts\sync-skeleton.bat
-scripts\sync-skeleton.bat --auto
-scripts\sync-skeleton.bat --check
+scripts\sync-skeleton.cmd
+scripts\sync-skeleton.cmd --auto
+scripts\sync-skeleton.cmd --check
 ```
 
 Senkronizasyon betiği `skeleton.json` kullanarak her dosyayı sınıflandırır:

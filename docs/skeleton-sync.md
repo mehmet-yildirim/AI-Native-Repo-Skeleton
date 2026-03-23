@@ -101,10 +101,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **Windows — Batch (delegates to PowerShell automatically):**
 ```bat
-scripts\sync-skeleton.bat
-scripts\sync-skeleton.bat --auto
-scripts\sync-skeleton.bat --dry-run
-scripts\sync-skeleton.bat --check
+scripts\sync-skeleton.cmd
+scripts\sync-skeleton.cmd --auto
+scripts\sync-skeleton.cmd --dry-run
+scripts\sync-skeleton.cmd --check
 ```
 
 ### Option 2: Claude Code command

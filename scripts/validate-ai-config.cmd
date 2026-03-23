@@ -5,7 +5,7 @@
 :: No special permissions required -- runs on any Windows system.
 ::
 :: Usage:
-::   scripts\validate-ai-config.bat
+::   scripts\validate-ai-config.cmd
 :: =============================================================================
 
 setlocal enabledelayedexpansion
@@ -141,9 +141,9 @@ call :chk "docs\architecture\overview.md"
 
 :: Scripts
 call :chk "scripts\setup.sh"
-call :chk "scripts\setup.bat"
+call :chk "scripts\setup.cmd"
 call :chk "scripts\init.sh"
-call :chk "scripts\init.bat"
+call :chk "scripts\init.cmd"
 
 :: ---------------------------------------------------------------------------
 :: Customization checks (look for TODO placeholders)
