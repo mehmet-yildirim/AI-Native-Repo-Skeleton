@@ -19,6 +19,37 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.20 — sync-skeleton.cmd no longer requires bash or WSL
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### What Changed
+`sync-skeleton.cmd` now delegates directly to `sync-skeleton.ps1` via
+`pwsh` (PowerShell 7) or `powershell.exe` (Windows PowerShell 5.1).
+Both are built into Windows — no bash, Git Bash, WSL, or `jq` required.
+
+`sync-skeleton.ps1` already contained the full sync implementation, so
+no functionality was removed or added. The `.cmd` file is now just a thin
+PowerShell launcher (identical pattern to `setup.cmd`, `init.cmd`, etc.).
+
+Also fixed a first-sync bug in `sync-skeleton.ps1`: when the stored
+commit SHA is not in the local repository (first-ever sync), the file
+list is now obtained with `git ls-tree -r --name-only` instead of
+`git show --name-only`.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `scripts/sync-skeleton.cmd` — rewritten to call `sync-skeleton.ps1` directly
+- `scripts/sync-skeleton.ps1` — fixed first-sync `git ls-tree` call
+- `docs/skeleton-sync.md` — updated Windows CMD section
+
+### Migration
+No action needed. Run `scripts/sync-skeleton.cmd` as before — it now
+works on any Windows machine without installing bash or WSL.
+
+---
+
 ## v1.0.19 — Rename Windows batch scripts from .bat to .cmd
 
 **Date:** 2026-03-23

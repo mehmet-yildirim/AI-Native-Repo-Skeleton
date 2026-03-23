@@ -2,8 +2,9 @@
 :: =============================================================================
 :: sync-skeleton.cmd — Apply skeleton updates to your derived project (Windows)
 :: =============================================================================
-:: Runs sync-skeleton.sh via Git Bash or WSL (preferred).
-:: Falls back to sync-skeleton.ps1 via PowerShell only if bash is unavailable.
+:: Delegates to sync-skeleton.ps1 via PowerShell 7 (pwsh) or
+:: Windows PowerShell 5.1 (powershell.exe) — both are built into Windows.
+:: No bash, WSL, or any additional tool required.
 ::
 :: Usage:
 ::   scripts\sync-skeleton.cmd              Interactive mode
@@ -53,83 +54,52 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: Build argument strings for bash and PowerShell
-set SH_ARGS=
+:: Build PowerShell argument string from CMD arguments
 set PS_ARGS=
 
 :parse_args
 if "%~1"=="" goto run
-if /I "%~1"=="--auto"     set SH_ARGS=%SH_ARGS% --auto
 if /I "%~1"=="--auto"     set PS_ARGS=%PS_ARGS% -Auto
-if /I "%~1"=="--dry-run"  set SH_ARGS=%SH_ARGS% --dry-run
 if /I "%~1"=="--dry-run"  set PS_ARGS=%PS_ARGS% -DryRun
-if /I "%~1"=="--check"    set SH_ARGS=%SH_ARGS% --check
 if /I "%~1"=="--check"    set PS_ARGS=%PS_ARGS% -Check
 shift
 goto parse_args
 
 :run
-set SH_SCRIPT=scripts/sync-skeleton.sh
 set PS_SCRIPT=%~dp0sync-skeleton.ps1
 
 :: ---------------------------------------------------------------------------
-:: Attempt 1: bash (Git for Windows / Git Bash)
-:: Git for Windows puts bash.exe in PATH when installed with default options.
-:: ---------------------------------------------------------------------------
-where bash >nul 2>&1
-if errorlevel 1 goto try_wsl
-echo [INFO]  Using bash ^(Git Bash^)
-bash %SH_SCRIPT%%SH_ARGS%
-exit /b %errorlevel%
-
-:try_wsl
-:: ---------------------------------------------------------------------------
-:: Attempt 2: WSL (Windows Subsystem for Linux)
-:: ---------------------------------------------------------------------------
-where wsl >nul 2>&1
-if errorlevel 1 goto try_pwsh
-echo [INFO]  Using WSL
-wsl bash %SH_SCRIPT%%SH_ARGS%
-exit /b %errorlevel%
-
-:try_pwsh
-:: ---------------------------------------------------------------------------
-:: Attempt 3: PowerShell 7+ with sync-skeleton.ps1 (optional fallback)
+:: Attempt 1: PowerShell 7+ (pwsh) — preferred, ships with Windows 11 / 10
 :: ---------------------------------------------------------------------------
 where pwsh >nul 2>&1
 if errorlevel 1 goto try_ps51
-if not exist "%PS_SCRIPT%" goto no_runner
-echo [INFO]  Using PowerShell 7 ^(pwsh^)
-pwsh -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" %PS_ARGS%
+pwsh -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%"%PS_ARGS%
 exit /b %errorlevel%
 
 :try_ps51
 :: ---------------------------------------------------------------------------
-:: Attempt 4: Windows PowerShell 5.1 with sync-skeleton.ps1 (optional fallback)
+:: Attempt 2: Windows PowerShell 5.1 — built into every Windows 7+ system
 :: ---------------------------------------------------------------------------
 where powershell >nul 2>&1
-if errorlevel 1 goto no_runner
-if not exist "%PS_SCRIPT%" goto no_runner
-echo [INFO]  Using Windows PowerShell 5.1
-powershell -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" %PS_ARGS%
+if errorlevel 1 goto no_powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%"%PS_ARGS%
 exit /b %errorlevel%
 
-:no_runner
+:no_powershell
 :: ---------------------------------------------------------------------------
-:: Nothing found — provide instructions
+:: PowerShell missing — extremely unlikely on any modern Windows system
 :: ---------------------------------------------------------------------------
 echo.
-echo [ERROR] No suitable runner found ^(bash, WSL, or PowerShell^).
+echo [ERROR] PowerShell not found in PATH.
 echo.
-echo  Install one of the following:
+echo  PowerShell is built into Windows 7 and later. If it is missing:
 echo.
-echo    Option A - Git for Windows ^(recommended^):
-echo      https://git-scm.com/download/win
-echo      Includes bash. Re-run this script after installing.
+echo    Option A - Restore Windows PowerShell 5.1:
+echo      Open "Turn Windows features on or off" and enable
+echo      "Windows PowerShell 2.0" (re-enables 5.1 on modern Windows).
 echo.
-echo    Option B - WSL ^(Windows Subsystem for Linux^):
-echo      Open PowerShell as Administrator and run: wsl --install
-echo      Then re-run this script.
+echo    Option B - Install PowerShell 7:
+echo      https://aka.ms/powershell
 echo.
 echo    Option C - Manual sync ^(no tools required^):
 echo      See docs\skeleton-sync.md for step-by-step instructions.

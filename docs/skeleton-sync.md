@@ -99,13 +99,17 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 > `ConvertFrom-Json`. For merge-required files, opens VS Code diff (if
 > available) instead of vimdiff. Fully equivalent to the bash version.
 
-**Windows — Batch (delegates to PowerShell automatically):**
+**Windows — CMD (no bash or WSL required):**
 ```bat
 scripts\sync-skeleton.cmd
 scripts\sync-skeleton.cmd --auto
 scripts\sync-skeleton.cmd --dry-run
 scripts\sync-skeleton.cmd --check
 ```
+
+> `sync-skeleton.cmd` delegates to `sync-skeleton.ps1` via `pwsh` or
+> `powershell.exe`, both of which are built into Windows. No bash, WSL,
+> or `jq` required.
 
 ### Option 2: Claude Code command
 

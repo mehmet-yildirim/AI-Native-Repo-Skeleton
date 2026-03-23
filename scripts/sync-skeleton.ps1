@@ -163,14 +163,13 @@ if (-not $Auto) {
 # Get changed files since last sync
 # ---------------------------------------------------------------------------
 $changedFiles = @()
-try {
-    git cat-file -e $CurrentCommit 2>$null
+git cat-file -e $CurrentCommit 2>$null
+if ($LASTEXITCODE -eq 0) {
     $changedFiles = (git diff --name-only $CurrentCommit "$SkeletonRemote/main") -split "`n" |
                     Where-Object { $_ -ne '' }
-} catch {
-    # First sync — all files in skeleton
-    $changedFiles = (git show "$SkeletonRemote/main" --name-only --format='') -split "`n" |
-                    Select-Object -Skip 1 |
+} else {
+    # First sync — list every file tracked in the skeleton tree
+    $changedFiles = (git ls-tree -r --name-only "$SkeletonRemote/main") -split "`n" |
                     Where-Object { $_ -ne '' }
 }
 
