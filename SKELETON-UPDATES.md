@@ -19,6 +19,29 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.18 — Remove jq dependency from sync-skeleton.sh
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### What Changed
+`scripts/sync-skeleton.sh` no longer requires `jq`. All JSON parsing is now
+done with `grep`, `sed`, and `awk`, which are available in Git Bash for Windows
+without any extra tooling.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `scripts/sync-skeleton.sh` — replaced all four `jq` call-sites with a
+  `_json_array` awk helper and `grep`/`sed` one-liners. No behavioural change.
+- `skeleton.json` — version bumped to 1.0.18.
+
+### Migration
+No action needed. The script behaviour is identical; `jq` is simply no longer
+required. If you had a local workaround that pre-installs `jq` in CI, it can
+safely be removed.
+
+---
+
 ## v1.0.17 — Compress always-loaded context files
 
 **Date:** 2026-03-23

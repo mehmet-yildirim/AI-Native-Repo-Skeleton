@@ -38,6 +38,21 @@ warn()    { echo -e "${YELLOW}[WARN]${NC}  $*"; }
 error()   { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
 heading() { echo -e "\n${BOLD}$*${NC}"; echo "$(printf '─%.0s' {1..60})"; }
 
+# Extract all string values from a named JSON array (pure awk, no jq required).
+# Usage: printf '%s\n' "$json_content" | _json_array <key>
+_json_array() {
+  local key="$1"
+  awk -v k="$key" '
+    index($0, "\"" k "\"") && /\[/ { in_arr=1; next }
+    in_arr && /^[[:space:]]*\]/ { exit }
+    in_arr {
+      gsub(/^[[:space:]]*"/, "")
+      gsub(/"[[:space:],]*$/, "")
+      if (length) print
+    }
+  '
+}
+
 # ---------------------------------------------------------------------------
 # Argument parsing
 # ---------------------------------------------------------------------------
@@ -68,7 +83,6 @@ heading "Pre-flight Checks"
 
 [ -f "$SKELETON_JSON" ] || error "skeleton.json not found. Is this a skeleton-based project?"
 command -v git >/dev/null 2>&1 || error "git is required but not found"
-command -v jq  >/dev/null 2>&1 || { warn "jq not found — install with: brew install jq / apt install jq"; exit 1; }
 
 # Check working tree is clean
 if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
@@ -85,9 +99,9 @@ success "Working directory: $(pwd)"
 # ---------------------------------------------------------------------------
 # Read skeleton.json
 # ---------------------------------------------------------------------------
-SKELETON_REPO=$(jq -r '.skeleton.repository' "$SKELETON_JSON")
-CURRENT_COMMIT=$(jq -r '.skeleton.commit' "$SKELETON_JSON")
-CURRENT_SYNCED=$(jq -r '.skeleton.syncedAt' "$SKELETON_JSON")
+SKELETON_REPO=$(grep '"repository"'  "$SKELETON_JSON" | sed 's/.*"repository": *"\([^"]*\)".*/\1/')
+CURRENT_COMMIT=$(grep '"commit"'     "$SKELETON_JSON" | sed 's/.*"commit": *"\([^"]*\)".*/\1/')
+CURRENT_SYNCED=$(grep '"syncedAt"'   "$SKELETON_JSON" | sed 's/.*"syncedAt": *"\([^"]*\)".*/\1/')
 
 info "Skeleton repo  : $SKELETON_REPO"
 info "Last synced at : $CURRENT_SYNCED"
@@ -160,12 +174,14 @@ fi
 # added files in the latest skeleton version are included, regardless of
 # what the local skeleton.json says.
 # ---------------------------------------------------------------------------
+REMOTE_SKELETON_JSON=$(git show "$SKELETON_REMOTE/main:skeleton.json")
+
 SKELETON_OWNED=()
-while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(git show "$SKELETON_REMOTE/main:skeleton.json" | jq -r '.fileOwnership.skeleton_owned[]')
+while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(printf '%s\n' "$REMOTE_SKELETON_JSON" | _json_array "skeleton_owned")
 PROJECT_OWNED=()
-while IFS= read -r line; do PROJECT_OWNED+=("$line"); done < <(git show "$SKELETON_REMOTE/main:skeleton.json" | jq -r '.fileOwnership.project_owned[]')
+while IFS= read -r line; do PROJECT_OWNED+=("$line"); done < <(printf '%s\n' "$REMOTE_SKELETON_JSON" | _json_array "project_owned")
 MERGE_REQUIRED=()
-while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(git show "$SKELETON_REMOTE/main:skeleton.json" | jq -r '.fileOwnership.merge_required[]')
+while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(printf '%s\n' "$REMOTE_SKELETON_JSON" | _json_array "merge_required")
 
 # ---------------------------------------------------------------------------
 # Get list of changed files in skeleton since last sync
@@ -378,13 +394,12 @@ if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
     grep -m1 "^## v" | sed 's/^## v//' | awk '{print $1}' || echo "unknown")
   TODAY=$(date +%Y-%m-%d)
 
-  # Update skeleton.json fields
+  # Update skeleton.json fields (pure sed, no jq required)
   TMP=$(mktemp)
-  jq --arg commit "$LATEST_COMMIT" \
-     --arg date "$TODAY" \
-     --arg ver "$SKELETON_VERSION" \
-     '.skeleton.commit = $commit | .skeleton.syncedAt = $date | .skeleton.version = $ver' \
-     "$SKELETON_JSON" > "$TMP"
+  sed "s|\"commit\": *\"[^\"]*\"|\"commit\": \"$LATEST_COMMIT\"|" "$SKELETON_JSON" \
+    | sed "s|\"syncedAt\": *\"[^\"]*\"|\"syncedAt\": \"$TODAY\"|" \
+    | sed "s|\"version\": *\"[^\"]*\"|\"version\": \"$SKELETON_VERSION\"|" \
+    > "$TMP"
   mv "$TMP" "$SKELETON_JSON"
   success "skeleton.json updated (version=$SKELETON_VERSION, commit=$LATEST_SHORT)"
 fi
