@@ -2,8 +2,8 @@
 :: =============================================================================
 :: sync-skeleton.bat — Apply skeleton updates to your derived project (Windows)
 :: =============================================================================
-:: Delegates to sync-skeleton.ps1 for the full implementation.
-:: If PowerShell execution policy blocks the script, see the note below.
+:: Runs sync-skeleton.sh via Git Bash or WSL (preferred).
+:: Falls back to sync-skeleton.ps1 via PowerShell only if bash is unavailable.
 ::
 :: Usage:
 ::   scripts\sync-skeleton.bat              Interactive mode
@@ -15,7 +15,7 @@
 
 setlocal
 
-:: Show help without launching PowerShell
+:: Show help
 if /I "%~1"=="--help" (
     echo.
     echo  sync-skeleton.bat -- Apply upstream skeleton updates to this project
@@ -53,61 +53,85 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: Build PowerShell argument list from batch arguments
+:: Build argument strings for bash and PowerShell
+set SH_ARGS=
 set PS_ARGS=
+
 :parse_args
-if "%~1"=="" goto run_ps
+if "%~1"=="" goto run
+if /I "%~1"=="--auto"     set SH_ARGS=%SH_ARGS% --auto
 if /I "%~1"=="--auto"     set PS_ARGS=%PS_ARGS% -Auto
+if /I "%~1"=="--dry-run"  set SH_ARGS=%SH_ARGS% --dry-run
 if /I "%~1"=="--dry-run"  set PS_ARGS=%PS_ARGS% -DryRun
+if /I "%~1"=="--check"    set SH_ARGS=%SH_ARGS% --check
 if /I "%~1"=="--check"    set PS_ARGS=%PS_ARGS% -Check
 shift
 goto parse_args
 
-:run_ps
-:: ---------------------------------------------------------------------------
-:: Try to run sync-skeleton.ps1 via PowerShell
-:: ---------------------------------------------------------------------------
+:run
+set SH_SCRIPT=scripts/sync-skeleton.sh
 set PS_SCRIPT=%~dp0sync-skeleton.ps1
 
-if not exist "%PS_SCRIPT%" (
-    echo [ERROR] scripts\sync-skeleton.ps1 not found.
-    echo         Run: bash scripts/sync-skeleton.sh    if using Git Bash or WSL
-    exit /b 1
-)
+:: ---------------------------------------------------------------------------
+:: Attempt 1: bash (Git for Windows / Git Bash)
+:: Git for Windows puts bash.exe in PATH when installed with default options.
+:: ---------------------------------------------------------------------------
+where bash >nul 2>&1
+if errorlevel 1 goto try_wsl
+echo [INFO]  Using bash ^(Git Bash^)
+bash %SH_SCRIPT%%SH_ARGS%
+exit /b %errorlevel%
 
-:: Attempt 1: PowerShell 7+ (pwsh)
-:: Use goto instead of if (...) so that %errorlevel% after pwsh is captured correctly.
+:try_wsl
+:: ---------------------------------------------------------------------------
+:: Attempt 2: WSL (Windows Subsystem for Linux)
+:: ---------------------------------------------------------------------------
+where wsl >nul 2>&1
+if errorlevel 1 goto try_pwsh
+echo [INFO]  Using WSL
+wsl bash %SH_SCRIPT%%SH_ARGS%
+exit /b %errorlevel%
+
+:try_pwsh
+:: ---------------------------------------------------------------------------
+:: Attempt 3: PowerShell 7+ with sync-skeleton.ps1 (optional fallback)
+:: ---------------------------------------------------------------------------
 where pwsh >nul 2>&1
 if errorlevel 1 goto try_ps51
+if not exist "%PS_SCRIPT%" goto no_runner
 echo [INFO]  Using PowerShell 7 ^(pwsh^)
 pwsh -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" %PS_ARGS%
 exit /b %errorlevel%
 
 :try_ps51
-:: Attempt 2: Windows PowerShell 5.1 (powershell)
+:: ---------------------------------------------------------------------------
+:: Attempt 4: Windows PowerShell 5.1 with sync-skeleton.ps1 (optional fallback)
+:: ---------------------------------------------------------------------------
 where powershell >nul 2>&1
-if errorlevel 1 goto no_ps
+if errorlevel 1 goto no_runner
+if not exist "%PS_SCRIPT%" goto no_runner
 echo [INFO]  Using Windows PowerShell 5.1
 powershell -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" %PS_ARGS%
 exit /b %errorlevel%
 
-:no_ps
+:no_runner
 :: ---------------------------------------------------------------------------
-:: No PowerShell found — offer Git Bash / WSL fallback
+:: Nothing found — provide instructions
 :: ---------------------------------------------------------------------------
 echo.
-echo [ERROR] PowerShell not found. Cannot run sync-skeleton.ps1.
+echo [ERROR] No suitable runner found ^(bash, WSL, or PowerShell^).
 echo.
-echo  Alternatives:
+echo  Install one of the following:
 echo.
-echo    Option A - Git Bash ^(recommended^):
-echo      Right-click folder -^> "Git Bash Here"
-echo      bash scripts/sync-skeleton.sh%PS_ARGS: =--%
+echo    Option A - Git for Windows ^(recommended^):
+echo      https://git-scm.com/download/win
+echo      Includes bash. Re-run this script after installing.
 echo.
 echo    Option B - WSL ^(Windows Subsystem for Linux^):
-echo      wsl bash scripts/sync-skeleton.sh%PS_ARGS: =--%
+echo      Open PowerShell as Administrator and run: wsl --install
+echo      Then re-run this script.
 echo.
-echo    Option C - Manual sync ^(no scripts^):
-echo      See docs\skeleton-sync.md for step-by-step instructions
+echo    Option C - Manual sync ^(no tools required^):
+echo      See docs\skeleton-sync.md for step-by-step instructions.
 echo.
 exit /b 1
