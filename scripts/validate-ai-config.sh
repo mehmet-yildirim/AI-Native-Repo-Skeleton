@@ -168,11 +168,11 @@ check_exists "docs/architecture/overview.md"
 # --- Skeleton sync ---
 check_exists "initium.json"
 check_exists "INITIUM-UPDATES.md"
-check_exists "scripts/sync-skeleton.sh"
-check_exists "scripts/sync-skeleton.ps1"
-check_exists "scripts/sync-skeleton.cmd"
-check_exists "docs/skeleton-sync.md"
-check_exists ".claude/commands/sync-skeleton.md"
+check_exists "scripts/sync-initium.sh"
+check_exists "scripts/sync-initium.ps1"
+check_exists "scripts/sync-initium.cmd"
+check_exists "docs/initium-sync.md"
+check_exists ".claude/commands/sync-initium.md"
 
 # --- Scripts ---
 check_exists "scripts/setup.sh"

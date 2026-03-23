@@ -12,40 +12,40 @@ Derived projects reference this file to decide what to apply.
 
 ```bash
 # One command — handles classification, diff, and selective application
-bash scripts/sync-skeleton.sh
+bash scripts/sync-initium.sh
 ```
 
-See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
+See [docs/initium-sync.md](docs/initium-sync.md) for the full guide.
 
 ---
 
-## v1.0.20 — sync-skeleton.cmd no longer requires bash or WSL
+## v1.0.20 — sync-initium.cmd no longer requires bash or WSL
 
 **Date:** 2026-03-23
 **Commit:** (set by release)
 **Severity:** MINOR
 
 ### What Changed
-`sync-skeleton.cmd` now delegates directly to `sync-skeleton.ps1` via
+`sync-initium.cmd` now delegates directly to `sync-initium.ps1` via
 `pwsh` (PowerShell 7) or `powershell.exe` (Windows PowerShell 5.1).
 Both are built into Windows — no bash, Git Bash, WSL, or `jq` required.
 
-`sync-skeleton.ps1` already contained the full sync implementation, so
+`sync-initium.ps1` already contained the full sync implementation, so
 no functionality was removed or added. The `.cmd` file is now just a thin
 PowerShell launcher (identical pattern to `setup.cmd`, `init.cmd`, etc.).
 
-Also fixed a first-sync bug in `sync-skeleton.ps1`: when the stored
+Also fixed a first-sync bug in `sync-initium.ps1`: when the stored
 commit SHA is not in the local repository (first-ever sync), the file
 list is now obtained with `git ls-tree -r --name-only` instead of
 `git show --name-only`.
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `scripts/sync-skeleton.cmd` — rewritten to call `sync-skeleton.ps1` directly
-- `scripts/sync-skeleton.ps1` — fixed first-sync `git ls-tree` call
-- `docs/skeleton-sync.md` — updated Windows CMD section
+- `scripts/sync-initium.cmd` — rewritten to call `sync-initium.ps1` directly
+- `scripts/sync-initium.ps1` — fixed first-sync `git ls-tree` call
+- `docs/initium-sync.md` — updated Windows CMD section
 
 ### Migration
-No action needed. Run `scripts/sync-skeleton.cmd` as before — it now
+No action needed. Run `scripts/sync-initium.cmd` as before — it now
 works on any Windows machine without installing bash or WSL.
 
 ---
@@ -66,7 +66,7 @@ Windows command script rather than a legacy DOS batch file.
 - `scripts/setup.cmd` (was `setup.bat`)
 - `scripts/init.cmd` (was `init.bat`)
 - `scripts/validate-ai-config.cmd` (was `validate-ai-config.bat`)
-- `scripts/sync-skeleton.cmd` (was `sync-skeleton.bat`)
+- `scripts/sync-initium.cmd` (was `sync-initium.bat`)
 - `scripts/validate-ai-config.ps1` — updated internal path references
 - `scripts/validate-ai-config.sh` — updated path checks
 - `skeleton.json` — ownership entries updated + version bumped to 1.0.19
@@ -74,25 +74,25 @@ Windows command script rather than a legacy DOS batch file.
 
 ### Migration
 If you already have the old `.bat` files in your derived project:
-1. Rename them to `.cmd` (or re-run `scripts/sync-skeleton.cmd` after
+1. Rename them to `.cmd` (or re-run `scripts/sync-initium.cmd` after
    adding the new files from the skeleton).
 2. Update any scripts or CI steps that invoke the old `.bat` names.
 
 ---
 
-## v1.0.18 — Remove jq dependency from sync-skeleton.sh
+## v1.0.18 — Remove jq dependency from sync-initium.sh
 
 **Date:** 2026-03-23
 **Commit:** (set by release)
 **Severity:** MINOR
 
 ### What Changed
-`scripts/sync-skeleton.sh` no longer requires `jq`. All JSON parsing is now
+`scripts/sync-initium.sh` no longer requires `jq`. All JSON parsing is now
 done with `grep`, `sed`, and `awk`, which are available in Git Bash for Windows
 without any extra tooling.
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `scripts/sync-skeleton.sh` — replaced all four `jq` call-sites with a
+- `scripts/sync-initium.sh` — replaced all four `jq` call-sites with a
   `_json_array` awk helper and `grep`/`sed` one-liners. No behavioural change.
 - `skeleton.json` — version bumped to 1.0.18.
 
@@ -269,14 +269,14 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ---
 
-## v1.0.7 — sync-skeleton.sh: add missing skeleton-owned files
+## v1.0.7 — sync-initium.sh: add missing skeleton-owned files
 
 **Date:** 2026-03-14
 **Commit:** (set by release)
 **Severity:** MINOR
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `scripts/sync-skeleton.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to the skeleton whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
+- `scripts/sync-initium.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to the skeleton whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
 
 ---
 
@@ -288,7 +288,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ### Updated Files (skeleton-owned — auto-applied)
 - `skeleton.json` — Added all previously unclassified files to ownership lists:
-  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `SKELETON-UPDATES.md`, `docs/skeleton-sync.md`
+  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `SKELETON-UPDATES.md`, `docs/initium-sync.md`
   - **project_owned**: `README.tr.md`, `docs/ai-workflow.tr.md`
 
 ---
@@ -329,29 +329,29 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ---
 
-## v1.0.2 — Fix sync-skeleton.sh sync logic
+## v1.0.2 — Fix sync-initium.sh sync logic
 
 **Date:** 2026-03-14
 **Commit:** (set by release)
 **Severity:** PATCH
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `scripts/sync-skeleton.sh` — Three bugs fixed:
+- `scripts/sync-initium.sh` — Three bugs fixed:
   - `((APPLIED++))` / `((SKIPPED++))` with `set -e` silently exited after first file; replaced with `APPLIED=$((APPLIED + 1))`
   - File ownership was read from local (potentially stale) `skeleton.json`; now reads from `skeleton/main:skeleton.json` so newly added files are always included
   - First-sync file list used `git show` (single commit diff) instead of `git ls-tree -r` (full tree)
-- `skeleton.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-skeleton` commands, `toon.mjs` hook, workflows `06`/`07`, `scripts/init.sh`
+- `skeleton.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-initium` commands, `toon.mjs` hook, workflows `06`/`07`, `scripts/init.sh`
 
 ---
 
-## v1.0.1 — Fix sync-skeleton.sh bash 3.2 compatibility
+## v1.0.1 — Fix sync-initium.sh bash 3.2 compatibility
 
 **Date:** 2026-03-14
 **Commit:** (set by release)
 **Severity:** PATCH
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `scripts/sync-skeleton.sh` — Replaced `mapfile` (bash 4+ only) with `while read` loops
+- `scripts/sync-initium.sh` — Replaced `mapfile` (bash 4+ only) with `while read` loops
   so the script runs on macOS default bash (3.2) without `command not found: mapfile`
 
 ---
@@ -389,7 +389,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ### New Features (opt-in)
 - **New file:** `.claude/commands/new-command.md`
-  **Action:** Run `bash scripts/sync-skeleton.sh` — auto-applied (skeleton_owned)
+  **Action:** Run `bash scripts/sync-initium.sh` — auto-applied (skeleton_owned)
 
 ### Updated Files (skeleton-owned — auto-applied)
 - `.cursor/rules/skills/lang-java.mdc` — Updated for Java 22 virtual thread patterns

@@ -17,7 +17,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow skeleton |
-| **Skeleton sync** | `initium.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Pull improvements from upstream skeleton without overwriting customizations |
+| **Skeleton sync** | `initium.json`, `scripts/sync-initium.{sh,ps1,bat}` | Pull improvements from upstream skeleton without overwriting customizations |
 
 ---
 
@@ -110,7 +110,7 @@ After setup, code with the AI loop:
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG from git history
 │   │   ├── doc-schema.md               # /doc-schema — database ERD + table reference
 │   │   ├── standup.md                  # /standup
-│   │   ├── sync-skeleton.md            # /sync-skeleton — apply upstream skeleton updates
+│   │   ├── sync-initium.md            # /sync-initium — apply upstream skeleton updates
 │   │   ├── triage.md                   # /triage        ← autonomous agent
 │   │   ├── groom.md                    # /groom         ← autonomous agent
 │   │   ├── loop.md                     # /loop          ← autonomous agent
@@ -155,7 +155,7 @@ After setup, code with the AI loop:
 │   ├── ai-workflow.md                 # AI-Native development workflow (English)
 │   ├── ai-workflow.tr.md              # AI-Native development workflow (Turkish)
 │   ├── onboarding.md                  # New developer guide
-│   ├── skeleton-sync.md               # How to sync skeleton updates into your project
+│   ├── initium-sync.md               # How to sync skeleton updates into your project
 │   ├── context/                       # ← CUSTOMIZE — AI context for tools and agent
 │   │   ├── project-brief.md
 │   │   ├── tech-stack.md
@@ -195,7 +195,7 @@ After setup, code with the AI loop:
     ├── setup.{sh,bat,ps1}            # Step 1 — initialize project
     ├── init.{sh,bat,ps1}             # Step 2 — interactive configuration wizard
     ├── validate-ai-config.{sh,bat,ps1}  # 128-point configuration validator
-    └── sync-skeleton.{sh,ps1,bat}    # Pull upstream skeleton improvements
+    └── sync-initium.{sh,ps1,bat}    # Pull upstream skeleton improvements
 ```
 
 ---
@@ -269,9 +269,9 @@ After setup, code with the AI loop:
 
 | Command | Purpose |
 |---------|---------|
-| `/sync-skeleton` | Pull improvements from the upstream skeleton into this project |
-| `/sync-skeleton --dry-run` | Preview what would change without applying anything |
-| `/sync-skeleton --check` | Check if a skeleton update is available |
+| `/sync-initium` | Pull improvements from the upstream skeleton into this project |
+| `/sync-initium --dry-run` | Preview what would change without applying anything |
+| `/sync-initium --check` | Check if a skeleton update is available |
 
 ---
 
@@ -351,23 +351,23 @@ When the skeleton receives improvements (new commands, updated skill rules, secu
 
 ```bash
 # macOS / Linux / Git Bash
-bash scripts/sync-skeleton.sh          # interactive: shows diff, auto-applies safe files
-bash scripts/sync-skeleton.sh --auto   # non-interactive: apply all skeleton-owned files
-bash scripts/sync-skeleton.sh --check  # just check if an update is available
+bash scripts/sync-initium.sh          # interactive: shows diff, auto-applies safe files
+bash scripts/sync-initium.sh --auto   # non-interactive: apply all skeleton-owned files
+bash scripts/sync-initium.sh --check  # just check if an update is available
 ```
 
 ```powershell
 # Windows (PowerShell — recommended)
-.\scripts\sync-skeleton.ps1            # interactive
-.\scripts\sync-skeleton.ps1 -Auto     # non-interactive
-.\scripts\sync-skeleton.ps1 -Check    # check only
+.\scripts\sync-initium.ps1            # interactive
+.\scripts\sync-initium.ps1 -Auto     # non-interactive
+.\scripts\sync-initium.ps1 -Check    # check only
 ```
 
 ```bat
 :: Windows (Batch — delegates to PowerShell automatically)
-scripts\sync-skeleton.cmd
-scripts\sync-skeleton.cmd --auto
-scripts\sync-skeleton.cmd --check
+scripts\sync-initium.cmd
+scripts\sync-initium.cmd --auto
+scripts\sync-initium.cmd --check
 ```
 
 The sync script uses `initium.json` to classify every file:
@@ -375,7 +375,7 @@ The sync script uses `initium.json` to classify every file:
 - **merge-required** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → shown as diff, you decide
 - **project-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → never touched
 
-See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide, including merge strategies for each file type and how to maintain an organizational fork.
+See [docs/initium-sync.md](docs/initium-sync.md) for the full guide, including merge strategies for each file type and how to maintain an organizational fork.
 
 ---
 
@@ -400,7 +400,7 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide, including
 | [docs/team.tr.md](docs/team.tr.md) | Ekip rolleri ve optimizasyon kılavuzu (Türkçe) |
 | [docs/onboarding.md](docs/onboarding.md) | New developer setup guide |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
-| [docs/skeleton-sync.md](docs/skeleton-sync.md) | How to apply skeleton updates to your project |
+| [docs/initium-sync.md](docs/initium-sync.md) | How to apply skeleton updates to your project |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Security evaluation architecture |

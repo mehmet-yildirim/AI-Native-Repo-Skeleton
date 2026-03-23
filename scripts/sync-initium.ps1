@@ -17,10 +17,10 @@
     Report whether a skeleton update is available, then exit.
 
 .EXAMPLE
-    .\scripts\sync-skeleton.ps1
-    .\scripts\sync-skeleton.ps1 -Auto
-    .\scripts\sync-skeleton.ps1 -DryRun
-    .\scripts\sync-skeleton.ps1 -Check
+    .\scripts\sync-initium.ps1
+    .\scripts\sync-initium.ps1 -Auto
+    .\scripts\sync-initium.ps1 -DryRun
+    .\scripts\sync-initium.ps1 -Check
 #>
 
 [CmdletBinding()]
@@ -134,7 +134,7 @@ if ($CurrentCommit -eq $LatestCommit) {
 
 if ($Check) {
     Write-Host ''
-    Write-Host "Run '.\scripts\sync-skeleton.ps1' to apply updates."
+    Write-Host "Run '.\scripts\sync-initium.ps1' to apply updates."
     exit 0
 }
 

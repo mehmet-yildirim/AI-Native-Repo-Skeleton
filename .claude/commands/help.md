@@ -87,7 +87,7 @@ OPERATIONS
   /triage           Score whether an issue belongs to this project's domain.
   /groom            Batch-process backlog issues through triage + requirements.
   /escalate         Raise a structured escalation when you are blocked.
-  /sync-skeleton    Pull the latest skeleton updates into this project.
+  /sync-initium    Pull the latest skeleton updates into this project.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Typical feature workflow:
@@ -140,7 +140,7 @@ Topic → command mapping:
 | infra, terraform, kubernetes, CI | `/infra` |
 | bug, error, broken, crash | `/debug` |
 | standup, daily, progress update | `/standup` |
-| skeleton, updates, sync | `/sync-skeleton` |
+| skeleton, updates, sync | `/sync-initium` |
 | stuck, blocked, escalate | `/escalate` |
 | sprint, planning, backlog | `/sprint` or `/groom` |
 

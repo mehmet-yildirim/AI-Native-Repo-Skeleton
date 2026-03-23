@@ -159,7 +159,7 @@ All 27 custom commands (type `/` to see them):
 /escalate      — structured human notification when agent is blocked
 
 # --- Skeleton maintenance ---
-/sync-skeleton — pull improvements from the upstream skeleton
+/sync-initium — pull improvements from the upstream skeleton
 ```
 
 ### Cursor
@@ -283,17 +283,17 @@ When the team updates the skeleton (new commands, improved skill rules, security
 
 ```bash
 # macOS / Linux
-bash scripts/sync-skeleton.sh --check    # check if update available
-bash scripts/sync-skeleton.sh            # apply updates interactively
+bash scripts/sync-initium.sh --check    # check if update available
+bash scripts/sync-initium.sh            # apply updates interactively
 ```
 
 ```powershell
 # Windows
-.\scripts\sync-skeleton.ps1 -Check
-.\scripts\sync-skeleton.ps1
+.\scripts\sync-initium.ps1 -Check
+.\scripts\sync-initium.ps1
 ```
 
-The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`docs/skeleton-sync.md`](skeleton-sync.md) for details.
+The sync script never touches your project-specific files (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`). See [`docs/initium-sync.md`](initium-sync.md) for details.
 
 ---
 

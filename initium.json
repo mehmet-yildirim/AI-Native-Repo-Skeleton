@@ -1,10 +1,10 @@
 {
-  "_comment": "This file tracks which version of Initium this project is based on. Update it after running scripts/sync-skeleton.sh.",
+  "_comment": "This file tracks which version of Initium this project is based on. Update it after running scripts/sync-initium.sh.",
   "skeleton": {
     "repository": "https://github.com/mehmet-yildirim/Initium",
     "version": "1.0.20",
-    "commit": "TODO: set by sync-skeleton.sh",
-    "syncedAt": "TODO: set by sync-skeleton.sh",
+    "commit": "TODO: set by sync-initium.sh",
+    "syncedAt": "TODO: set by sync-initium.sh",
     "releaseNotesUrl": "https://github.com/mehmet-yildirim/Initium/blob/main/INITIUM-UPDATES.md"
   },
   "fileOwnership": {
@@ -34,7 +34,7 @@
       ".claude/commands/standup.md",
       ".claude/commands/test.md",
       ".claude/commands/help.md",
-      ".claude/commands/sync-skeleton.md",
+      ".claude/commands/sync-initium.md",
       ".claude/commands/task.md",
       ".claude/commands/triage.md",
       ".claude/hooks/audit-log.mjs",
@@ -119,9 +119,9 @@
       "scripts/setup.sh",
       "scripts/validate-ai-config.sh",
       "skills/README.md",
-      "scripts/sync-skeleton.sh",
-      "scripts/sync-skeleton.ps1",
-      "scripts/sync-skeleton.cmd",
+      "scripts/sync-initium.sh",
+      "scripts/sync-initium.ps1",
+      "scripts/sync-initium.cmd",
       "scripts/init.ps1",
       "scripts/init.cmd",
       "scripts/setup.ps1",
@@ -135,7 +135,7 @@
       "CONTRIBUTING.md",
       "SKELETON-UPDATES.md",
       "docs/onboarding.tr.md",
-      "docs/skeleton-sync.md",
+      "docs/initium-sync.md",
       "docs/team.md",
       "docs/team.tr.md"
     ],

@@ -29,7 +29,7 @@ Every file in the skeleton is classified into one of three categories, defined i
 ### `skeleton_owned` — Safe to overwrite
 
 These files contain **no project-specific content**. The skeleton owns them completely.
-Updates are applied automatically by `sync-skeleton.sh`.
+Updates are applied automatically by `sync-initium.sh`.
 
 Examples:
 - All `.claude/commands/*.md` — slash command definitions
@@ -78,10 +78,10 @@ if the skeleton template was updated (so you can read the new guidance):
 
 **macOS / Linux / Git Bash (WSL):**
 ```bash
-bash scripts/sync-skeleton.sh           # Interactive
-bash scripts/sync-skeleton.sh --auto    # Auto-apply skeleton-owned files
-bash scripts/sync-skeleton.sh --dry-run # Preview only
-bash scripts/sync-skeleton.sh --check   # Check for updates
+bash scripts/sync-initium.sh           # Interactive
+bash scripts/sync-initium.sh --auto    # Auto-apply skeleton-owned files
+bash scripts/sync-initium.sh --dry-run # Preview only
+bash scripts/sync-initium.sh --check   # Check for updates
 ```
 
 **Windows — PowerShell (recommended on Windows):**
@@ -89,10 +89,10 @@ bash scripts/sync-skeleton.sh --check   # Check for updates
 # One-time: allow script execution if not already set
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-.\scripts\sync-skeleton.ps1            # Interactive
-.\scripts\sync-skeleton.ps1 -Auto     # Auto-apply
-.\scripts\sync-skeleton.ps1 -DryRun   # Preview only
-.\scripts\sync-skeleton.ps1 -Check    # Check for updates
+.\scripts\sync-initium.ps1            # Interactive
+.\scripts\sync-initium.ps1 -Auto     # Auto-apply
+.\scripts\sync-initium.ps1 -DryRun   # Preview only
+.\scripts\sync-initium.ps1 -Check    # Check for updates
 ```
 
 > **PowerShell advantage on Windows:** No `jq` required — uses built-in
@@ -101,22 +101,22 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **Windows — CMD (no bash or WSL required):**
 ```bat
-scripts\sync-skeleton.cmd
-scripts\sync-skeleton.cmd --auto
-scripts\sync-skeleton.cmd --dry-run
-scripts\sync-skeleton.cmd --check
+scripts\sync-initium.cmd
+scripts\sync-initium.cmd --auto
+scripts\sync-initium.cmd --dry-run
+scripts\sync-initium.cmd --check
 ```
 
-> `sync-skeleton.cmd` delegates to `sync-skeleton.ps1` via `pwsh` or
+> `sync-initium.cmd` delegates to `sync-initium.ps1` via `pwsh` or
 > `powershell.exe`, both of which are built into Windows. No bash, WSL,
 > or `jq` required.
 
 ### Option 2: Claude Code command
 
 ```
-/sync-skeleton
-/sync-skeleton --auto
-/sync-skeleton --dry-run
+/sync-initium
+/sync-initium --auto
+/sync-initium --dry-run
 ```
 
 ### Option 3: Manual (when you need full control)

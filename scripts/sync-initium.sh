@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # =============================================================================
-# sync-skeleton.sh — Apply skeleton updates to your derived project
+# sync-initium.sh — Apply skeleton updates to your derived project
 # =============================================================================
 # Run this when the AI-Native skeleton has been updated and you want to
 # pull in improvements without overwriting your project-specific files.
 #
 # Usage:
-#   bash scripts/sync-skeleton.sh                  # Interactive mode
-#   bash scripts/sync-skeleton.sh --auto           # Apply skeleton_owned files without prompting
-#   bash scripts/sync-skeleton.sh --dry-run        # Show what would change, apply nothing
-#   bash scripts/sync-skeleton.sh --check          # Just report version status, exit
+#   bash scripts/sync-initium.sh                  # Interactive mode
+#   bash scripts/sync-initium.sh --auto           # Apply skeleton_owned files without prompting
+#   bash scripts/sync-initium.sh --dry-run        # Show what would change, apply nothing
+#   bash scripts/sync-initium.sh --check          # Just report version status, exit
 #
 # What it does:
 #   1. Fetches the skeleton repo (adds as 'skeleton' remote if needed)
@@ -66,7 +66,7 @@ for arg in "$@"; do
     --dry-run)  DRY_RUN=true ;;
     --check)    CHECK_ONLY=true ;;
     --help|-h)
-      echo "Usage: bash scripts/sync-skeleton.sh [--auto|--dry-run|--check]"
+      echo "Usage: bash scripts/sync-initium.sh [--auto|--dry-run|--check]"
       echo ""
       echo "  --auto      Apply all skeleton_owned files without prompting"
       echo "  --dry-run   Show what would change; apply nothing"
@@ -147,7 +147,7 @@ fi
 
 if [ "$CHECK_ONLY" = true ]; then
   echo ""
-  echo "Run 'bash scripts/sync-skeleton.sh' to apply updates."
+  echo "Run 'bash scripts/sync-initium.sh' to apply updates."
   exit 0
 fi
 

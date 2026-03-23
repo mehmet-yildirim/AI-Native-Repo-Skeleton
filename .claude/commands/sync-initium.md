@@ -15,7 +15,7 @@ Read `initium.json` from the project root:
 - `skeleton.version` — skeleton version string
 
 If `initium.json` doesn't exist, this project was not initialized from the skeleton
-with proper tracking. Add it manually (see `docs/skeleton-sync.md`).
+with proper tracking. Add it manually (see `docs/initium-sync.md`).
 
 ---
 

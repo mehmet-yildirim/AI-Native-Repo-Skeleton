@@ -17,7 +17,7 @@
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
-| **İskelet senkronizasyonu** | `initium.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
+| **İskelet senkronizasyonu** | `initium.json`, `scripts/sync-initium.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
 
 ---
 
@@ -95,7 +95,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │   │   ├── doc-site.md                 # /doc-site — belgelendirme sitesi
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG üretimi
 │   │   ├── doc-schema.md               # /doc-schema — veritabanı ERD + tablo referansı
-│   │   ├── sync-skeleton.md            # /sync-skeleton — iskelet güncellemelerini uygula
+│   │   ├── sync-initium.md            # /sync-initium — iskelet güncellemelerini uygula
 │   │   ├── triage.md                   # /triage  ← otonom ajan
 │   │   ├── groom.md                    # /groom   ← otonom ajan
 │   │   ├── loop.md                     # /loop    ← otonom ajan
@@ -117,7 +117,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── docs/
 │   ├── ai-workflow.md / .tr.md        # AI iş akışı rehberi (İngilizce / Türkçe)
 │   ├── onboarding.md                  # Yeni geliştirici kılavuzu
-│   ├── skeleton-sync.md               # İskelet güncellemelerini projeye aktarma rehberi
+│   ├── initium-sync.md               # İskelet güncellemelerini projeye aktarma rehberi
 │   ├── context/                       # ← TÜMÜNÜ DÜZENLE (AI bağlamı + ajan kapsamı)
 │   ├── architecture/                  # ← DÜZENLE + ADR'ler
 │   ├── agent/                         # Otonom ajan belgeleri (iş akışı, eskalasyon, güvenlik, belgelendirme…)
@@ -128,7 +128,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── .agent-templates/webhook-receiver.mjs
 └── scripts/
     ├── setup / init / validate        # Her biri için .sh, .cmd, .ps1 sürümleri
-    └── sync-skeleton.{sh,ps1,bat}     # İskelet güncellemelerini uygula
+    └── sync-initium.{sh,ps1,bat}     # İskelet güncellemelerini uygula
 ```
 
 ---
@@ -201,9 +201,9 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 
 | Komut | Amaç |
 |-------|------|
-| `/sync-skeleton` | Üst iskelet yeni geliştirmelerini bu projeye aktar |
-| `/sync-skeleton --dry-run` | Herhangi bir şeyi uygulamadan neyin değişeceğini önizle |
-| `/sync-skeleton --check` | İskelet güncellemesi mevcut mu kontrol et |
+| `/sync-initium` | Üst iskelet yeni geliştirmelerini bu projeye aktar |
+| `/sync-initium --dry-run` | Herhangi bir şeyi uygulamadan neyin değişeceğini önizle |
+| `/sync-initium --check` | İskelet güncellemesi mevcut mu kontrol et |
 
 ---
 
@@ -283,23 +283,23 @@ Initium yeni komutlar, güncellenmiş beceri kuralları veya güvenlik düzeltme
 
 ```bash
 # macOS / Linux / Git Bash
-bash scripts/sync-skeleton.sh          # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
-bash scripts/sync-skeleton.sh --auto   # etkileşimsiz: tüm iskelet-owned dosyaları uygula
-bash scripts/sync-skeleton.sh --check  # sadece güncelleme mevcut mu kontrol et
+bash scripts/sync-initium.sh          # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
+bash scripts/sync-initium.sh --auto   # etkileşimsiz: tüm iskelet-owned dosyaları uygula
+bash scripts/sync-initium.sh --check  # sadece güncelleme mevcut mu kontrol et
 ```
 
 ```powershell
 # Windows (PowerShell — önerilir)
-.\scripts\sync-skeleton.ps1            # etkileşimli
-.\scripts\sync-skeleton.ps1 -Auto     # etkileşimsiz
-.\scripts\sync-skeleton.ps1 -Check    # sadece kontrol et
+.\scripts\sync-initium.ps1            # etkileşimli
+.\scripts\sync-initium.ps1 -Auto     # etkileşimsiz
+.\scripts\sync-initium.ps1 -Check    # sadece kontrol et
 ```
 
 ```bat
 :: Windows (Batch — PowerShell'e otomatik yönlendirir)
-scripts\sync-skeleton.cmd
-scripts\sync-skeleton.cmd --auto
-scripts\sync-skeleton.cmd --check
+scripts\sync-initium.cmd
+scripts\sync-initium.cmd --auto
+scripts\sync-initium.cmd --check
 ```
 
 Senkronizasyon betiği `initium.json` kullanarak her dosyayı sınıflandırır:
@@ -307,7 +307,7 @@ Senkronizasyon betiği `initium.json` kullanarak her dosyayı sınıflandırır:
 - **birleştirme gerekli** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → diff olarak gösterilir, sen karar verirsin
 - **proje-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → asla dokunulmaz
 
-Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/skeleton-sync.md](docs/skeleton-sync.md)
+Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/initium-sync.md](docs/initium-sync.md)
 
 ---
 
@@ -331,7 +331,7 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/skeleton-s
 | [docs/team.tr.md](docs/team.tr.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
 | [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
-| [docs/skeleton-sync.md](docs/skeleton-sync.md) | İskelet güncellemelerini projeye aktarma |
+| [docs/initium-sync.md](docs/initium-sync.md) | İskelet güncellemelerini projeye aktarma |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
