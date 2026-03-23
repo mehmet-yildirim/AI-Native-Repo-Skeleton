@@ -19,6 +19,22 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.17 — Compress always-loaded context files
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `CLAUDE.md` — 167 → 124 lines (−43). Compressed Essential Commands to a single compact block, collapsed Architecture bullets, trimmed branch workflow section, merged Coding Conventions sub-items.
+- `.cursor/rules/01-coding-standards.mdc` — 103 → 80 lines (−23). Removed language-specific naming TODO, import alias TODO, concurrency TODO, and the TypeScript/Python template sections (these belong in `lang-typescript.mdc` / `lang-python.mdc` skill files, not in an always-loaded rule).
+- `.cursor/rules/00-project-overview.mdc` — 47 → 41 lines (−6). Compressed Key Constraints and Domain Glossary TODO sections.
+
+### Net savings
+**−72 lines from always-loaded context** (loaded on every Claude Code turn and every Cursor session).
+
+---
+
 ## v1.0.16 — Remove .cursor/prompts/ — Cursor reads slash commands from .claude/commands/ directly
 
 **Date:** 2026-03-23

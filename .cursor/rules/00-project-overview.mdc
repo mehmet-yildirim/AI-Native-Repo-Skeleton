@@ -34,14 +34,8 @@ TODO: Paste your actual directory tree with brief annotations.
 
 ## Key Constraints & Decisions
 
-- TODO: e.g., Must support multi-tenancy with row-level isolation
-- TODO: e.g., All API responses follow JSON:API spec
-- TODO: e.g., Zero-downtime deployments required
-- TODO: e.g., GDPR compliance — no PII in logs
+- TODO: e.g., multi-tenancy, API contract, deployment requirements, compliance
 
 ## Domain Glossary
 
-TODO: Define the 10–15 most important domain terms.
-
-- **Term**: Definition
-- **Term**: Definition
+TODO: Define 10–15 domain terms (`**Term**: definition`).
