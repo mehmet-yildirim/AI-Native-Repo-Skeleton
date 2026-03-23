@@ -69,7 +69,7 @@ Windows command script rather than a legacy DOS batch file.
 - `scripts/sync-initium.cmd` (was `sync-initium.bat`)
 - `scripts/validate-ai-config.ps1` — updated internal path references
 - `scripts/validate-ai-config.sh` — updated path checks
-- `skeleton.json` — ownership entries updated + version bumped to 1.0.19
+- `initium.json` — ownership entries updated + version bumped to 1.0.19
 - All documentation files updated.
 
 ### Migration
@@ -94,7 +94,7 @@ without any extra tooling.
 ### Updated Files (skeleton-owned — auto-applied)
 - `scripts/sync-initium.sh` — replaced all four `jq` call-sites with a
   `_json_array` awk helper and `grep`/`sed` one-liners. No behavioural change.
-- `skeleton.json` — version bumped to 1.0.18.
+- `initium.json` — version bumped to 1.0.18.
 
 ### Migration
 No action needed. The script behaviour is identical; `jq` is simply no longer
@@ -280,15 +280,15 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ---
 
-## v1.0.6 — Fix skeleton.json: add 36 missing file ownership entries
+## v1.0.6 — Fix initium.json: add 36 missing file ownership entries
 
 **Date:** 2026-03-14
 **Commit:** (set by release)
 **Severity:** PATCH
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `skeleton.json` — Added all previously unclassified files to ownership lists:
-  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `SKELETON-UPDATES.md`, `docs/initium-sync.md`
+- `initium.json` — Added all previously unclassified files to ownership lists:
+  - **skeleton_owned**: all `.cursor/prompts/*.md`, Windows scripts (`init/setup/validate-ai-config .ps1/.cmd`), `.agent/tasks/.gitkeep` + `TASK-TEMPLATE.md`, `.devcontainer/devcontainer.json`, `CONTRIBUTING.md`, `INITIUM-UPDATES.md`, `docs/initium-sync.md`
   - **project_owned**: `README.tr.md`, `docs/ai-workflow.tr.md`
 
 ---
@@ -338,9 +338,9 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 ### Updated Files (skeleton-owned — auto-applied)
 - `scripts/sync-initium.sh` — Three bugs fixed:
   - `((APPLIED++))` / `((SKIPPED++))` with `set -e` silently exited after first file; replaced with `APPLIED=$((APPLIED + 1))`
-  - File ownership was read from local (potentially stale) `skeleton.json`; now reads from `skeleton/main:skeleton.json` so newly added files are always included
+  - File ownership was read from local (potentially stale) `initium.json`; now reads from `skeleton/main:initium.json` so newly added files are always included
   - First-sync file list used `git show` (single commit diff) instead of `git ls-tree -r` (full tree)
-- `skeleton.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-initium` commands, `toon.mjs` hook, workflows `06`/`07`, `scripts/init.sh`
+- `initium.json` — Added missing `skeleton_owned` entries: `/task`, `/sync-initium` commands, `toon.mjs` hook, workflows `06`/`07`, `scripts/init.sh`
 
 ---
 

@@ -133,7 +133,7 @@
       ".cursor/prompts/README.md",
       ".devcontainer/devcontainer.json",
       "CONTRIBUTING.md",
-      "SKELETON-UPDATES.md",
+      "INITIUM-UPDATES.md",
       "docs/onboarding.tr.md",
       "docs/initium-sync.md",
       "docs/team.md",
@@ -155,7 +155,7 @@
       "README.md",
       "README.tr.md",
       "docs/ai-workflow.tr.md",
-      "skeleton.json"
+      "initium.json"
     ],
     "merge_required": [
       ".continue/config.yaml",
