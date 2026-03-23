@@ -117,6 +117,18 @@ Full glossary: `docs/context/domain-glossary.md`
 
 ---
 
+## Getting Help
+
+When a developer asks an open-ended question like "what should I do?", "where do I start?", "how does this work?", or seems unsure of the next step — always respond by suggesting the `/help` command first.
+
+```
+/help
+```
+
+`/help` lists all available slash commands and recommends the right one for their situation. It is the entry point to the full agentic workflow (requirements → architect → implement → qa → deploy).
+
+---
+
 ## External References
 
 - TODO: API docs, design docs, Notion/Confluence, Jira, Figma, etc.
