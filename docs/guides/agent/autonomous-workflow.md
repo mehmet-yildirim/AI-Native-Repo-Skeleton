@@ -10,7 +10,7 @@ for the autonomous AI development agent.
 │                     AUTONOMOUS AGENT ORCHESTRATOR                    │
 │                                                                      │
 │  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────────────┐ │
-│  │  POLLER  │──▶│ TRIAGER  │──▶│PLANNER   │──▶│  EXECUTOR LOOP   │ │
+│  │  POLLER  │──▶│ TRIAGER  │──▶│ PLANNER  │──▶│  EXECUTOR LOOP   │ │
 │  │          │   │          │   │          │   │                  │ │
 │  │Pull from │   │Domain    │   │Require-  │   │Architect →       │ │
 │  │JIRA/     │   │relevance │   │ments →   │   │Implement →       │ │

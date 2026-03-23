@@ -97,7 +97,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │   │   ├── doc-site.md                 # /doc-site — belgelendirme sitesi
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG üretimi
 │   │   ├── doc-schema.md               # /doc-schema — veritabanı ERD + tablo referansı
-│   │   ├── sync-initium.md            # /sync-initium — Initium güncellemelerini uygula
+│   │   ├── sync-initium.md             # /sync-initium — Initium güncellemelerini uygula
 │   │   ├── triage.md                   # /triage  ← otonom ajan
 │   │   ├── groom.md                    # /groom   ← otonom ajan
 │   │   ├── loop.md                     # /loop    ← otonom ajan
@@ -117,20 +117,28 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │   └── rules/                         # Temel kurallar + 22 beceri dosyası
 │
 ├── docs/
-│   ├── ai-workflow.md / .tr.md        # AI iş akışı rehberi (İngilizce / Türkçe)
-│   ├── onboarding.md                  # Yeni geliştirici kılavuzu
-│   ├── initium-sync.md               # Initium güncellemelerini projeye aktarma rehberi
+│   ├── guides/                        # Initium rehber belgeleri — serbestçe düzenleyin
+│   │   ├── ai-workflow.md / .tr.md    # AI iş akışı rehberi (İngilizce / Türkçe)
+│   │   ├── onboarding.md              # Yeni geliştirici kılavuzu
+│   │   ├── team.md                    # Ekip rolleri ve AI-native optimizasyon
+│   │   ├── agent/                     # Otonom ajan belgeleri (iş akışı, eskalasyon, güvenlik…)
+│   │   │   └── schemas/               # JSON şemaları: görev durumu, QA raporu, güvenlik raporu…
+│   │   └── workflows/                 # 7 iş akışı kılavuzu (gereksinimler → dağıtım)
 │   ├── context/                       # ← TÜMÜNÜ DÜZENLE (AI bağlamı + ajan kapsamı)
 │   ├── architecture/                  # ← DÜZENLE + ADR'ler
-│   ├── agent/                         # Otonom ajan belgeleri (iş akışı, eskalasyon, güvenlik, belgelendirme…)
-│   │   └── schemas/                   # JSON şemaları: görev durumu, QA raporu, güvenlik raporu…
-│   └── workflows/                     # 7 iş akışı kılavuzu (gereksinimler → dağıtım)
 │
 ├── skills/README.md                   # Beceri indeksi ve aktivasyon rehberi
 ├── .agent-templates/webhook-receiver.mjs
 └── .initium/
-    ├── setup / init / validate        # Her biri için .sh, .cmd, .ps1 sürümleri
-    └── sync.{sh,ps1,cmd}             # Initium güncellemelerini uygula
+    ├── initium.json                   # Bu projenin hangi Initium sürümünü temel aldığını izler
+    ├── scripts/
+    │   ├── setup.{sh,cmd,ps1}         # Adım 1 — projeyi başlat
+    │   ├── init.{sh,cmd,ps1}          # Adım 2 — yapılandırma sihirbazı
+    │   ├── validate.{sh,cmd,ps1}      # 128 noktalı yapılandırma doğrulayıcı
+    │   └── sync.{sh,ps1,cmd}          # Initium güncellemelerini uygula
+    └── docs/
+        ├── sync-guide.md              # Senkronizasyon rehberi ve birleştirme stratejileri
+        └── UPDATES.md                 # Her Initium sürümü için güncelleme notları
 ```
 
 ---

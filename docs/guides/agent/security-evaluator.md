@@ -142,8 +142,8 @@ After /implement (all tasks committed to branch):
     │ Check: ciGate.blockMerge == true?                 │
     └───────────────────────────────────────────────────┘
                 │
-    ┌───────────┴──────────────────────────────────┐
-    │ CRITICAL or HIGH findings?                    │
+    ┌───────────┬──────────────────────────────────┐
+    │ CRITICAL or HIGH findings?                   │
     └──────────────────────────────────────────────┘
          │ YES                           │ NO
          ▼                               ▼

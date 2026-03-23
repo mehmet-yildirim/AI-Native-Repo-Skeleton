@@ -112,7 +112,7 @@ After setup, code with the AI loop:
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG from git history
 │   │   ├── doc-schema.md               # /doc-schema — database ERD + table reference
 │   │   ├── standup.md                  # /standup
-│   │   ├── sync-initium.md            # /sync-initium — apply upstream Initium updates
+│   │   ├── sync-initium.md             # /sync-initium — apply upstream Initium updates
 │   │   ├── triage.md                   # /triage        ← autonomous agent
 │   │   ├── groom.md                    # /groom         ← autonomous agent
 │   │   ├── loop.md                     # /loop          ← autonomous agent
@@ -154,31 +154,32 @@ After setup, code with the AI loop:
 │   └── workflows/ci.yml               # CI template — adapt for your stack
 │
 ├── docs/
-│   ├── ai-workflow.md                 # AI-Native development workflow (English)
-│   ├── ai-workflow.tr.md              # AI-Native development workflow (Turkish)
-│   ├── onboarding.md                  # New developer guide
-│   ├── initium-sync.md               # How to sync Initium updates into your project
+│   ├── guides/                        # Initium-provided guidance — customize freely
+│   │   ├── ai-workflow.md             # AI-Native development workflow (English)
+│   │   ├── ai-workflow.tr.md          # AI-Native development workflow (Turkish)
+│   │   ├── onboarding.md              # New developer onboarding guide
+│   │   ├── team.md                    # Team roles and AI-native optimization
+│   │   ├── agent/                     # Autonomous agent documentation
+│   │   │   ├── autonomous-workflow.md    # State machine, phases, gates, resume
+│   │   │   ├── escalation-protocol.md    # Triggers, severity levels, human responses
+│   │   │   ├── security-evaluator.md     # Security integration in the agent loop
+│   │   │   ├── documentation-agent.md    # Documentation generation architecture
+│   │   │   ├── jira-server-setup.md      # On-premise Jira Server operator guide
+│   │   │   ├── decision-log-template.md  # Audit trail schema
+│   │   │   └── schemas/                  # JSON schemas: task-state, qa-report, security-report…
+│   │   └── workflows/                 # Detailed workflow guides (7 files)
+│   │       ├── 01 … 04               # Requirements, feature dev, testing, deployment
+│   │       ├── 05-security-evaluation.md
+│   │       ├── 06-database-migrations.md
+│   │       └── 07-deployment-platforms.md
 │   ├── context/                       # ← CUSTOMIZE — AI context for tools and agent
 │   │   ├── project-brief.md
 │   │   ├── tech-stack.md
 │   │   ├── domain-glossary.md
 │   │   └── domain-boundaries.md      # ← CRITICAL for autonomous agent triage
-│   ├── architecture/
-│   │   ├── overview.md               # ← CUSTOMIZE — system architecture
-│   │   └── decisions/                # Architecture Decision Records (ADR)
-│   ├── agent/                        # Autonomous agent documentation
-│   │   ├── autonomous-workflow.md    # State machine, phases, gates, resume
-│   │   ├── escalation-protocol.md    # Triggers, severity levels, human responses
-│   │   ├── security-evaluator.md     # Security integration in the agent loop
-│   │   ├── documentation-agent.md    # Documentation generation architecture
-│   │   ├── jira-server-setup.md      # On-premise Jira Server operator guide
-│   │   ├── decision-log-template.md  # Audit trail schema
-│   │   └── schemas/                  # JSON schemas: task-state, qa-report, security-report…
-│   └── workflows/                    # Detailed workflow guides (7 files)
-│       ├── 01 … 04                   # Requirements, feature dev, testing, deployment
-│       ├── 05-security-evaluation.md
-│       ├── 06-database-migrations.md
-│       └── 07-deployment-platforms.md
+│   └── architecture/
+│       ├── overview.md               # ← CUSTOMIZE — system architecture
+│       └── decisions/                # Architecture Decision Records (ADR)
 │
 ├── skills/
 │   └── README.md                     # Skills index, activation guide, how to add new skills
@@ -194,12 +195,15 @@ After setup, code with the AI loop:
 │   └── webhook-receiver.mjs          # Jira Server webhook receiver (copy to .agent/)
 │
 └── .initium/
-    ├── setup.{sh,cmd,ps1}           # Step 1 — initialize project
-    ├── init.{sh,cmd,ps1}            # Step 2 — interactive configuration wizard
-    ├── validate.{sh,cmd,ps1}        # 128-point configuration validator
-    ├── sync.{sh,ps1,cmd}            # Pull upstream Initium improvements
-    ├── sync-guide.md                # Sync guide and merge strategies
-    └── UPDATES.md                   # Migration notes for each Initium version
+    ├── initium.json                 # Tracks which Initium version this project is based on
+    ├── scripts/
+    │   ├── setup.{sh,cmd,ps1}       # Step 1 — initialize project
+    │   ├── init.{sh,cmd,ps1}        # Step 2 — interactive configuration wizard
+    │   ├── validate.{sh,cmd,ps1}    # 128-point configuration validator
+    │   └── sync.{sh,ps1,cmd}        # Pull upstream Initium improvements
+    └── docs/
+        ├── sync-guide.md            # Sync guide and merge strategies
+        └── UPDATES.md               # Migration notes for each Initium version
 ```
 
 ---
