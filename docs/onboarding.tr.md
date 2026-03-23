@@ -278,7 +278,7 @@ Tam güvenlik iş akışı için: [`docs/workflows/05-security-evaluation.md`](w
 
 ## Kurulumunu Güncel Tutma
 
-Takım iskeleti güncellediğinde (yeni komutlar, geliştirilmiş beceri kuralları, güvenlik düzeltmeleri):
+Initium güncellendiğinde (yeni komutlar, geliştirilmiş beceri kuralları, güvenlik düzeltmeleri):
 
 ```bash
 # macOS / Linux
@@ -347,7 +347,7 @@ Cursor'da sohbette `/help` yazıp ardından sorunuzu ekleyin — `.claude/comman
 | Proje soruları | Slack / Teams'de `#<kanal>` |
 | AI iş akışı rehberliği | [`docs/ai-workflow.tr.md`](ai-workflow.tr.md) |
 | Otonom ajan sorunları | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
-| İskelet hatası veya iyileştirme | İskelet deposunda issue aç |
+| Initium hatası veya iyileştirme | Initium deposunda issue aç |
 
 ---
 

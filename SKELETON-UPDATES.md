@@ -1,6 +1,6 @@
 # Skeleton Updates — Migration Guide
 
-This file documents every breaking and notable change to the AI-Native Skeleton
+This file documents every breaking and notable change to Initium
 so that projects derived from the skeleton can apply updates selectively.
 
 When the skeleton is updated, add an entry here **before** tagging a new version.

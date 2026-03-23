@@ -1,6 +1,6 @@
 # Initium — Geliştirici Kılavuzu
 
-İnteraktif insan destekli geliştirmeden, JIRA backlog'undan iş alıp Pull Request teslim eden **tam otonom ajan moduna** kadar çalışan, AI-native yazılım geliştirme için üreteme hazır bir iskelet.
+İnteraktif insan destekli geliştirmeden, JIRA backlog'undan iş alıp Pull Request teslim eden **tam otonom ajan moduna** kadar çalışan, AI-native yazılım geliştirme için üreteme hazır bir proje şablonu.
 
 [Cursor](https://cursor.sh), [Continue](https://continue.dev) ve [Claude Code](https://claude.ai/code) araçlarını kutudan çıkar çıkmaz destekler.
 
@@ -8,7 +8,7 @@
 
 ---
 
-## Bu İskelet Ne Sağlar?
+## Initium Ne Sağlar?
 
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
@@ -279,7 +279,7 @@ Tam indeks, aktivasyon kılavuzu ve yeni beceri ekleme için: [skills/README.md]
 
 ## Projeyi Güncel Tutma
 
-İskelet yeni komutlar, güncellenmiş beceri kuralları veya güvenlik düzeltmeleri aldığında:
+Initium yeni komutlar, güncellenmiş beceri kuralları veya güvenlik düzeltmeleri aldığında:
 
 ```bash
 # macOS / Linux / Git Bash

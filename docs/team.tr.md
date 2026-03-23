@@ -1,6 +1,6 @@
 # Takım Oluşturma Kılavuzu — AI-Native Geliştirme
 
-Bu kılavuz, AI-native iskeletiyle çalışırken insan takımlarının nasıl yapılandırılması ve optimize edilmesi gerektiğini tanımlar. AI araçları tekrarlayan işleri, şablonları ve mekanik akıl yürütmeyi üstlenir — takımın işi ise yargı, bağlam ve denetimdir.
+Bu kılavuz, Initium ile çalışırken insan takımlarının nasıl yapılandırılması ve optimize edilmesi gerektiğini tanımlar. AI araçları tekrarlayan işleri, şablonları ve mekanik akıl yürütmeyi üstlenir — takımın işi ise yargı, bağlam ve denetimdir.
 
 > **TODO bölümlerini doldurun** — projeye özgü kişiler ve iletişim bilgileriyle.
 
