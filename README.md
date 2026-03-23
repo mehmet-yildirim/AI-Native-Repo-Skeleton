@@ -13,7 +13,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | Layer | Config | Purpose |
 |-------|--------|---------|
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 27 slash commands, event hooks |
-| **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 6 base rules + 22 skill rules (auto-activate by file type) + prompt files |
+| **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 base rules + 22 skill rules (auto-activate by file type) + shared slash commands |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow skeleton |
@@ -48,7 +48,7 @@ After setup, code with the AI loop:
 /requirements <your first feature>   →  /architect  →  /task plan  →  /implement  →  /qa  →  /deploy
 ```
 
-> **New to the project or unsure what to do?** Type `/help` in Claude Code (or `@.cursor/prompts/help.md` in Cursor) — the AI will guide you to the right command for your situation.
+> **New to the project or unsure what to do?** Type `/help` in Claude Code or Cursor — the AI will guide you to the right command for your situation.
 
 ---
 

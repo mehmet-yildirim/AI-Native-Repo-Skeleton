@@ -19,6 +19,63 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.17 — Compress always-loaded context files
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `CLAUDE.md` — 167 → 124 lines (−43). Compressed Essential Commands to a single compact block, collapsed Architecture bullets, trimmed branch workflow section, merged Coding Conventions sub-items.
+- `.cursor/rules/01-coding-standards.mdc` — 103 → 80 lines (−23). Removed language-specific naming TODO, import alias TODO, concurrency TODO, and the TypeScript/Python template sections (these belong in `lang-typescript.mdc` / `lang-python.mdc` skill files, not in an always-loaded rule).
+- `.cursor/rules/00-project-overview.mdc` — 47 → 41 lines (−6). Compressed Key Constraints and Domain Glossary TODO sections.
+
+### Net savings
+**−72 lines from always-loaded context** (loaded on every Claude Code turn and every Cursor session).
+
+---
+
+## v1.0.16 — Remove .cursor/prompts/ — Cursor reads slash commands from .claude/commands/ directly
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Removed Files (skeleton-owned — auto-removed on sync)
+All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted. Cursor reads slash commands directly from `.claude/commands/`, making the prompt files redundant duplicates. **~2,900 lines of duplicated content eliminated.**
+
+### Updated Files (merge-required — review before applying)
+- `.cursor/prompts/README.md` — Rewritten to explain that Cursor uses `.claude/commands/` directly.
+- `README.md` — Updated Cursor row in the tool table; updated `/help` tip.
+- `README.tr.md` — Same in Turkish.
+- `docs/onboarding.md` — Updated Cursor setup step 4; updated `/help` references.
+- `docs/onboarding.tr.md` — Same in Turkish.
+
+### Migration notes
+- **Derived projects:** Delete all files in `.cursor/prompts/` except `README.md`. No functionality is lost — `/implement`, `/debug`, `/qa`, etc. continue to work in Cursor via `.claude/commands/`.
+- If you have customized any `.cursor/prompts/*.md` files, migrate those customizations to the corresponding `.claude/commands/*.md` file instead.
+
+---
+
+## v1.0.15 — Reduce token usage across CLAUDE.md and command files
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `CLAUDE.md` — Removed redundant architecture constraints block (now a 3-line summary referencing `.cursor/rules/02-architecture.mdc`). Compressed verbose TODO placeholder examples. Removed empty glossary table row. **216 → 167 lines; saves ~49 tokens on every conversation turn.**
+- `.claude/commands/implement.md` — Compressed 14-line branch check block to 2 lines (CLAUDE.md already carries the full rule in context).
+- `.claude/commands/debug.md` — Same branch check compression.
+- `.cursor/prompts/implement.md` — Same branch check compression (rule is in `04-git-workflow.mdc`).
+- `.cursor/prompts/debug.md` — Same branch check compression.
+
+### Migration notes
+- **Derived projects:** Apply `CLAUDE.md` changes carefully — your filled-in project-specific content must be preserved. The architecture constraints block can be removed; replace it with the 3-line summary pointing to `.cursor/rules/02-architecture.mdc`.
+- **No behavioral change** — all rules still apply; they are now stored in one canonical location instead of being repeated in every file.
+
+---
+
 ## v1.0.14 — Add Turkish translation of team formation guide
 
 **Date:** 2026-03-15

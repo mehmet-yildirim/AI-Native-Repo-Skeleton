@@ -167,7 +167,7 @@ All 27 custom commands (type `/` to see them):
 1. Open the project folder in Cursor
 2. Rules in `.cursor/rules/` load automatically by file type (no action needed)
 3. Skill rules in `.cursor/rules/skills/` activate when you open matching files
-4. To use prompt files: `@.cursor/prompts/requirements.md` in the chat
+4. Slash commands from `.claude/commands/` work directly in Cursor — type `/` to see the full list
 5. Enable MCP servers: edit `.cursor/mcp.json`, remove `"disabled": true`, set env vars in `.env`
 6. Add your `ANTHROPIC_API_KEY` to Cursor settings
 
@@ -338,13 +338,13 @@ In Claude Code, type `/help` and describe your situation in plain language:
 /help what should I do before opening a PR?
 ```
 
-In Cursor, use `@.cursor/prompts/help.md` in the chat followed by your question.
+In Cursor, type `/help` in the chat followed by your question — slash commands from `.claude/commands/` work in Cursor directly.
 
 The `/help` command will identify where you are in the workflow, map your question to the right command(s), and give you a clear next step — without writing any code.
 
 | Need | Resource |
 |------|---------|
-| Don't know what to do | `/help` in Claude Code — or `@.cursor/prompts/help.md` in Cursor |
+| Don't know what to do | `/help` in Claude Code or Cursor |
 | Project questions | `#<channel>` on Slack / Teams |
 | AI workflow guidance | [`docs/ai-workflow.md`](ai-workflow.md) |
 | Autonomous agent issues | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |

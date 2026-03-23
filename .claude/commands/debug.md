@@ -2,18 +2,7 @@ Systematically diagnose and fix the described bug or error.
 
 ## Step 0: Branch Check
 
-Before making any code changes, confirm you are on a feature branch:
-
-```bash
-git branch --show-current
-```
-
-- If on `main` or `develop`: **stop** and create a branch first:
-  ```bash
-  git checkout -b fix/<bug-slug>
-  ```
-- Derive the slug from the bug description (kebab-case, max 40 chars)
-- Never commit a fix directly to `main` or `develop`
+Verify you are on a feature branch (`fix/` prefix for bugs). If on `main` or `develop`, stop and create one first (see CLAUDE.md → Git Workflow).
 
 ---
 

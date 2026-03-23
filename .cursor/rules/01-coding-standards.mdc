@@ -24,16 +24,11 @@ alwaysApply: true
 - Constants: SCREAMING_SNAKE_CASE (`MAX_RETRY_COUNT`)
 - Avoid single-letter names except loop counters (`i`, `j`) and well-known conventions (`e` for error)
 
-### TODO: Language-specific naming
-- e.g., TypeScript: `camelCase` variables/functions, `PascalCase` types/classes/interfaces, `kebab-case` file names
-- e.g., Python: `snake_case` variables/functions, `PascalCase` classes, `SCREAMING_SNAKE_CASE` module constants
-
 ## File & Module Organization
 
 - One concept per file; file name matches the primary export
 - Group related files in feature/domain folders, not layer folders (prefer `features/auth/` over `controllers/`)
 - Index files (`index.ts`) only re-export — no business logic
-- TODO: Define import alias (e.g., `@/` for project root)
 - Import order: stdlib → third-party → internal (enforced by linter)
 
 ## Functions & Methods
@@ -83,21 +78,3 @@ async function getUser(id: string): Promise<Result<User, 'NOT_FOUND' | 'DB_ERROR
 - Prefer `async/await` over raw Promises/callbacks
 - Always `await` Promises — never fire-and-forget unless explicitly intentional (and comment why)
 - Handle concurrent operations with `Promise.all` / `Promise.allSettled` where appropriate
-- TODO: Add language-specific concurrency rules (goroutines, asyncio, etc.)
-
-## TODO: Language-Specific Rules
-
-Add rules specific to your chosen language/framework here.
-
-### TypeScript
-- Use strict mode: `"strict": true` in tsconfig
-- Prefer `interface` for object shapes, `type` for unions/intersections
-- No `any` without an explanatory comment
-- Use `unknown` instead of `any` for untrusted data
-- Discriminated unions over boolean flags
-
-### Python (if applicable)
-- Type hints on all public functions
-- Use `dataclasses` or Pydantic models over plain dicts for structured data
-- Prefer `pathlib.Path` over `os.path`
-- Use context managers (`with`) for resource management
