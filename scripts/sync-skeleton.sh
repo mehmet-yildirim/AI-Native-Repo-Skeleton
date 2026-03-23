@@ -13,11 +13,11 @@
 #
 # What it does:
 #   1. Fetches the skeleton repo (adds as 'skeleton' remote if needed)
-#   2. Reads skeleton.json to classify every file by ownership
+#   2. Reads initium.json to classify every file by ownership
 #   3. For skeleton_owned files  → auto-applies (safe overwrite)
 #   4. For merge_required files  → shows diff, asks you to confirm each
 #   5. For project_owned files   → skips (never touched)
-#   6. Updates skeleton.json with the new version
+#   6. Updates initium.json with the new version
 # =============================================================================
 
 set -euo pipefail
@@ -25,7 +25,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-SKELETON_JSON="skeleton.json"
+SKELETON_JSON="initium.json"
 SKELETON_REMOTE="skeleton"
 
 # Colours
@@ -81,7 +81,7 @@ done
 # ---------------------------------------------------------------------------
 heading "Pre-flight Checks"
 
-[ -f "$SKELETON_JSON" ] || error "skeleton.json not found. Is this a skeleton-based project?"
+[ -f "$SKELETON_JSON" ] || error "initium.json not found. Is this a skeleton-based project?"
 command -v git >/dev/null 2>&1 || error "git is required but not found"
 
 # Check working tree is clean
@@ -97,7 +97,7 @@ fi
 success "Working directory: $(pwd)"
 
 # ---------------------------------------------------------------------------
-# Read skeleton.json
+# Read initium.json
 # ---------------------------------------------------------------------------
 SKELETON_REPO=$(grep '"repository"'  "$SKELETON_JSON" | sed 's/.*"repository": *"\([^"]*\)".*/\1/')
 CURRENT_COMMIT=$(grep '"commit"'     "$SKELETON_JSON" | sed 's/.*"commit": *"\([^"]*\)".*/\1/')
@@ -162,7 +162,7 @@ git log --oneline "$CURRENT_COMMIT..$SKELETON_REMOTE/main" 2>/dev/null || \
   git log --oneline "$SKELETON_REMOTE/main" --max-count=20
 
 echo ""
-info "Full migration notes: $SKELETON_REPO/blob/main/SKELETON-UPDATES.md"
+info "Full migration notes: $SKELETON_REPO/blob/main/INITIUM-UPDATES.md"
 echo ""
 if [ "$AUTO" = false ]; then
   read -r -p "Continue with sync? [Y/n] " confirm
@@ -172,9 +172,9 @@ fi
 # ---------------------------------------------------------------------------
 # Read file ownership lists — always from the skeleton remote so newly
 # added files in the latest skeleton version are included, regardless of
-# what the local skeleton.json says.
+# what the local initium.json says.
 # ---------------------------------------------------------------------------
-REMOTE_SKELETON_JSON=$(git show "$SKELETON_REMOTE/main:skeleton.json")
+REMOTE_SKELETON_JSON=$(git show "$SKELETON_REMOTE/main:initium.json")
 
 SKELETON_OWNED=()
 while IFS= read -r line; do SKELETON_OWNED+=("$line"); done < <(printf '%s\n' "$REMOTE_SKELETON_JSON" | _json_array "skeleton_owned")
@@ -386,22 +386,22 @@ if [ ${#PROJECT_TEMPLATE_CHANGES[@]} -gt 0 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Update skeleton.json
+# Update initium.json
 # ---------------------------------------------------------------------------
 if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
-  heading "Updating skeleton.json"
-  SKELETON_VERSION=$(git show "$SKELETON_REMOTE/main:SKELETON-UPDATES.md" 2>/dev/null | \
+  heading "Updating initium.json"
+  SKELETON_VERSION=$(git show "$SKELETON_REMOTE/main:INITIUM-UPDATES.md" 2>/dev/null | \
     grep -m1 "^## v" | sed 's/^## v//' | awk '{print $1}' || echo "unknown")
   TODAY=$(date +%Y-%m-%d)
 
-  # Update skeleton.json fields (pure sed, no jq required)
+  # Update initium.json fields (pure sed, no jq required)
   TMP=$(mktemp)
   sed "s|\"commit\": *\"[^\"]*\"|\"commit\": \"$LATEST_COMMIT\"|" "$SKELETON_JSON" \
     | sed "s|\"syncedAt\": *\"[^\"]*\"|\"syncedAt\": \"$TODAY\"|" \
     | sed "s|\"version\": *\"[^\"]*\"|\"version\": \"$SKELETON_VERSION\"|" \
     > "$TMP"
   mv "$TMP" "$SKELETON_JSON"
-  success "skeleton.json updated (version=$SKELETON_VERSION, commit=$LATEST_SHORT)"
+  success "initium.json updated (version=$SKELETON_VERSION, commit=$LATEST_SHORT)"
 fi
 
 # ---------------------------------------------------------------------------

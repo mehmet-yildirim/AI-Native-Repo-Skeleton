@@ -166,8 +166,8 @@ check_exists "docs/context/domain-glossary.md"
 check_exists "docs/architecture/overview.md"
 
 # --- Skeleton sync ---
-check_exists "skeleton.json"
-check_exists "SKELETON-UPDATES.md"
+check_exists "initium.json"
+check_exists "INITIUM-UPDATES.md"
 check_exists "scripts/sync-skeleton.sh"
 check_exists "scripts/sync-skeleton.ps1"
 check_exists "scripts/sync-skeleton.cmd"
@@ -203,7 +203,7 @@ check_customized() {
 }
 
 check_customized "CLAUDE.md"
-check_customized "skeleton.json"
+check_customized "initium.json"
 check_customized ".cursor/rules/00-project-overview.mdc"
 check_customized "docs/context/project-brief.md"
 check_customized "docs/context/tech-stack.md"

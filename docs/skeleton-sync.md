@@ -24,7 +24,7 @@ would overwrite everything you've customised.
 
 ## File Ownership Model
 
-Every file in the skeleton is classified into one of three categories, defined in `skeleton.json`:
+Every file in the skeleton is classified into one of three categories, defined in `initium.json`:
 
 ### `skeleton_owned` — Safe to overwrite
 
@@ -68,7 +68,7 @@ if the skeleton template was updated (so you can read the new guidance):
 - `docs/context/` — your project brief, tech stack, domain glossary
 - `docs/architecture/` — your system architecture and ADRs
 - `.env`, `.env.example` — your environment variables
-- `skeleton.json` — version tracking (updated by sync script only)
+- `initium.json` — version tracking (updated by sync script only)
 
 ---
 
@@ -140,7 +140,7 @@ done
 # 5. Review a merge-required file
 git diff skeleton/main:.continue/config.yaml .continue/config.yaml
 
-# 6. Update skeleton.json manually
+# 6. Update initium.json manually
 # Edit skeleton.commit and skeleton.syncedAt fields
 ```
 
@@ -216,7 +216,7 @@ The skeleton improves the generic CI skeleton. Your version has stack-specific s
 
 ## Tracking Which Skeleton Version You're On
 
-After each sync, `skeleton.json` is updated:
+After each sync, `initium.json` is updated:
 
 ```json
 {
@@ -229,7 +229,7 @@ After each sync, `skeleton.json` is updated:
 }
 ```
 
-Commit `skeleton.json` after every sync so your team can see when the project was last
+Commit `initium.json` after every sync so your team can see when the project was last
 updated and from which skeleton version.
 
 ---
@@ -256,7 +256,7 @@ to a skill rule), the sync will overwrite it. Solutions:
 ```
 
 **Option B — Move to merge_required**
-Edit `skeleton.json` → `fileOwnership.merge_required` to add your file.
+Edit `initium.json` → `fileOwnership.merge_required` to add your file.
 The sync script will then prompt before overwriting.
 
 ### When a skeleton file is removed
@@ -288,7 +288,7 @@ No. The sync only touches AI configuration files (`.claude/`, `.cursor/`, `.cont
 
 **Q: What if I've modified a skeleton_owned file?**
 Your modification will be overwritten. Either move your additions to a separate file,
-or reclassify the file as `merge_required` in `skeleton.json`.
+or reclassify the file as `merge_required` in `initium.json`.
 
 **Q: Can I sync a specific file only?**
 Yes: `git show skeleton/main:.claude/commands/loop.md > .claude/commands/loop.md`

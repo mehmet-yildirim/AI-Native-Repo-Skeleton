@@ -1,11 +1,11 @@
 {
-  "_comment": "This file tracks which version of the AI-Native skeleton this project is based on. Update it after running scripts/sync-skeleton.sh.",
+  "_comment": "This file tracks which version of Initium this project is based on. Update it after running scripts/sync-skeleton.sh.",
   "skeleton": {
     "repository": "https://github.com/mehmet-yildirim/Initium",
     "version": "1.0.20",
     "commit": "TODO: set by sync-skeleton.sh",
     "syncedAt": "TODO: set by sync-skeleton.sh",
-    "releaseNotesUrl": "https://github.com/mehmet-yildirim/Initium/blob/main/SKELETON-UPDATES.md"
+    "releaseNotesUrl": "https://github.com/mehmet-yildirim/Initium/blob/main/INITIUM-UPDATES.md"
   },
   "fileOwnership": {
     "_comment": "Classifies every skeleton file by who owns it. Controls sync behaviour.",

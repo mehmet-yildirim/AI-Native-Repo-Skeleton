@@ -568,7 +568,7 @@ reports/
 .cursor/.cache/
 .claude/settings.local.json
 
-# Autonomous agent runtime (generated at runtime — commit skeleton.json only)
+# Autonomous agent runtime (generated at runtime — commit initium.json only)
 .agent/state/
 .agent/audit/
 .agent/escalations/

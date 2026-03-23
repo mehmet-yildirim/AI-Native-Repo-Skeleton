@@ -8,13 +8,13 @@ This command orchestrates the full sync: fetch → classify → apply → valida
 
 ## Step 1: Read Current Sync State
 
-Read `skeleton.json` from the project root:
+Read `initium.json` from the project root:
 - `skeleton.repository` — the upstream skeleton URL
 - `skeleton.commit` — the commit this project last synced from
 - `skeleton.syncedAt` — when the last sync ran
 - `skeleton.version` — skeleton version string
 
-If `skeleton.json` doesn't exist, this project was not initialized from the skeleton
+If `initium.json` doesn't exist, this project was not initialized from the skeleton
 with proper tracking. Add it manually (see `docs/skeleton-sync.md`).
 
 ---
@@ -24,13 +24,13 @@ with proper tracking. Add it manually (see `docs/skeleton-sync.md`).
 ```bash
 # Add skeleton remote if not present
 git remote get-url skeleton 2>/dev/null || \
-  git remote add skeleton "$(jq -r '.skeleton.repository' skeleton.json)"
+  git remote add skeleton "$(jq -r '.skeleton.repository' initium.json)"
 
 # Fetch latest
 git fetch skeleton --quiet
 
 LATEST_COMMIT=$(git rev-parse skeleton/main)
-CURRENT_COMMIT=$(jq -r '.skeleton.commit' skeleton.json)
+CURRENT_COMMIT=$(jq -r '.skeleton.commit' initium.json)
 ```
 
 If `LATEST_COMMIT == CURRENT_COMMIT`, report "Already up to date" and stop.
@@ -40,13 +40,13 @@ Otherwise, show the changes:
 git log --oneline "$CURRENT_COMMIT..skeleton/main"
 ```
 
-And point to `SKELETON-UPDATES.md` on the skeleton repo for the full migration guide.
+And point to `INITIUM-UPDATES.md` on the skeleton repo for the full migration guide.
 
 ---
 
 ## Step 3: Classify Changed Files
 
-Read the ownership lists from `skeleton.json`:
+Read the ownership lists from `initium.json`:
 
 | Category | Behaviour |
 |----------|-----------|
@@ -59,7 +59,7 @@ Get files changed since last sync:
 git diff --name-only "$CURRENT_COMMIT" skeleton/main
 ```
 
-For each changed file, determine its category from `skeleton.json`.
+For each changed file, determine its category from `initium.json`.
 
 ---
 
@@ -142,7 +142,7 @@ Do NOT apply these files automatically.
 
 ---
 
-## Step 7: Update skeleton.json
+## Step 7: Update initium.json
 
 After applying changes, update the tracking fields:
 
@@ -151,7 +151,7 @@ jq --arg commit "$LATEST_COMMIT" \
    --arg date "$(date +%Y-%m-%d)" \
    --arg ver "$NEW_VERSION" \
    '.skeleton.commit = $commit | .skeleton.syncedAt = $date | .skeleton.version = $ver' \
-   skeleton.json > tmp && mv tmp skeleton.json
+   initium.json > tmp && mv tmp initium.json
 ```
 
 ---

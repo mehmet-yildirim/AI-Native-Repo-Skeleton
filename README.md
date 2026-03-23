@@ -17,7 +17,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow skeleton |
-| **Skeleton sync** | `skeleton.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Pull improvements from upstream skeleton without overwriting customizations |
+| **Skeleton sync** | `initium.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Pull improvements from upstream skeleton without overwriting customizations |
 
 ---
 
@@ -82,8 +82,8 @@ After setup, code with the AI loop:
 .
 ├── CLAUDE.md                           # ← CUSTOMIZE — project instructions for Claude Code
 ├── agent.config.yaml                   # ← CUSTOMIZE — autonomous agent configuration
-├── skeleton.json                       # Tracks which skeleton version this project is based on
-├── SKELETON-UPDATES.md                 # Migration notes for skeleton upgrades
+├── initium.json                       # Tracks which skeleton version this project is based on
+├── INITIUM-UPDATES.md                 # Migration notes for skeleton upgrades
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
@@ -370,7 +370,7 @@ scripts\sync-skeleton.cmd --auto
 scripts\sync-skeleton.cmd --check
 ```
 
-The sync script uses `skeleton.json` to classify every file:
+The sync script uses `initium.json` to classify every file:
 - **skeleton-owned** (commands, skill rules, agent docs) → auto-applied safely
 - **merge-required** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → shown as diff, you decide
 - **project-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → never touched
@@ -406,4 +406,4 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide, including
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Security evaluation architecture |
 | [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Documentation generation tools and pipeline |
 | [skills/README.md](skills/README.md) | Complete skills index and activation guide |
-| [SKELETON-UPDATES.md](SKELETON-UPDATES.md) | Changelog for skeleton versions |
+| [INITIUM-UPDATES.md](INITIUM-UPDATES.md) | Changelog for skeleton versions |

@@ -33,17 +33,17 @@ if /I "%~1"=="--help" (
     echo    3. skeleton_owned files  -^> applied automatically ^(safe^)
     echo    4. merge_required files  -^> shown as diff; you choose per file
     echo    5. project_owned files   -^> never touched ^(your customisations^)
-    echo    6. Updates skeleton.json with the new version and commit SHA
+    echo    6. Updates initium.json with the new version and commit SHA
     echo.
-    echo  File ownership is defined in skeleton.json at the repo root.
+    echo  File ownership is defined in initium.json at the repo root.
     echo  Full guide: docs\skeleton-sync.md
     echo.
     exit /b 0
 )
 
-:: Verify skeleton.json exists
-if not exist "skeleton.json" (
-    echo [ERROR] skeleton.json not found. Is this a skeleton-based project?
+:: Verify initium.json exists
+if not exist "initium.json" (
+    echo [ERROR] initium.json not found. Is this a skeleton-based project?
     exit /b 1
 )
 

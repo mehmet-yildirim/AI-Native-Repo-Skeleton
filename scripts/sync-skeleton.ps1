@@ -55,11 +55,11 @@ function Confirm-Yes {
 # ---------------------------------------------------------------------------
 Write-Heading 'Pre-flight Checks'
 
-$SkeletonJson = 'skeleton.json'
+$SkeletonJson = 'initium.json'
 $SkeletonRemote = 'skeleton'
 
 if (-not (Test-Path $SkeletonJson)) {
-    Write-Err "skeleton.json not found. Is this a skeleton-based project?"
+    Write-Err "initium.json not found. Is this a skeleton-based project?"
 }
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -79,7 +79,7 @@ if ($gitStatus) {
 Write-OK "Working directory: $(Get-Location)"
 
 # ---------------------------------------------------------------------------
-# Read skeleton.json (no jq needed — PowerShell has native JSON support)
+# Read initium.json (no jq needed — PowerShell has native JSON support)
 # ---------------------------------------------------------------------------
 $skeleton = Get-Content $SkeletonJson -Raw | ConvertFrom-Json
 
@@ -150,7 +150,7 @@ try {
     git log --oneline "$SkeletonRemote/main" --max-count=20
 }
 Write-Host ''
-Write-Info "Full migration notes: $SkeletonRepo/blob/main/SKELETON-UPDATES.md"
+Write-Info "Full migration notes: $SkeletonRepo/blob/main/INITIUM-UPDATES.md"
 Write-Host ''
 
 if (-not $Auto) {
@@ -332,13 +332,13 @@ if ($projectTemplateChanges.Count -gt 0) {
 }
 
 # ---------------------------------------------------------------------------
-# Update skeleton.json
+# Update initium.json
 # ---------------------------------------------------------------------------
 if (-not $DryRun -and $applied -gt 0) {
-    Write-Heading 'Updating skeleton.json'
+    Write-Heading 'Updating initium.json'
 
     try {
-        $updates = git show "${SkeletonRemote}/main:SKELETON-UPDATES.md" 2>$null
+        $updates = git show "${SkeletonRemote}/main:INITIUM-UPDATES.md" 2>$null
         $versionLine = $updates -split "`n" | Where-Object { $_ -match '^## v' } | Select-Object -First 1
         $skeletonVersion = if ($versionLine) { ($versionLine -replace '^## v', '').Split(' ')[0] } else { 'unknown' }
     } catch {
@@ -352,7 +352,7 @@ if (-not $DryRun -and $applied -gt 0) {
     $json.skeleton.version   = $skeletonVersion
     $json | ConvertTo-Json -Depth 10 | Set-Content $SkeletonJson -Encoding UTF8
 
-    Write-OK "skeleton.json updated (version=$skeletonVersion, commit=$LatestShort)"
+    Write-OK "initium.json updated (version=$skeletonVersion, commit=$LatestShort)"
 }
 
 # ---------------------------------------------------------------------------

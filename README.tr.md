@@ -17,7 +17,7 @@
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
-| **İskelet senkronizasyonu** | `skeleton.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
+| **İskelet senkronizasyonu** | `initium.json`, `scripts/sync-skeleton.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
 
 ---
 
@@ -82,8 +82,8 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 .
 ├── CLAUDE.md                           # ← DÜZENLE — Claude Code proje talimatları
 ├── agent.config.yaml                   # ← DÜZENLE — otonom ajan yapılandırması
-├── skeleton.json                       # Bu projenin hangi iskelet sürümünü baz aldığını takip eder
-├── SKELETON-UPDATES.md                 # İskelet yükseltmeleri için taşıma notları
+├── initium.json                       # Bu projenin hangi iskelet sürümünü baz aldığını takip eder
+├── INITIUM-UPDATES.md                 # İskelet yükseltmeleri için taşıma notları
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
@@ -302,7 +302,7 @@ scripts\sync-skeleton.cmd --auto
 scripts\sync-skeleton.cmd --check
 ```
 
-Senkronizasyon betiği `skeleton.json` kullanarak her dosyayı sınıflandırır:
+Senkronizasyon betiği `initium.json` kullanarak her dosyayı sınıflandırır:
 - **iskelet-owned** (komutlar, beceri kuralları, ajan belgeleri) → güvenle otomatik uygulanır
 - **birleştirme gerekli** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → diff olarak gösterilir, sen karar verirsin
 - **proje-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → asla dokunulmaz
@@ -337,4 +337,4 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/skeleton-s
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
 | [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
 | [skills/README.md](skills/README.md) | Tam beceri indeksi ve aktivasyon kılavuzu |
-| [SKELETON-UPDATES.md](SKELETON-UPDATES.md) | İskelet sürümleri için değişiklik kaydı |
+| [INITIUM-UPDATES.md](INITIUM-UPDATES.md) | İskelet sürümleri için değişiklik kaydı |
