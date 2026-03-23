@@ -2,7 +2,7 @@
 
 This document defines the documentation generation strategy for AI-native projects:
 what to generate, which tools to use per stack, how to wire everything into CI/CD,
-and how AI agents (including this skeleton's slash commands) fit into the workflow.
+and how AI agents (including Initium's slash commands) fit into the workflow.
 
 ---
 

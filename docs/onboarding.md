@@ -158,8 +158,8 @@ All 27 custom commands (type `/` to see them):
 /loop          — full autonomous loop: design → code → docs → QA → PR → deploy
 /escalate      — structured human notification when agent is blocked
 
-# --- Skeleton maintenance ---
-/sync-initium — pull improvements from the upstream skeleton
+# --- Initium maintenance ---
+/sync-initium — pull improvements from upstream Initium
 ```
 
 ### Cursor
@@ -279,7 +279,7 @@ See [`docs/workflows/05-security-evaluation.md`](workflows/05-security-evaluatio
 
 ## Keeping Your Setup Up to Date
 
-When the team updates the skeleton (new commands, improved skill rules, security fixes):
+When the team updates Initium (new commands, improved skill rules, security fixes):
 
 ```bash
 # macOS / Linux
@@ -348,7 +348,7 @@ The `/help` command will identify where you are in the workflow, map your questi
 | Project questions | `#<channel>` on Slack / Teams |
 | AI workflow guidance | [`docs/ai-workflow.md`](ai-workflow.md) |
 | Autonomous agent issues | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
-| Skeleton bug or improvement | Open an issue in the skeleton repository |
+| Initium bug or improvement | Open an issue in the Initium repository |
 
 ---
 

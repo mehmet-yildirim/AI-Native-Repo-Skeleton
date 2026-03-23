@@ -1,22 +1,22 @@
-# Skeleton Sync Guide
+# Initium Sync Guide
 
-This guide explains how to keep a project that was derived from the AI-Native skeleton
-in sync as the skeleton itself evolves — without overwriting your project-specific work.
+This guide explains how to keep a project that was derived from Initium
+in sync as Initium itself evolves — without overwriting your project-specific work.
 
 ---
 
 ## The Problem
 
-When you clone the skeleton and start a project, you immediately diverge:
+When you clone Initium and start a project, you immediately diverge:
 
 ```
-Skeleton repo ──────────────────── v1.0 ──── v1.1 ──── v1.2 ──── v2.0
+Initium repo ──────────────────── v1.0 ──── v1.1 ──── v1.2 ──── v2.0
                     │
                     └──── Your Project (from v1.0)
                               (customised CLAUDE.md, docs/context, etc.)
 ```
 
-Over time the skeleton gains new slash commands, improved skill rules, security patches,
+Over time Initium gains new slash commands, improved skill rules, security patches,
 and new agent capabilities. Your project would benefit from these — but a naive `git pull`
 would overwrite everything you've customised.
 
@@ -24,11 +24,11 @@ would overwrite everything you've customised.
 
 ## File Ownership Model
 
-Every file in the skeleton is classified into one of three categories, defined in `initium.json`:
+Every file in Initium is classified into one of three categories, defined in `initium.json`:
 
 ### `skeleton_owned` — Safe to overwrite
 
-These files contain **no project-specific content**. The skeleton owns them completely.
+These files contain **no project-specific content**. Initium owns them completely.
 Updates are applied automatically by `sync-initium.sh`.
 
 Examples:
@@ -44,23 +44,23 @@ If you have project-specific additions, keep them in a separate file.
 
 ### `merge_required` — Review and cherry-pick
 
-These files are a **mix of skeleton base content and your customizations**.
+These files are a **mix of Initium base content and your customizations**.
 The sync script shows you a diff and lets you decide what to adopt.
 
 | File | Why merge is needed |
 |------|---------------------|
-| `.continue/config.yaml` | You've added API keys and activated skills; skeleton adds new skills/commands |
-| `.cursor/mcp.json` | You've enabled servers; skeleton adds new server entries |
-| `.claude/settings.json` | You may have added permissions; skeleton adds hook entries |
-| `.github/workflows/ci.yml` | Your stack's CI steps; skeleton fixes or adds generic steps |
-| `docs/ai-workflow.md` | Your project workflow notes; skeleton adds new command references |
-| `docs/onboarding.md` | Your project-specific setup; skeleton adds new sections |
-| `.gitignore` | Your project ignores; skeleton adds new generated-file patterns |
+| `.continue/config.yaml` | You've added API keys and activated skills; Initium adds new skills/commands |
+| `.cursor/mcp.json` | You've enabled servers; Initium adds new server entries |
+| `.claude/settings.json` | You may have added permissions; Initium adds hook entries |
+| `.github/workflows/ci.yml` | Your stack's CI steps; Initium fixes or adds generic steps |
+| `docs/ai-workflow.md` | Your project workflow notes; Initium adds new command references |
+| `docs/onboarding.md` | Your project-specific setup; Initium adds new sections |
+| `.gitignore` | Your project ignores; Initium adds new generated-file patterns |
 
 ### `project_owned` — Never overwrite
 
 These files are **entirely yours**. The sync script skips them and only reports
-if the skeleton template was updated (so you can read the new guidance):
+if Initium was updated (so you can read the new guidance):
 
 - `CLAUDE.md` — your project's coding conventions and architecture
 - `agent.config.yaml` — your JIRA connection, team settings
@@ -122,13 +122,13 @@ scripts\sync-initium.cmd --check
 ### Option 3: Manual (when you need full control)
 
 ```bash
-# 1. Add skeleton as a remote (first time only)
-git remote add skeleton https://github.com/org/ai-native-skeleton.git
+# 1. Add Initium as a remote (first time only)
+git remote add skeleton https://github.com/mehmet-yildirim/Initium.git
 
 # 2. Fetch latest
 git fetch skeleton
 
-# 3. Apply a specific file from the skeleton
+# 3. Apply a specific file from Initium
 git show skeleton/main:.claude/commands/loop.md > .claude/commands/loop.md
 
 # 4. Apply an entire directory of skeleton-owned files
@@ -150,13 +150,13 @@ git diff skeleton/main:.continue/config.yaml .continue/config.yaml
 
 | Trigger | Frequency | Priority |
 |---------|-----------|----------|
-| Skeleton releases a new version | Within one sprint of release | High |
+| Initium releases a new version | Within one sprint of release | High |
 | New skill added (language/framework your team uses) | When you start using that tech | Medium |
 | Security patch in skill rules | Within a week | High |
 | New slash command added | As convenient | Low |
 | Check for updates | Every sprint | — |
 
-Subscribe to the skeleton repository to get notified of new releases:
+Subscribe to the Initium repository to get notified of new releases:
 `GitHub → Watch → Custom → Releases`
 
 ---
@@ -165,9 +165,9 @@ Subscribe to the skeleton repository to get notified of new releases:
 
 ### `.continue/config.yaml`
 
-The skeleton adds new skill sections. Your version has API keys and activated skills.
+Initium adds new skill sections. Your version has API keys and activated skills.
 
-**What to take from skeleton:**
+**What to take from Initium:**
 ```yaml
 # Look for new section blocks like:
 # --- Documentation skills ---
@@ -185,14 +185,14 @@ The skeleton adds new skill sections. Your version has API keys and activated sk
 **Merge command:**
 ```bash
 # Open side-by-side
-vimdiff .continue/config.yaml <(git show skeleton/main:.continue/config.yaml)
+vimdiff .continue/config.yaml <(git show skeleton/main:.continue/config.yaml)  # 'skeleton' is the git remote name
 ```
 
 ### `.cursor/mcp.json`
 
-The skeleton adds new MCP server entries (always disabled by default).
+Initium adds new MCP server entries (always disabled by default).
 
-**What to take from skeleton:**
+**What to take from Initium:**
 - New server entries like `jira`, `linear`, `slack`, `sentry`
 - Updated configurations for existing servers
 
@@ -202,9 +202,9 @@ The skeleton adds new MCP server entries (always disabled by default).
 
 ### `.github/workflows/ci.yml`
 
-The skeleton improves the generic CI skeleton. Your version has stack-specific steps.
+Initium improves the generic CI template. Your version has stack-specific steps.
 
-**What to take from skeleton:**
+**What to take from Initium:**
 - New generic job patterns
 - Fixed concurrency or caching configurations
 
@@ -214,14 +214,14 @@ The skeleton improves the generic CI skeleton. Your version has stack-specific s
 
 ---
 
-## Tracking Which Skeleton Version You're On
+## Tracking Which Initium Version You're On
 
 After each sync, `initium.json` is updated:
 
 ```json
 {
   "skeleton": {
-    "repository": "https://github.com/org/ai-native-skeleton",
+    "repository": "https://github.com/mehmet-yildirim/Initium",
     "version": "1.2.0",
     "commit": "abc1234def567",
     "syncedAt": "2024-06-15"
@@ -230,18 +230,18 @@ After each sync, `initium.json` is updated:
 ```
 
 Commit `initium.json` after every sync so your team can see when the project was last
-updated and from which skeleton version.
+updated and from which Initium version.
 
 ---
 
 ## Handling Conflicts
 
-### When skeleton changes a file your team also changed
+### When Initium changes a file your team also changed
 
 This can happen with `merge_required` files. Resolution order:
 
-1. **Use skeleton version** if your changes are minor or the skeleton's improvement is significant
-2. **Keep your version** if the file is heavily customised and the skeleton change is minor
+1. **Use Initium version** if your changes are minor or Initium's improvement is significant
+2. **Keep your version** if the file is heavily customised and the Initium change is minor
 3. **Cherry-pick** specific lines using a diff tool if both have valuable changes
 
 ### When a skeleton_owned file was customised locally
@@ -259,24 +259,24 @@ to a skill rule), the sync will overwrite it. Solutions:
 Edit `initium.json` → `fileOwnership.merge_required` to add your file.
 The sync script will then prompt before overwriting.
 
-### When a skeleton file is removed
+### When an Initium file is removed
 
 The sync script warns you: "REMOVED in skeleton: `<file>`"
 Review whether to also remove it from your project (usually yes).
 
 ---
 
-## Keeping Your Own Skeleton Fork
+## Keeping Your Own Initium Fork
 
-If your organization maintains a private fork of this skeleton with company-wide defaults:
+If your organization maintains a private fork of Initium with company-wide defaults:
 
-1. Fork the skeleton repo into your org
+1. Fork the Initium repo into your org
 2. Apply your company-wide customizations to the fork
 3. In each project, set `skeleton.repository` to your fork URL
-4. The sync script will pull from your fork, not the public skeleton
+4. The sync script will pull from your fork, not the public Initium
 
 This lets you add company standards (internal tools, compliance rules, house style)
-to the skeleton while still pulling upstream improvements via your fork.
+to Initium while still pulling upstream improvements via your fork.
 
 ---
 
@@ -297,7 +297,7 @@ Yes: `git show skeleton/main:.claude/commands/loop.md > .claude/commands/loop.md
 `git diff HEAD` shows what changed. `git checkout HEAD -- <files>` restores any file.
 Or `git stash` before sync to have a quick escape hatch.
 
-**Q: What if the skeleton validator count increases after sync?**
-New files were added to the skeleton. The updated validator checks for them.
+**Q: What if the Initium validator count increases after sync?**
+New files were added to Initium. The updated validator checks for them.
 Run `bash scripts/validate-ai-config.sh` — any FAILs indicate missing new files.
 The sync should have applied them; if not, apply manually.

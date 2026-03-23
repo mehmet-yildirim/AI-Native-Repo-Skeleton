@@ -1,6 +1,6 @@
 # Initium
 
-A production-ready skeleton for **AI-Native agentic development** — from interactive human-guided coding all the way to a fully autonomous agent that pulls work from JIRA, validates domain relevance, and delivers Pull Requests without manual intervention.
+A production-ready starter for **AI-Native agentic development** — from interactive human-guided coding all the way to a fully autonomous agent that pulls work from JIRA, validates domain relevance, and delivers Pull Requests without manual intervention.
 
 Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Claude Code](https://claude.ai/code) out of the box.
 
@@ -16,8 +16,8 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 base rules + 22 skill rules (auto-activate by file type) + shared slash commands |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
-| **GitHub** | `.github/` | PR template, issue templates, CI workflow skeleton |
-| **Skeleton sync** | `initium.json`, `scripts/sync-initium.{sh,ps1,bat}` | Pull improvements from upstream skeleton without overwriting customizations |
+| **GitHub** | `.github/` | PR template, issue templates, CI workflow template |
+| **Initium sync** | `initium.json`, `scripts/sync-initium.{sh,ps1,bat}` | Pull improvements from upstream Initium without overwriting customizations |
 
 ---
 
@@ -64,7 +64,7 @@ After setup, code with the AI loop:
 | `docs/context/tech-stack.md` | AI-generated from confirmed stack |
 | `docs/context/domain-boundaries.md` | AI-generated — **critical for autonomous agent** |
 | `docs/context/domain-glossary.md` | AI-generated from domain analysis |
-| `docs/architecture/overview.md` | AI-generated architecture skeleton |
+| `docs/architecture/overview.md` | AI-generated architecture template |
 | `agent.config.yaml` | Wizard fills IDs; `/init agent:` fills tracker keys |
 | `.github/workflows/ci.yml` | `/init ci:` generates per detected stack |
 
@@ -82,8 +82,8 @@ After setup, code with the AI loop:
 .
 ├── CLAUDE.md                           # ← CUSTOMIZE — project instructions for Claude Code
 ├── agent.config.yaml                   # ← CUSTOMIZE — autonomous agent configuration
-├── initium.json                       # Tracks which skeleton version this project is based on
-├── INITIUM-UPDATES.md                 # Migration notes for skeleton upgrades
+├── initium.json                       # Tracks which Initium version this project is based on
+├── INITIUM-UPDATES.md                 # Migration notes for Initium upgrades
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
@@ -110,7 +110,7 @@ After setup, code with the AI loop:
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG from git history
 │   │   ├── doc-schema.md               # /doc-schema — database ERD + table reference
 │   │   ├── standup.md                  # /standup
-│   │   ├── sync-initium.md            # /sync-initium — apply upstream skeleton updates
+│   │   ├── sync-initium.md            # /sync-initium — apply upstream Initium updates
 │   │   ├── triage.md                   # /triage        ← autonomous agent
 │   │   ├── groom.md                    # /groom         ← autonomous agent
 │   │   ├── loop.md                     # /loop          ← autonomous agent
@@ -149,13 +149,13 @@ After setup, code with the AI loop:
 ├── .github/
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   ├── ISSUE_TEMPLATE/
-│   └── workflows/ci.yml               # CI skeleton — adapt for your stack
+│   └── workflows/ci.yml               # CI template — adapt for your stack
 │
 ├── docs/
 │   ├── ai-workflow.md                 # AI-Native development workflow (English)
 │   ├── ai-workflow.tr.md              # AI-Native development workflow (Turkish)
 │   ├── onboarding.md                  # New developer guide
-│   ├── initium-sync.md               # How to sync skeleton updates into your project
+│   ├── initium-sync.md               # How to sync Initium updates into your project
 │   ├── context/                       # ← CUSTOMIZE — AI context for tools and agent
 │   │   ├── project-brief.md
 │   │   ├── tech-stack.md
@@ -195,7 +195,7 @@ After setup, code with the AI loop:
     ├── setup.{sh,bat,ps1}            # Step 1 — initialize project
     ├── init.{sh,bat,ps1}             # Step 2 — interactive configuration wizard
     ├── validate-ai-config.{sh,bat,ps1}  # 128-point configuration validator
-    └── sync-initium.{sh,ps1,bat}    # Pull upstream skeleton improvements
+    └── sync-initium.{sh,ps1,bat}    # Pull upstream Initium improvements
 ```
 
 ---
@@ -265,13 +265,13 @@ After setup, code with the AI loop:
 | `/loop <task-id>` | Full autonomous loop: design → implement → docs → QA → security → PR → deploy |
 | `/escalate <sev> <trigger> <id>` | Structured human notification with Slack/GitHub/email routing |
 
-### Skeleton Maintenance
+### Initium Maintenance
 
 | Command | Purpose |
 |---------|---------|
-| `/sync-initium` | Pull improvements from the upstream skeleton into this project |
+| `/sync-initium` | Pull improvements from upstream Initium into this project |
 | `/sync-initium --dry-run` | Preview what would change without applying anything |
-| `/sync-initium --check` | Check if a skeleton update is available |
+| `/sync-initium --check` | Check if an Initium update is available |
 
 ---
 
@@ -347,7 +347,7 @@ Configured in `.cursor/mcp.json`. Enable a server: remove `"disabled": true` and
 
 ## Keeping Your Project Up to Date
 
-When the skeleton receives improvements (new commands, updated skill rules, security fixes):
+When Initium receives improvements (new commands, updated skill rules, security fixes):
 
 ```bash
 # macOS / Linux / Git Bash
@@ -371,7 +371,7 @@ scripts\sync-initium.cmd --check
 ```
 
 The sync script uses `initium.json` to classify every file:
-- **skeleton-owned** (commands, skill rules, agent docs) → auto-applied safely
+- **Initium-owned** (commands, skill rules, agent docs) → auto-applied safely
 - **merge-required** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → shown as diff, you decide
 - **project-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → never touched
 
@@ -400,10 +400,10 @@ See [docs/initium-sync.md](docs/initium-sync.md) for the full guide, including m
 | [docs/team.tr.md](docs/team.tr.md) | Ekip rolleri ve optimizasyon kılavuzu (Türkçe) |
 | [docs/onboarding.md](docs/onboarding.md) | New developer setup guide |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
-| [docs/initium-sync.md](docs/initium-sync.md) | How to apply skeleton updates to your project |
+| [docs/initium-sync.md](docs/initium-sync.md) | How to apply Initium updates to your project |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Security evaluation architecture |
 | [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Documentation generation tools and pipeline |
 | [skills/README.md](skills/README.md) | Complete skills index and activation guide |
-| [INITIUM-UPDATES.md](INITIUM-UPDATES.md) | Changelog for skeleton versions |
+| [INITIUM-UPDATES.md](INITIUM-UPDATES.md) | Changelog for Initium versions |

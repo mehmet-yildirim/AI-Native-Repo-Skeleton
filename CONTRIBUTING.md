@@ -1,13 +1,13 @@
 # Contributing to Initium
 
-This guide is for contributors who want to improve the **skeleton itself** — the rules, skills, prompts, scripts, and documentation that ship with this template. If you are customizing the skeleton for your own project, see the [README](README.md) and [docs/ai-workflow.md](docs/ai-workflow.md) instead.
+This guide is for contributors who want to improve **Initium itself** — the rules, skills, prompts, scripts, and documentation that ship with this template. If you are customizing Initium for your own project, see the [README](README.md) and [docs/ai-workflow.md](docs/ai-workflow.md) instead.
 
 ## Who This Is For
 
 - Adding or improving skill files (language, framework, DevOps)
 - Updating rules, prompts, or slash commands
 - Improving documentation, scripts, or CI configuration
-- Fixing bugs or gaps in the skeleton
+- Fixing bugs or gaps in Initium
 
 ## Repo Setup
 

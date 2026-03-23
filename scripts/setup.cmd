@@ -2,7 +2,7 @@
 :: =============================================================================
 :: Initium -- Project Setup Script (Windows Batch)
 :: =============================================================================
-:: Run this once after cloning the skeleton to initialize your project.
+:: Run this once after cloning Initium to initialize your project.
 :: No special permissions required -- runs on any Windows system.
 ::
 :: Usage:
@@ -33,13 +33,13 @@ if not exist ".git\" (
 )
 
 :: ---------------------------------------------------------------------------
-:: 2. Remove skeleton remote origin (if inherited from clone)
+:: 2. Remove Initium remote origin (if inherited from clone)
 :: ---------------------------------------------------------------------------
 for /f "delims=" %%R in ('git remote get-url origin 2^>nul') do set "REMOTE_URL=%%R"
 if defined REMOTE_URL (
     echo !REMOTE_URL! | findstr /c:"Initium" >nul 2>&1
     if not errorlevel 1 (
-        echo [WARN] Removing skeleton remote origin: !REMOTE_URL!
+        echo [WARN] Removing Initium remote origin: !REMOTE_URL!
         git remote remove origin
         echo [OK]   Removed. Add your own with: git remote add origin ^<url^>
     )

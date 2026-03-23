@@ -1,4 +1,4 @@
-Initialize this project from the skeleton by populating all TODO placeholder files based on the provided description.
+Initialize this project from Initium by populating all TODO placeholder files based on the provided description.
 
 This command accepts either a **full project description** (populates everything at once) or a
 **targeted scope keyword** followed by the relevant details (populates only that section).

@@ -17,7 +17,7 @@
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
-| **İskelet senkronizasyonu** | `initium.json`, `scripts/sync-initium.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan iskelet güncellemelerini projelerinize aktarma |
+| **Initium senkronizasyonu** | `initium.json`, `scripts/sync-initium.{sh,ps1,bat}` | Özelleştirmelerin üzerine yazmadan Initium güncellemelerini projelerinize aktarma |
 
 ---
 
@@ -64,7 +64,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 | `docs/context/tech-stack.md` | Onaylanan yığından AI tarafından üretilir |
 | `docs/context/domain-boundaries.md` | AI tarafından üretilir — **otonom ajan için kritik** |
 | `docs/context/domain-glossary.md` | Domain analizinden AI tarafından üretilir |
-| `docs/architecture/overview.md` | AI tarafından üretilen mimari iskeleti |
+| `docs/architecture/overview.md` | AI tarafından üretilen mimari şablonu |
 | `agent.config.yaml` | Sihirbaz kimlikleri; `/init agent:` tracker anahtarlarını doldurur |
 | `.github/workflows/ci.yml` | `/init ci:` yığına göre üretir |
 
@@ -82,8 +82,8 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 .
 ├── CLAUDE.md                           # ← DÜZENLE — Claude Code proje talimatları
 ├── agent.config.yaml                   # ← DÜZENLE — otonom ajan yapılandırması
-├── initium.json                       # Bu projenin hangi iskelet sürümünü baz aldığını takip eder
-├── INITIUM-UPDATES.md                 # İskelet yükseltmeleri için taşıma notları
+├── initium.json                       # Bu projenin hangi Initium sürümünü baz aldığını takip eder
+├── INITIUM-UPDATES.md                 # Initium yükseltmeleri için taşıma notları
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
@@ -95,7 +95,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │   │   ├── doc-site.md                 # /doc-site — belgelendirme sitesi
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG üretimi
 │   │   ├── doc-schema.md               # /doc-schema — veritabanı ERD + tablo referansı
-│   │   ├── sync-initium.md            # /sync-initium — iskelet güncellemelerini uygula
+│   │   ├── sync-initium.md            # /sync-initium — Initium güncellemelerini uygula
 │   │   ├── triage.md                   # /triage  ← otonom ajan
 │   │   ├── groom.md                    # /groom   ← otonom ajan
 │   │   ├── loop.md                     # /loop    ← otonom ajan
@@ -117,7 +117,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── docs/
 │   ├── ai-workflow.md / .tr.md        # AI iş akışı rehberi (İngilizce / Türkçe)
 │   ├── onboarding.md                  # Yeni geliştirici kılavuzu
-│   ├── initium-sync.md               # İskelet güncellemelerini projeye aktarma rehberi
+│   ├── initium-sync.md               # Initium güncellemelerini projeye aktarma rehberi
 │   ├── context/                       # ← TÜMÜNÜ DÜZENLE (AI bağlamı + ajan kapsamı)
 │   ├── architecture/                  # ← DÜZENLE + ADR'ler
 │   ├── agent/                         # Otonom ajan belgeleri (iş akışı, eskalasyon, güvenlik, belgelendirme…)
@@ -172,7 +172,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 | `/test` | Kapsamlı testler üret (mutlu yol + kenar + hata) | Her modül için |
 | `/debug` | Sistematik teşhis: hipotez → düzeltme → önleme | Takıldığında |
 | `/deploy` | Deployment öncesi kontrol listesi + izleme planı | Her deployment |
-| `/infra <platform>` | AWS / GCP / şirket içi için Terraform / K8s iskeleti | Yeni deployment hedefi |
+| `/infra <platform>` | AWS / GCP / şirket içi için Terraform / K8s şablonu | Yeni deployment hedefi |
 | `/migrate` | Güvenli DB migrasyonu: Expand-Contract + toplu + geri alma | Şema değişiklikleri |
 | `/db <alt-komut>` | DB yaşam döngüsü: `init`, `create`, `dml`, `seed`, `status`, `diff` | DB yönetimi |
 | `/sprint` | Sprint planlaması: kapasite + backlog + görevler + risk kaydı | Sprint başlangıcı |
@@ -201,9 +201,9 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 
 | Komut | Amaç |
 |-------|------|
-| `/sync-initium` | Üst iskelet yeni geliştirmelerini bu projeye aktar |
+| `/sync-initium` | Initium yeni geliştirmelerini bu projeye aktar |
 | `/sync-initium --dry-run` | Herhangi bir şeyi uygulamadan neyin değişeceğini önizle |
-| `/sync-initium --check` | İskelet güncellemesi mevcut mu kontrol et |
+| `/sync-initium --check` | Initium güncellemesi mevcut mu kontrol et |
 
 ---
 
@@ -284,7 +284,7 @@ Initium yeni komutlar, güncellenmiş beceri kuralları veya güvenlik düzeltme
 ```bash
 # macOS / Linux / Git Bash
 bash scripts/sync-initium.sh          # etkileşimli: diff gösterir, güvenli dosyaları otomatik uygular
-bash scripts/sync-initium.sh --auto   # etkileşimsiz: tüm iskelet-owned dosyaları uygula
+bash scripts/sync-initium.sh --auto   # etkileşimsiz: tüm Initium-owned dosyaları uygula
 bash scripts/sync-initium.sh --check  # sadece güncelleme mevcut mu kontrol et
 ```
 
@@ -303,7 +303,7 @@ scripts\sync-initium.cmd --check
 ```
 
 Senkronizasyon betiği `initium.json` kullanarak her dosyayı sınıflandırır:
-- **iskelet-owned** (komutlar, beceri kuralları, ajan belgeleri) → güvenle otomatik uygulanır
+- **Initium-owned** (komutlar, beceri kuralları, ajan belgeleri) → güvenle otomatik uygulanır
 - **birleştirme gerekli** (`.continue/config.yaml`, `mcp.json`, `ci.yml`) → diff olarak gösterilir, sen karar verirsin
 - **proje-owned** (`CLAUDE.md`, `docs/context/`, `agent.config.yaml`) → asla dokunulmaz
 
@@ -331,10 +331,10 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [docs/initium-sy
 | [docs/team.tr.md](docs/team.tr.md) | AI-native geliştirme için ekip rolleri, yapısı ve optimizasyonu |
 | [docs/onboarding.md](docs/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
 | [docs/onboarding.tr.md](docs/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
-| [docs/initium-sync.md](docs/initium-sync.md) | İskelet güncellemelerini projeye aktarma |
+| [docs/initium-sync.md](docs/initium-sync.md) | Initium güncellemelerini projeye aktarma |
 | [docs/agent/autonomous-workflow.md](docs/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
 | [docs/agent/jira-server-setup.md](docs/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
 | [docs/agent/security-evaluator.md](docs/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
 | [docs/agent/documentation-agent.md](docs/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
 | [skills/README.md](skills/README.md) | Tam beceri indeksi ve aktivasyon kılavuzu |
-| [INITIUM-UPDATES.md](INITIUM-UPDATES.md) | İskelet sürümleri için değişiklik kaydı |
+| [INITIUM-UPDATES.md](INITIUM-UPDATES.md) | Initium sürümleri için değişiklik kaydı |

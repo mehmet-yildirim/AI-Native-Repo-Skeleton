@@ -1,14 +1,14 @@
-# Skeleton Updates — Migration Guide
+# Initium Updates — Migration Guide
 
 This file documents every breaking and notable change to Initium
-so that projects derived from the skeleton can apply updates selectively.
+so that projects derived from Initium can apply updates selectively.
 
-When the skeleton is updated, add an entry here **before** tagging a new version.
+When Initium is updated, add an entry here **before** tagging a new version.
 Derived projects reference this file to decide what to apply.
 
 ---
 
-## How to Apply Skeleton Updates to Your Project
+## How to Apply Initium Updates to Your Project
 
 ```bash
 # One command — handles classification, diff, and selective application
@@ -75,7 +75,7 @@ Windows command script rather than a legacy DOS batch file.
 ### Migration
 If you already have the old `.bat` files in your derived project:
 1. Rename them to `.cmd` (or re-run `scripts/sync-initium.cmd` after
-   adding the new files from the skeleton).
+   adding the new files from Initium).
 2. Update any scripts or CI steps that invoke the old `.bat` names.
 
 ---
@@ -276,7 +276,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 **Severity:** MINOR
 
 ### Updated Files (skeleton-owned — auto-applied)
-- `scripts/sync-initium.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to the skeleton whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
+- `scripts/sync-initium.sh` — Added "Adding Missing Skeleton-Owned Files" pass after the normal update loop. For each file in `skeleton_owned`, if it does not exist locally it is fetched and created. This handles new files added to Initium whose content hasn't changed since the last sync commit (so they wouldn't appear in `git diff --name-only`), as well as files accidentally deleted from the derived project.
 
 ---
 
@@ -397,7 +397,7 @@ All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted.
 
 ### Merge-Required Files (developer must review)
 - `.continue/config.yaml` — New skill entries added; merge with your model config
-  **How:** Compare skeleton version with yours; add new skill lines only
+  **How:** Compare Initium version with yours; add new skill lines only
 
 ### Removed Files
 - `old-file.md` — removed because...

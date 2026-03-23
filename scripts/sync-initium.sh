@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # =============================================================================
-# sync-initium.sh — Apply skeleton updates to your derived project
+# sync-initium.sh — Apply Initium updates to your derived project
 # =============================================================================
-# Run this when the AI-Native skeleton has been updated and you want to
+# Run this when Initium has been updated and you want to
 # pull in improvements without overwriting your project-specific files.
 #
 # Usage:
@@ -12,7 +12,7 @@
 #   bash scripts/sync-initium.sh --check          # Just report version status, exit
 #
 # What it does:
-#   1. Fetches the skeleton repo (adds as 'skeleton' remote if needed)
+#   1. Fetches the Initium repo (adds as 'skeleton' remote if needed)
 #   2. Reads initium.json to classify every file by ownership
 #   3. For skeleton_owned files  → auto-applies (safe overwrite)
 #   4. For merge_required files  → shows diff, asks you to confirm each
@@ -103,17 +103,17 @@ SKELETON_REPO=$(grep '"repository"'  "$SKELETON_JSON" | sed 's/.*"repository": *
 CURRENT_COMMIT=$(grep '"commit"'     "$SKELETON_JSON" | sed 's/.*"commit": *"\([^"]*\)".*/\1/')
 CURRENT_SYNCED=$(grep '"syncedAt"'   "$SKELETON_JSON" | sed 's/.*"syncedAt": *"\([^"]*\)".*/\1/')
 
-info "Skeleton repo  : $SKELETON_REPO"
+info "Initium repo   : $SKELETON_REPO"
 info "Last synced at : $CURRENT_SYNCED"
 info "Last sync SHA  : $CURRENT_COMMIT"
 
 # ---------------------------------------------------------------------------
-# Set up skeleton remote
+# Set up Initium remote
 # ---------------------------------------------------------------------------
-heading "Connecting to Skeleton Repository"
+heading "Connecting to Initium Repository"
 
 if ! git remote get-url "$SKELETON_REMOTE" &>/dev/null; then
-  info "Adding skeleton remote: $SKELETON_REPO"
+  info "Adding Initium remote: $SKELETON_REPO"
   git remote add "$SKELETON_REMOTE" "$SKELETON_REPO"
 else
   EXISTING_URL=$(git remote get-url "$SKELETON_REMOTE")
@@ -127,16 +127,16 @@ else
   fi
 fi
 
-info "Fetching skeleton..."
+info "Fetching Initium..."
 git fetch "$SKELETON_REMOTE" --quiet
 LATEST_COMMIT=$(git rev-parse "$SKELETON_REMOTE/main")
 LATEST_SHORT=$(git rev-parse --short "$SKELETON_REMOTE/main")
 
-success "Latest skeleton commit: $LATEST_SHORT"
+success "Latest Initium commit: $LATEST_SHORT"
 
 # Compare versions
 if [ "$CURRENT_COMMIT" = "$LATEST_COMMIT" ]; then
-  success "Already up to date — skeleton commit matches your last sync."
+  success "Already up to date — Initium commit matches your last sync."
   [ "$CHECK_ONLY" = true ] && exit 0
   echo ""
   read -r -p "Force re-sync anyway? [y/N] " confirm
@@ -154,7 +154,7 @@ fi
 # ---------------------------------------------------------------------------
 # Show changelog between versions
 # ---------------------------------------------------------------------------
-heading "What Changed in the Skeleton"
+heading "What Changed in Initium"
 
 echo ""
 echo "Commits since your last sync:"
@@ -170,8 +170,8 @@ if [ "$AUTO" = false ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Read file ownership lists — always from the skeleton remote so newly
-# added files in the latest skeleton version are included, regardless of
+# Read file ownership lists — always from the Initium remote so newly
+# added files in the latest Initium version are included, regardless of
 # what the local initium.json says.
 # ---------------------------------------------------------------------------
 REMOTE_SKELETON_JSON=$(git show "$SKELETON_REMOTE/main:initium.json")
@@ -184,12 +184,12 @@ MERGE_REQUIRED=()
 while IFS= read -r line; do MERGE_REQUIRED+=("$line"); done < <(printf '%s\n' "$REMOTE_SKELETON_JSON" | _json_array "merge_required")
 
 # ---------------------------------------------------------------------------
-# Get list of changed files in skeleton since last sync
+# Get list of changed files in Initium since last sync
 # ---------------------------------------------------------------------------
 if git cat-file -e "$CURRENT_COMMIT" 2>/dev/null; then
   CHANGED_FILES=$(git diff --name-only "$CURRENT_COMMIT" "$SKELETON_REMOTE/main")
 else
-  # First sync — list every file tracked in the skeleton tree
+  # First sync — list every file tracked in the Initium tree
   CHANGED_FILES=$(git ls-tree -r --name-only "$SKELETON_REMOTE/main")
 fi
 
@@ -200,7 +200,7 @@ NEEDS_MERGE=()
 # ---------------------------------------------------------------------------
 # Apply skeleton_owned files
 # ---------------------------------------------------------------------------
-heading "Applying Skeleton-Owned Files (safe overwrite)"
+heading "Applying Initium-Owned Files (safe overwrite)"
 
 for file in $CHANGED_FILES; do
   # Check if this file is skeleton_owned
@@ -217,9 +217,9 @@ for file in $CHANGED_FILES; do
     continue
   fi
 
-  # Check if file exists in skeleton
+  # Check if file exists in Initium
   if ! git show "$SKELETON_REMOTE/main:$file" &>/dev/null; then
-    warn "  REMOVED in skeleton: $file"
+    warn "  REMOVED in Initium: $file"
     if [ "$DRY_RUN" = false ] && [ "$AUTO" = true ]; then
       warn "    Leaving local copy — remove manually if no longer needed"
     fi
@@ -240,10 +240,10 @@ done
 
 # ---------------------------------------------------------------------------
 # Add skeleton_owned files that are missing locally
-# (new files added to the skeleton that don't appear in a normal diff
+# (new files added to Initium that don't appear in a normal diff
 #  because the derived project never had them, or were accidentally deleted)
 # ---------------------------------------------------------------------------
-heading "Adding Missing Skeleton-Owned Files"
+heading "Adding Missing Initium-Owned Files"
 
 ADDED_NEW=0
 for file in "${SKELETON_OWNED[@]}"; do
@@ -251,7 +251,7 @@ for file in "${SKELETON_OWNED[@]}"; do
   [[ "${file: -1}" == "/" ]] && continue
   # Skip files that already exist locally
   [ -f "$file" ] && continue
-  # Skip files that don't exist in the skeleton (e.g. stale entries)
+  # Skip files that don't exist in Initium (e.g. stale entries)
   if ! git show "$SKELETON_REMOTE/main:$file" &>/dev/null; then
     continue
   fi
@@ -270,7 +270,7 @@ for file in "${SKELETON_OWNED[@]}"; do
 done
 
 if [ "$ADDED_NEW" -eq 0 ]; then
-  info "No missing skeleton-owned files."
+  info "No missing Initium-owned files."
 fi
 
 # ---------------------------------------------------------------------------
@@ -299,10 +299,10 @@ for file in $CHANGED_FILES; do
 done
 
 if [ ${#NEEDS_MERGE[@]} -eq 0 ]; then
-  info "No merge-required files changed in this skeleton update."
+  info "No merge-required files changed in this Initium update."
 else
   echo ""
-  warn "These files changed in the skeleton but require manual merge"
+  warn "These files changed in Initium but require manual merge"
   warn "because your project has likely customised them:"
   echo ""
   for file in "${NEEDS_MERGE[@]}"; do
@@ -310,9 +310,9 @@ else
   done
   echo ""
   echo "For each file above:"
-  echo "  1. View skeleton version: git show $SKELETON_REMOTE/main:<file>"
+  echo "  1. View Initium version: git show $SKELETON_REMOTE/main:<file>"
   echo "  2. View your version: cat <file>"
-  echo "  3. Apply only the relevant new sections from the skeleton"
+  echo "  3. Apply only the relevant new sections from Initium"
   echo ""
 
   if [ "$DRY_RUN" = false ]; then
@@ -322,14 +322,14 @@ else
       echo " MERGE: $file"
       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
       echo ""
-      echo "Diff (skeleton vs your version):"
+      echo "Diff (Initium vs your version):"
       git diff "$SKELETON_REMOTE/main:$file" "$file" 2>/dev/null || \
-        echo "  [file is new in skeleton — no local version to diff]"
+        echo "  [file is new in Initium — no local version to diff]"
       echo ""
 
       if [ "$AUTO" = false ]; then
         echo "Options:"
-        echo "  a) Overwrite with skeleton version (discards your changes)"
+        echo "  a) Overwrite with Initium version (discards your changes)"
         echo "  s) Skip this file (merge manually later)"
         echo "  o) Open both in diff tool ($VISUAL or vimdiff)"
         read -r -p "Choice [a/S/o]: " choice
@@ -362,7 +362,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Report project_owned files that were changed in skeleton (informational)
+# Report project_owned files that were changed in Initium (informational)
 # ---------------------------------------------------------------------------
 PROJECT_TEMPLATE_CHANGES=()
 for file in $CHANGED_FILES; do
@@ -375,8 +375,8 @@ for file in $CHANGED_FILES; do
 done
 
 if [ ${#PROJECT_TEMPLATE_CHANGES[@]} -gt 0 ]; then
-  heading "Skeleton Template Files Changed (for your reference)"
-  warn "These project-owned files were updated in the skeleton template."
+  heading "Initium Template Files Changed (for your reference)"
+  warn "These project-owned files were updated in the Initium template."
   warn "Review them to see if new guidance applies to your project:"
   echo ""
   for file in "${PROJECT_TEMPLATE_CHANGES[@]}"; do
@@ -422,13 +422,13 @@ echo ""
 echo -e "  ${GREEN}Applied (auto)${NC}   : $APPLIED files"
 echo -e "  ${YELLOW}Skipped (manual)${NC} : $SKIPPED files — merge these manually"
 if [ ${#PROJECT_TEMPLATE_CHANGES[@]} -gt 0 ]; then
-  echo -e "  ${CYAN}Template notices${NC} : ${#PROJECT_TEMPLATE_CHANGES[@]} project-owned files changed in skeleton"
+  echo -e "  ${CYAN}Template notices${NC} : ${#PROJECT_TEMPLATE_CHANGES[@]} project-owned files changed in Initium"
 fi
 echo ""
 if [ "$DRY_RUN" = false ] && [ "$APPLIED" -gt 0 ]; then
   echo "Suggested next steps:"
   echo "  1. Review changes: git diff"
-  echo "  2. Stage and commit: git add -p && git commit -m 'chore: sync skeleton to $LATEST_SHORT'"
+  echo "  2. Stage and commit: git add -p && git commit -m 'chore: sync Initium to $LATEST_SHORT'"
   [ "$SKIPPED" -gt 0 ] && echo "  3. Merge skipped files manually, then commit"
 else
   [ "$DRY_RUN" = true ] && echo "  (Dry run — no files changed)"

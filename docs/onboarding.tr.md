@@ -157,8 +157,8 @@ claude
 /loop          — tam otonom döngü: tasarım → kod → belgelendirme → QA → PR → deployment
 /escalate      — ajan bloke olduğunda yapılandırılmış insan bildirimi
 
-# --- İskelet bakımı ---
-/sync-initium — üst iskelet yeni geliştirmelerini çek
+# --- Initium bakımı ---
+/sync-initium — üst Initium yeni geliştirmelerini çek
 ```
 
 ### Cursor

@@ -1,6 +1,6 @@
 # Team Formation Guide — AI-Native Development
 
-This guide defines how human teams should be structured and optimized when working with this AI-native skeleton. The AI tools handle boilerplate, repetition, and mechanical reasoning — the team's job is judgment, context, and oversight.
+This guide defines how human teams should be structured and optimized when working with Initium. The AI tools handle boilerplate, repetition, and mechanical reasoning — the team's job is judgment, context, and oversight.
 
 > **Turkish / Türkçe:** [docs/team.tr.md](team.tr.md) — Türkçe takım oluşturma kılavuzu
 
@@ -36,7 +36,7 @@ The ratio of senior to junior engineers shifts: **prefer senior or mid-level eng
 - Approve high-risk designs flagged by `/architect` (triggered by `risk=HIGH`)
 - Review autonomous agent PRs before merge for any structural changes
 - Maintain `CLAUDE.md` — the single source of truth for how AI agents understand this project
-- Decide when to adopt new skeleton features via `/sync-initium`
+- Decide when to adopt new Initium features via `/sync-initium`
 
 **AI-native responsibilities:**
 - Set `AGENT_APPROVE_DESIGN` on JIRA/GitHub when the autonomous agent escalates architecture decisions
@@ -90,7 +90,7 @@ The ratio of senior to junior engineers shifts: **prefer senior or mid-level eng
 
 **What they do:**
 - Keep all AI tooling running smoothly across the team
-- Run `/sync-initium` when skeleton updates are available; coordinate merging `merge_required` files with the team
+- Run `/sync-initium` when Initium updates are available; coordinate merging `merge_required` files with the team
 - Maintain `.cursor/rules/`, `.continue/rules/`, and CLAUDE.md conventions
 - Track which commands are underused or causing confusion; improve prompts or document patterns
 - Manage `.cursor/mcp.json` and `.claude/settings.json` — enable/disable MCP servers and tool permissions
@@ -101,7 +101,7 @@ The ratio of senior to junior engineers shifts: **prefer senior or mid-level eng
 **AI-native responsibilities:**
 - Monitor autonomous agent audit logs in `.agent/audit/` for unexpected behavior
 - Tune triage confidence thresholds when the agent over- or under-accepts issues
-- Review and test skeleton updates before rolling them out to the team
+- Review and test Initium updates before rolling them out to the team
 
 **TODO: Assigned to:** `<name>`
 
@@ -137,7 +137,7 @@ Clear ownership prevents the agent from proceeding without the right human appro
 | Production deployment | Tech Lead + Security Champion | `/escalate` → `AGENT_APPROVE_DEPLOY` |
 | CRITICAL security finding | Security Champion | `/escalate` → blocks deploy |
 | Merge to main (automated PR) | Any senior dev reviewer | GitHub PR review |
-| Skeleton update (merge_required files) | AI Workflow Coordinator | `/sync-initium` review |
+| Initium update (merge_required files) | AI Workflow Coordinator | `/sync-initium` review |
 | Agent abandon / reassign | Domain Owner or Tech Lead | `AGENT_REASSIGN` or `AGENT_ABANDON` |
 
 ---
@@ -163,7 +163,7 @@ Clear ownership prevents the agent from proceeding without the right human appro
 ### 7–15 people (scaled team)
 
 - Full role separation: Tech Lead, 2–3 Domain Owners, dedicated AI Workflow Coordinator (part-time), Security Champion
-- Introduce a **platform sub-team** (1–2 people) that owns the skeleton, MCP servers, and agent infrastructure
+- Introduce a **platform sub-team** (1–2 people) that owns Initium, MCP servers, and agent infrastructure
 - Each domain owner manages their area's `domain-boundaries.md` entries
 - Agent runs in full autonomous mode for accepted, low-risk issues
 - Bi-weekly architecture review meeting: Tech Lead + domain owners review agent ADRs

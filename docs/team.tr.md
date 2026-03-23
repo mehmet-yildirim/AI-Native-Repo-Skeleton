@@ -36,7 +36,7 @@ Kıdemli-acemi mühendis oranı değişir: **kıdemli veya orta seviye mühendis
 - `/architect` tarafından işaretlenen yüksek riskli tasarımları onaylar (`risk=HIGH` tetiklendiğinde)
 - Yapısal değişiklikler içeren otonom ajan PR'larını birleştirmeden önce inceler
 - `CLAUDE.md`'yi korur — AI ajanlarının projeyi nasıl anladığının tek doğru kaynağı
-- `/sync-initium` aracılığıyla yeni iskelet özelliklerinin ne zaman benimseneceğine karar verir
+- `/sync-initium` aracılığıyla yeni Initium özelliklerinin ne zaman benimseneceğine karar verir
 
 **AI-native sorumluluklar:**
 - Otonom ajan mimari kararları artırdığında JIRA/GitHub'da `AGENT_APPROVE_DESIGN` ayarlar
@@ -90,7 +90,7 @@ Kıdemli-acemi mühendis oranı değişir: **kıdemli veya orta seviye mühendis
 
 **Ne yapar:**
 - Tüm AI araçlarının takım genelinde sorunsuz çalışmasını sağlar
-- İskelet güncellemeleri mevcut olduğunda `/sync-initium` çalıştırır; `merge_required` dosyalarını takımla koordineli olarak birleştirir
+- Initium güncellemeleri mevcut olduğunda `/sync-initium` çalıştırır; `merge_required` dosyalarını takımla koordineli olarak birleştirir
 - `.cursor/rules/`, `.continue/rules/` ve CLAUDE.md kurallarını korur
 - Hangi komutların az kullanıldığını veya kafa karışıklığına yol açtığını takip eder; promptları iyileştirir veya kalıpları belgeler
 - `.cursor/mcp.json` ve `.claude/settings.json`'ı yönetir — MCP sunucularını ve araç izinlerini etkinleştirir/devre dışı bırakır
@@ -101,7 +101,7 @@ Kıdemli-acemi mühendis oranı değişir: **kıdemli veya orta seviye mühendis
 **AI-native sorumluluklar:**
 - Beklenmeyen davranışlar için `.agent/audit/` içindeki otonom ajan denetim günlüklerini izler
 - Ajan issue'ları aşırı veya yetersiz kabul ettiğinde triyaj güven eşiklerini ayarlar
-- Takıma sunmadan önce iskelet güncellemelerini inceler ve test eder
+- Takıma sunmadan önce Initium güncellemelerini inceler ve test eder
 
 **TODO: Atanan kişi:** `<isim>`
 
@@ -137,7 +137,7 @@ Net sahiplik, ajanın doğru insanın doğru kararı onaylaması olmadan ilerlem
 | Üretim dağıtımı | Teknik Lider + Güvenlik Şampiyonu | `/escalate` → `AGENT_APPROVE_DEPLOY` |
 | CRITICAL güvenlik bulgusu | Güvenlik Şampiyonu | `/escalate` → dağıtımı engeller |
 | Main'e birleştirme (otomatik PR) | Herhangi bir kıdemli geliştirici inceleyici | GitHub PR incelemesi |
-| İskelet güncellemesi (merge_required dosyalar) | AI İş Akışı Koordinatörü | `/sync-initium` incelemesi |
+| Initium güncellemesi (merge_required dosyalar) | AI İş Akışı Koordinatörü | `/sync-initium` incelemesi |
 | Ajanı terk etme / yeniden atama | Alan Sahibi veya Teknik Lider | `AGENT_REASSIGN` veya `AGENT_ABANDON` |
 
 ---
@@ -163,7 +163,7 @@ Net sahiplik, ajanın doğru insanın doğru kararı onaylaması olmadan ilerlem
 ### 7–15 kişi (ölçeklendirilmiş takım)
 
 - Tam rol ayrımı: Teknik Lider, 2–3 Alan Sahibi, özel AI İş Akışı Koordinatörü (yarı zamanlı), Güvenlik Şampiyonu
-- İskeleti, MCP sunucularını ve ajan altyapısını sahiplenen bir **platform alt takımı** (1–2 kişi) oluşturun
+- Initium'u, MCP sunucularını ve ajan altyapısını sahiplenen bir **platform alt takımı** (1–2 kişi) oluşturun
 - Her alan sahibi, alanının `domain-boundaries.md` girdilerini yönetir
 - Ajan, kabul edilen düşük riskli issue'lar için tam otonom modda çalışır
 - İki haftada bir mimari inceleme toplantısı: Teknik Lider + alan sahipleri ajan ADR'lerini inceler

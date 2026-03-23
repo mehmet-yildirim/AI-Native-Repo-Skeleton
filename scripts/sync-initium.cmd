@@ -1,6 +1,6 @@
 @echo off
 :: =============================================================================
-:: sync-initium.cmd — Apply skeleton updates to your derived project (Windows)
+:: sync-initium.cmd — Apply Initium updates to your derived project (Windows)
 :: =============================================================================
 :: Delegates to sync-initium.ps1 via PowerShell 7 (pwsh) or
 :: Windows PowerShell 5.1 (powershell.exe) — both are built into Windows.
@@ -19,7 +19,7 @@ setlocal
 :: Show help
 if /I "%~1"=="--help" (
     echo.
-    echo  sync-initium.cmd -- Apply upstream skeleton updates to this project
+    echo  sync-initium.cmd -- Apply upstream Initium updates to this project
     echo.
     echo  Usage:
     echo    scripts\sync-initium.cmd              Interactive mode
@@ -28,8 +28,8 @@ if /I "%~1"=="--help" (
     echo    scripts\sync-initium.cmd --check      Check for update availability
     echo.
     echo  What it does:
-    echo    1. Adds the upstream skeleton repo as a git remote ^(once^)
-    echo    2. Fetches latest commits from the skeleton
+    echo    1. Adds the upstream Initium repo as a git remote ^(once^)
+    echo    2. Fetches latest commits from Initium
     echo    3. skeleton_owned files  -^> applied automatically ^(safe^)
     echo    4. merge_required files  -^> shown as diff; you choose per file
     echo    5. project_owned files   -^> never touched ^(your customisations^)
@@ -43,7 +43,7 @@ if /I "%~1"=="--help" (
 
 :: Verify initium.json exists
 if not exist "initium.json" (
-    echo [ERROR] initium.json not found. Is this a skeleton-based project?
+    echo [ERROR] initium.json not found. Is this an Initium-based project?
     exit /b 1
 )
 

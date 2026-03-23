@@ -44,7 +44,7 @@ Print this reference, replacing the header with the actual project name from `CL
 
 SETUP
   /init             Populate all TODO placeholders from your project description.
-                    Run this once after cloning the skeleton.
+                    Run this once after cloning Initium.
 
 PLANNING & DESIGN
   /requirements     Decompose a raw feature idea into a structured spec.
@@ -87,7 +87,7 @@ OPERATIONS
   /triage           Score whether an issue belongs to this project's domain.
   /groom            Batch-process backlog issues through triage + requirements.
   /escalate         Raise a structured escalation when you are blocked.
-  /sync-initium    Pull the latest skeleton updates into this project.
+  /sync-initium    Pull the latest Initium updates into this project.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Typical feature workflow:
@@ -103,7 +103,7 @@ Map their situation to the correct workflow stage and print a short, numbered se
 
 | Situation | Recommended sequence |
 |-----------|---------------------|
-| Starting a brand-new project from the skeleton | `/init` → fill in `CLAUDE.md` → `/requirements` |
+| Starting a brand-new project with Initium | `/init` → fill in `CLAUDE.md` → `/requirements` |
 | Starting a new feature | `/requirements` → `/architect` → `/task plan` → `/implement` → `/qa` → `/review` |
 | Picking up an in-progress feature | `/task list` → `/task next` → `/implement <TASK-ID>` |
 | Fixing a bug | `/debug` → `/implement <fix>` → `/test` → `/qa` |
@@ -140,7 +140,7 @@ Topic → command mapping:
 | infra, terraform, kubernetes, CI | `/infra` |
 | bug, error, broken, crash | `/debug` |
 | standup, daily, progress update | `/standup` |
-| skeleton, updates, sync | `/sync-initium` |
+| Initium, updates, sync | `/sync-initium` |
 | stuck, blocked, escalate | `/escalate` |
 | sprint, planning, backlog | `/sprint` or `/groom` |
 

@@ -165,7 +165,7 @@ check_exists "docs/context/domain-boundaries.md"
 check_exists "docs/context/domain-glossary.md"
 check_exists "docs/architecture/overview.md"
 
-# --- Skeleton sync ---
+# --- Initium sync ---
 check_exists "initium.json"
 check_exists "INITIUM-UPDATES.md"
 check_exists "scripts/sync-initium.sh"

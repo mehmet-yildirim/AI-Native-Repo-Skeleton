@@ -8,7 +8,7 @@
     "releaseNotesUrl": "https://github.com/mehmet-yildirim/Initium/blob/main/INITIUM-UPDATES.md"
   },
   "fileOwnership": {
-    "_comment": "Classifies every skeleton file by who owns it. Controls sync behaviour.",
+    "_comment": "Classifies every Initium file by who owns it. Controls sync behaviour.",
     "skeleton_owned": [
       ".claude/commands/architect.md",
       ".claude/commands/db.md",

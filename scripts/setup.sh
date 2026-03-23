@@ -4,7 +4,7 @@ set -euo pipefail
 # =============================================================================
 # Initium — Project Setup Script
 # =============================================================================
-# Run this once after cloning the skeleton to initialize your project.
+# Run this once after cloning Initium to initialize your project.
 # =============================================================================
 
 CYAN='\033[0;36m'
@@ -36,14 +36,14 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 2. Remove skeleton remote origin (if inherited from clone)
+# 2. Remove Initium remote origin (if inherited from clone)
 # ---------------------------------------------------------------------------
 if git remote get-url origin &>/dev/null 2>&1; then
   REMOTE=$(git remote get-url origin)
   if [[ "$REMOTE" == *"Initium"* ]]; then
-    warn "Removing skeleton remote origin: $REMOTE"
+    warn "Removing Initium remote origin: $REMOTE"
     git remote remove origin
-    success "Removed skeleton remote. Add your own with: git remote add origin <url>"
+    success "Removed Initium remote. Add your own with: git remote add origin <url>"
   fi
 fi
 

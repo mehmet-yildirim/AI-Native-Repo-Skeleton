@@ -1,6 +1,6 @@
-Check for and apply updates from the AI-Native skeleton into this derived project.
+Check for and apply updates from Initium into this derived project.
 Preserves all project-specific customizations while pulling in improved AI rules,
-new slash commands, updated skill files, and bug fixes from the upstream skeleton.
+new slash commands, updated skill files, and bug fixes from upstream Initium.
 
 This command orchestrates the full sync: fetch → classify → apply → validate.
 
@@ -9,17 +9,17 @@ This command orchestrates the full sync: fetch → classify → apply → valida
 ## Step 1: Read Current Sync State
 
 Read `initium.json` from the project root:
-- `skeleton.repository` — the upstream skeleton URL
+- `skeleton.repository` — the upstream Initium URL
 - `skeleton.commit` — the commit this project last synced from
 - `skeleton.syncedAt` — when the last sync ran
-- `skeleton.version` — skeleton version string
+- `skeleton.version` — Initium version string
 
-If `initium.json` doesn't exist, this project was not initialized from the skeleton
+If `initium.json` doesn't exist, this project was not initialized from Initium
 with proper tracking. Add it manually (see `docs/initium-sync.md`).
 
 ---
 
-## Step 2: Fetch Skeleton Updates
+## Step 2: Fetch Initium Updates
 
 ```bash
 # Add skeleton remote if not present
@@ -40,7 +40,7 @@ Otherwise, show the changes:
 git log --oneline "$CURRENT_COMMIT..skeleton/main"
 ```
 
-And point to `INITIUM-UPDATES.md` on the skeleton repo for the full migration guide.
+And point to `INITIUM-UPDATES.md` on the Initium repo for the full migration guide.
 
 ---
 
@@ -67,7 +67,7 @@ For each changed file, determine its category from `initium.json`.
 
 For every file in `skeleton_owned` that changed:
 ```bash
-# Extract from skeleton remote and overwrite local copy
+# Extract from Initium remote and overwrite local copy
 git show skeleton/main:<file> > <file>
 ```
 
@@ -77,7 +77,7 @@ These files are safe to overwrite because they contain no project-specific conte
 - All `docs/agent/` documentation
 - All `scripts/` utility scripts
 
-**Exception:** Check if any file in `skeleton_owned` was deleted in the skeleton.
+**Exception:** Check if any file in `skeleton_owned` was deleted in Initium.
 If so, warn the developer and ask if they want to remove it locally too.
 
 ---
@@ -91,36 +91,36 @@ git diff skeleton/main:<file> <file>
 ```
 
 For each, present three options:
-1. **Overwrite** — take the skeleton version entirely (use when you haven't customized the file)
+1. **Overwrite** — take the Initium version entirely (use when you haven't customized the file)
 2. **Diff tool** — open in your configured diff editor to cherry-pick changes
 3. **Skip** — leave as is; developer merges manually later
 
 **Key merge_required files and what to look for:**
 
 ### `.continue/config.yaml`
-Skeleton adds new skill sections and slash commands. Merge strategy:
+Initium adds new skill sections and slash commands. Merge strategy:
 - Keep your API keys and model configuration
-- Add any new `# --- X skills ---` comment blocks from the skeleton
-- Add any new slash command entries from the skeleton
+- Add any new `# --- X skills ---` comment blocks from Initium
+- Add any new slash command entries from Initium
 - Don't remove your existing uncommented skill activations
 
 ### `.cursor/mcp.json`
-Skeleton may add new MCP server entries. Merge strategy:
+Initium may add new MCP server entries. Merge strategy:
 - Keep any servers you've enabled (removed `"disabled": true`)
-- Add new skeleton server entries (they ship with `"disabled": true`)
+- Add new Initium server entries (they ship with `"disabled": true`)
 
 ### `.claude/settings.json`
-Skeleton adds new hook definitions. Merge strategy:
+Initium adds new hook definitions. Merge strategy:
 - Keep your existing permission allow/deny rules
-- Add any new hook entries from the skeleton
+- Add any new hook entries from Initium
 
 ### `.github/workflows/ci.yml`
-Skeleton may fix or add CI steps. Merge strategy:
+Initium may fix or add CI steps. Merge strategy:
 - Keep your project-specific job configurations
-- Adopt skeleton improvements to existing job structure
+- Adopt Initium improvements to existing job structure
 
 ### `docs/ai-workflow.md` and `docs/onboarding.md`
-Skeleton adds new command references. Merge strategy:
+Initium adds new command references. Merge strategy:
 - Keep your project-specific workflows and examples
 - Add new command rows to the reference tables
 - Don't overwrite project-specific notes you've added
@@ -129,11 +129,11 @@ Skeleton adds new command references. Merge strategy:
 
 ## Step 6: Report project_owned Changes (Informational)
 
-If any `project_owned` files changed in the skeleton (e.g., `CLAUDE.md` template was
+If any `project_owned` files changed in Initium (e.g., `CLAUDE.md` template was
 improved), report them as informational notices:
 
 ```
-ℹ  CLAUDE.md — skeleton template improved
+ℹ  CLAUDE.md — Initium template improved
    Review: git show skeleton/main:CLAUDE.md
    Action: Manually adopt any new guidance that applies to your project
 ```
@@ -163,7 +163,7 @@ bash scripts/validate-ai-config.sh
 ```
 
 All PASS counts should be ≥ what they were before the sync. Any new FAILs indicate
-a file that was expected by the skeleton but not applied (e.g., due to merge conflicts).
+a file that was expected by Initium but not applied (e.g., due to merge conflicts).
 
 ---
 
@@ -179,7 +179,7 @@ Sync Summary
 
 Suggested commit:
   git add -p
-  git commit -m "chore: sync skeleton to vX.Y.Z (<short-sha>)"
+  git commit -m "chore: sync Initium to vX.Y.Z (<short-sha>)"
 ```
 
 ---

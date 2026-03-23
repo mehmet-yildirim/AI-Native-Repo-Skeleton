@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Apply skeleton updates to your derived project (Windows PowerShell)
+    Apply Initium updates to your derived project (Windows PowerShell)
 
 .DESCRIPTION
-    Fetches the upstream AI-Native skeleton, classifies every changed file
+    Fetches upstream Initium, classifies every changed file
     by ownership (skeleton_owned / merge_required / project_owned), auto-applies
     safe files, and prompts for manual review on files you have customised.
 
@@ -14,7 +14,7 @@
     Show what would change; apply nothing.
 
 .PARAMETER Check
-    Report whether a skeleton update is available, then exit.
+    Report whether an Initium update is available, then exit.
 
 .EXAMPLE
     .\scripts\sync-initium.ps1
@@ -59,7 +59,7 @@ $SkeletonJson = 'initium.json'
 $SkeletonRemote = 'skeleton'
 
 if (-not (Test-Path $SkeletonJson)) {
-    Write-Err "initium.json not found. Is this a skeleton-based project?"
+    Write-Err "initium.json not found. Is this an Initium-based project?"
 }
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -95,9 +95,9 @@ Write-Info "Last synced at : $CurrentSynced"
 Write-Info "Last sync SHA  : $CurrentCommit"
 
 # ---------------------------------------------------------------------------
-# Set up skeleton remote
+# Set up Initium remote
 # ---------------------------------------------------------------------------
-Write-Heading 'Connecting to Skeleton Repository'
+Write-Heading 'Connecting to Initium Repository'
 
 $existingRemote = git remote get-url $SkeletonRemote 2>$null
 if (-not $existingRemote) {
@@ -111,18 +111,18 @@ if (-not $existingRemote) {
     }
 }
 
-Write-Info 'Fetching skeleton...'
+Write-Info 'Fetching Initium...'
 git fetch $SkeletonRemote --quiet
 $LatestCommit = (git rev-parse "$SkeletonRemote/main").Trim()
 $LatestShort  = (git rev-parse --short "$SkeletonRemote/main").Trim()
 
-Write-OK "Latest skeleton commit: $LatestShort"
+Write-OK "Latest Initium commit: $LatestShort"
 
 # ---------------------------------------------------------------------------
 # Version comparison
 # ---------------------------------------------------------------------------
 if ($CurrentCommit -eq $LatestCommit) {
-    Write-OK 'Already up to date — skeleton commit matches your last sync.'
+    Write-OK 'Already up to date — Initium commit matches your last sync.'
     if ($Check) { exit 0 }
     Write-Host ''
     if (-not (Confirm-Yes 'Force re-sync anyway?')) {
@@ -141,7 +141,7 @@ if ($Check) {
 # ---------------------------------------------------------------------------
 # Show changelog
 # ---------------------------------------------------------------------------
-Write-Heading 'What Changed in the Skeleton'
+Write-Heading 'What Changed in Initium'
 Write-Host ''
 Write-Host 'Commits since your last sync:'
 try {
@@ -168,7 +168,7 @@ if ($LASTEXITCODE -eq 0) {
     $changedFiles = (git diff --name-only $CurrentCommit "$SkeletonRemote/main") -split "`n" |
                     Where-Object { $_ -ne '' }
 } else {
-    # First sync — list every file tracked in the skeleton tree
+    # First sync — list every file tracked in the Initium tree
     $changedFiles = (git ls-tree -r --name-only "$SkeletonRemote/main") -split "`n" |
                     Where-Object { $_ -ne '' }
 }
@@ -193,15 +193,15 @@ function Test-InList {
 # ---------------------------------------------------------------------------
 # Apply skeleton_owned files
 # ---------------------------------------------------------------------------
-Write-Heading 'Applying Skeleton-Owned Files (safe overwrite)'
+Write-Heading 'Applying Initium-Owned Files (safe overwrite)'
 
 foreach ($file in $changedFiles) {
     if (-not (Test-InList $file $SkeletonOwned)) { continue }
 
-    # Check if file exists in skeleton remote
+    # Check if file exists in Initium remote
     $existsInSkeleton = git show "${SkeletonRemote}/main:$file" 2>$null
     if (-not $existsInSkeleton -and $LASTEXITCODE -ne 0) {
-        Write-Warn "  REMOVED in skeleton: $file"
+        Write-Warn "  REMOVED in Initium: $file"
         Write-Warn "    Leaving local copy — remove manually if no longer needed"
         continue
     }
@@ -233,10 +233,10 @@ foreach ($file in $changedFiles) {
 }
 
 if ($needsMerge.Count -eq 0) {
-    Write-Info 'No merge-required files changed in this skeleton update.'
+    Write-Info 'No merge-required files changed in this Initium update.'
 } else {
     Write-Host ''
-    Write-Warn 'These files changed in the skeleton but require manual merge'
+    Write-Warn 'These files changed in Initium but require manual merge'
     Write-Warn 'because your project has likely customised them:'
     Write-Host ''
     foreach ($file in $needsMerge) {
@@ -246,7 +246,7 @@ if ($needsMerge.Count -eq 0) {
     Write-Host 'For each file above:'
     Write-Host "  1. View skeleton version: git show ${SkeletonRemote}/main:<file>"
     Write-Host '  2. View your version:     Get-Content <file>'
-    Write-Host '  3. Apply only the relevant new sections from the skeleton'
+    Write-Host '  3. Apply only the relevant new sections from Initium'
     Write-Host ''
 
     if (-not $DryRun) {
@@ -256,17 +256,17 @@ if ($needsMerge.Count -eq 0) {
             Write-Host " MERGE: $file" -ForegroundColor Yellow
             Write-Host ('━' * 60)
             Write-Host ''
-            Write-Host 'Diff (skeleton vs your version):'
+            Write-Host 'Diff (Initium vs your version):'
             try {
                 git diff "${SkeletonRemote}/main:$file" $file 2>$null
             } catch {
-                Write-Host '  [file is new in skeleton — no local version to diff]'
+                Write-Host '  [file is new in Initium — no local version to diff]'
             }
             Write-Host ''
 
             if (-not $Auto) {
                 Write-Host 'Options:'
-                Write-Host '  a) Overwrite with skeleton version (discards your changes)'
+                Write-Host '  a) Overwrite with Initium version (discards your changes)'
                 Write-Host '  s) Skip this file (merge manually later)'
                 Write-Host '  c) Open side-by-side in VS Code diff'
                 $choice = Read-Host 'Choice [a/S/c]'
@@ -282,7 +282,7 @@ if ($needsMerge.Count -eq 0) {
                         $applied++
                     }
                     'c' {
-                        # Open in VS Code diff (skeleton version as left, your version as right)
+                        # Open in VS Code diff (Initium version as left, your version as right)
                         $tmpFile = [System.IO.Path]::GetTempFileName()
                         git show "${SkeletonRemote}/main:$file" | Set-Content $tmpFile -Encoding UTF8 -NoNewline
                         if (Get-Command code -ErrorAction SilentlyContinue) {
@@ -311,7 +311,7 @@ if ($needsMerge.Count -eq 0) {
 }
 
 # ---------------------------------------------------------------------------
-# Report project_owned files changed in skeleton (informational only)
+# Report project_owned files changed in Initium (informational only)
 # ---------------------------------------------------------------------------
 $projectTemplateChanges = @()
 foreach ($file in $changedFiles) {
@@ -321,8 +321,8 @@ foreach ($file in $changedFiles) {
 }
 
 if ($projectTemplateChanges.Count -gt 0) {
-    Write-Heading 'Skeleton Template Files Changed (for your reference)'
-    Write-Warn 'These project-owned files were updated in the skeleton template.'
+    Write-Heading 'Initium Template Files Changed (for your reference)'
+    Write-Warn 'These project-owned files were updated in the Initium template.'
     Write-Warn 'Review them to see if new guidance applies to your project:'
     Write-Host ''
     foreach ($file in $projectTemplateChanges) {
@@ -377,13 +377,13 @@ Write-Host ''
 Write-Host "  Applied (auto)   : $applied files" -ForegroundColor Green
 Write-Host "  Skipped (manual) : $skipped files — merge these manually" -ForegroundColor Yellow
 if ($projectTemplateChanges.Count -gt 0) {
-    Write-Host "  Template notices : $($projectTemplateChanges.Count) project-owned files changed in skeleton" -ForegroundColor Cyan
+    Write-Host "  Template notices : $($projectTemplateChanges.Count) project-owned files changed in Initium" -ForegroundColor Cyan
 }
 Write-Host ''
 if (-not $DryRun -and $applied -gt 0) {
     Write-Host 'Suggested next steps:'
     Write-Host '  1. Review changes:  git diff'
-    Write-Host "  2. Stage and commit: git add -p; git commit -m 'chore: sync skeleton to $LatestShort'"
+    Write-Host "  2. Stage and commit: git add -p; git commit -m 'chore: sync Initium to $LatestShort'"
     if ($skipped -gt 0) {
         Write-Host '  3. Merge skipped files manually, then commit'
     }
