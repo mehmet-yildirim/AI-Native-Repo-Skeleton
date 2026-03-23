@@ -166,7 +166,7 @@ claude
 1. Proje klasörünü Cursor'da aç
 2. `.cursor/rules/` içindeki kurallar dosya türüne göre otomatik yüklenir (işlem gerekmez)
 3. `.cursor/rules/skills/` içindeki beceri kuralları eşleşen dosyaları açtığında etkinleşir
-4. Prompt dosyalarını kullanmak için: sohbette `@.cursor/prompts/help.md` yazarak başla
+4. `.claude/commands/` içindeki slash komutları Cursor'da doğrudan çalışır — tam listeyi görmek için `/` yaz
 5. MCP sunucularını etkinleştir: `.cursor/mcp.json` dosyasını düzenle, `"disabled": true` satırını kaldır, env değişkenlerini `.env` dosyasına ekle
 6. Cursor ayarlarına `ANTHROPIC_API_KEY` ekle
 
@@ -337,13 +337,13 @@ Claude Code'da `/help` yaz ve durumunu sade bir dille anlat:
 /help PR açmadan önce ne yapmalıyım?
 ```
 
-Cursor'da, sohbette `@.cursor/prompts/help.md` yazıp ardından sorunuzu ekleyin.
+Cursor'da sohbette `/help` yazıp ardından sorunuzu ekleyin — `.claude/commands/` içindeki slash komutları Cursor'da doğrudan çalışır.
 
 `/help` komutu iş akışında nerede olduğunu belirleyecek, sorunuzu doğru komut(lar)a eşleyecek ve sana net bir sonraki adım verecek — hiçbir kod yazmadan.
 
 | İhtiyaç | Kaynak |
 |---------|--------|
-| Ne yapacağını bilmiyorum | Claude Code'da `/help` — veya Cursor'da `@.cursor/prompts/help.md` |
+| Ne yapacağını bilmiyorum | Claude Code veya Cursor'da `/help` |
 | Proje soruları | Slack / Teams'de `#<kanal>` |
 | AI iş akışı rehberliği | [`docs/ai-workflow.tr.md`](ai-workflow.tr.md) |
 | Otonom ajan sorunları | [`docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |

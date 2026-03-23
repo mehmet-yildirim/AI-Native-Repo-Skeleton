@@ -19,6 +19,28 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.16 — Remove .cursor/prompts/ — Cursor reads slash commands from .claude/commands/ directly
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Removed Files (skeleton-owned — auto-removed on sync)
+All 22 files under `.cursor/prompts/` (excluding `README.md`) have been deleted. Cursor reads slash commands directly from `.claude/commands/`, making the prompt files redundant duplicates. **~2,900 lines of duplicated content eliminated.**
+
+### Updated Files (merge-required — review before applying)
+- `.cursor/prompts/README.md` — Rewritten to explain that Cursor uses `.claude/commands/` directly.
+- `README.md` — Updated Cursor row in the tool table; updated `/help` tip.
+- `README.tr.md` — Same in Turkish.
+- `docs/onboarding.md` — Updated Cursor setup step 4; updated `/help` references.
+- `docs/onboarding.tr.md` — Same in Turkish.
+
+### Migration notes
+- **Derived projects:** Delete all files in `.cursor/prompts/` except `README.md`. No functionality is lost — `/implement`, `/debug`, `/qa`, etc. continue to work in Cursor via `.claude/commands/`.
+- If you have customized any `.cursor/prompts/*.md` files, migrate those customizations to the corresponding `.claude/commands/*.md` file instead.
+
+---
+
 ## v1.0.15 — Reduce token usage across CLAUDE.md and command files
 
 **Date:** 2026-03-23

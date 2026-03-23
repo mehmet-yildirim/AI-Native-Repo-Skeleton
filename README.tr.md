@@ -13,7 +13,7 @@
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 27 slash komutu, olay hook'ları |
-| **Cursor** | `.cursor/rules/`, `.cursor/prompts/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + prompt dosyaları |
+| **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + paylaşılan slash komutları |
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
@@ -48,7 +48,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 /requirements <ilk özelliğin>   →  /architect  →  /task plan  →  /implement  →  /qa  →  /deploy
 ```
 
-> **Projeye yeni misiniz veya ne yapacağınızdan emin değil misiniz?** Claude Code'da `/help` yazın (ya da Cursor'da `@.cursor/prompts/help.md` kullanın) — AI sizi durumunuza uygun komuta yönlendirir.
+> **Projeye yeni misiniz veya ne yapacağınızdan emin değil misiniz?** Claude Code'da veya Cursor'da `/help` yazın — AI sizi durumunuza uygun komuta yönlendirir.
 
 ---
 
