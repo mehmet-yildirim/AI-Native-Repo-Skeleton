@@ -27,11 +27,11 @@ if /I "%~1"=="--help" (
     echo    scripts\sync-skeleton.bat --check      Check for update availability
     echo.
     echo  What it does:
-    echo    1. Adds the upstream skeleton repo as a git remote (once)
+    echo    1. Adds the upstream skeleton repo as a git remote ^(once^)
     echo    2. Fetches latest commits from the skeleton
-    echo    3. skeleton_owned files  -^> applied automatically (safe)
+    echo    3. skeleton_owned files  -^> applied automatically ^(safe^)
     echo    4. merge_required files  -^> shown as diff; you choose per file
-    echo    5. project_owned files   -^> never touched (your customisations)
+    echo    5. project_owned files   -^> never touched ^(your customisations^)
     echo    6. Updates skeleton.json with the new version and commit SHA
     echo.
     echo  File ownership is defined in skeleton.json at the repo root.
@@ -76,21 +76,22 @@ if not exist "%PS_SCRIPT%" (
 )
 
 :: Attempt 1: PowerShell 7+ (pwsh)
+:: Use goto instead of if (...) so that %errorlevel% after pwsh is captured correctly.
 where pwsh >nul 2>&1
-if not errorlevel 1 (
-    echo [INFO]  Using PowerShell 7 (pwsh)
-    pwsh -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%"%PS_ARGS%
-    exit /b %errorlevel%
-)
+if errorlevel 1 goto try_ps51
+echo [INFO]  Using PowerShell 7 ^(pwsh^)
+pwsh -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" %PS_ARGS%
+exit /b %errorlevel%
 
+:try_ps51
 :: Attempt 2: Windows PowerShell 5.1 (powershell)
 where powershell >nul 2>&1
-if not errorlevel 1 (
-    echo [INFO]  Using Windows PowerShell 5.1
-    powershell -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%"%PS_ARGS%
-    exit /b %errorlevel%
-)
+if errorlevel 1 goto no_ps
+echo [INFO]  Using Windows PowerShell 5.1
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" %PS_ARGS%
+exit /b %errorlevel%
 
+:no_ps
 :: ---------------------------------------------------------------------------
 :: No PowerShell found — offer Git Bash / WSL fallback
 :: ---------------------------------------------------------------------------
@@ -99,16 +100,14 @@ echo [ERROR] PowerShell not found. Cannot run sync-skeleton.ps1.
 echo.
 echo  Alternatives:
 echo.
-echo    Option A - Git Bash (recommended):
+echo    Option A - Git Bash ^(recommended^):
 echo      Right-click folder -^> "Git Bash Here"
-echo      bash scripts/sync-skeleton.sh%PS_ARGS: -=--%
+echo      bash scripts/sync-skeleton.sh%PS_ARGS: =--%
 echo.
-echo    Option B - WSL (Windows Subsystem for Linux):
-echo      wsl bash scripts/sync-skeleton.sh%PS_ARGS: -=--%
+echo    Option B - WSL ^(Windows Subsystem for Linux^):
+echo      wsl bash scripts/sync-skeleton.sh%PS_ARGS: =--%
 echo.
-echo    Option C - Manual sync (no scripts):
+echo    Option C - Manual sync ^(no scripts^):
 echo      See docs\skeleton-sync.md for step-by-step instructions
 echo.
 exit /b 1
-
-endlocal
