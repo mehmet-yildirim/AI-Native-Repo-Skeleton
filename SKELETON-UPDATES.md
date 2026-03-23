@@ -19,6 +19,25 @@ See [docs/skeleton-sync.md](docs/skeleton-sync.md) for the full guide.
 
 ---
 
+## v1.0.15 — Reduce token usage across CLAUDE.md and command files
+
+**Date:** 2026-03-23
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### Updated Files (skeleton-owned — auto-applied)
+- `CLAUDE.md` — Removed redundant architecture constraints block (now a 3-line summary referencing `.cursor/rules/02-architecture.mdc`). Compressed verbose TODO placeholder examples. Removed empty glossary table row. **216 → 167 lines; saves ~49 tokens on every conversation turn.**
+- `.claude/commands/implement.md` — Compressed 14-line branch check block to 2 lines (CLAUDE.md already carries the full rule in context).
+- `.claude/commands/debug.md` — Same branch check compression.
+- `.cursor/prompts/implement.md` — Same branch check compression (rule is in `04-git-workflow.mdc`).
+- `.cursor/prompts/debug.md` — Same branch check compression.
+
+### Migration notes
+- **Derived projects:** Apply `CLAUDE.md` changes carefully — your filled-in project-specific content must be preserved. The architecture constraints block can be removed; replace it with the 3-line summary pointing to `.cursor/rules/02-architecture.mdc`.
+- **No behavioral change** — all rules still apply; they are now stored in one canonical location instead of being repeated in every file.
+
+---
+
 ## v1.0.14 — Add Turkish translation of team formation guide
 
 **Date:** 2026-03-15

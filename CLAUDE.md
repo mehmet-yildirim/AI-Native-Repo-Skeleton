@@ -1,53 +1,50 @@
 # CLAUDE.md — Project Instructions for Claude Code
 
-> **CUSTOMIZE THIS FILE.** Replace all placeholder sections (marked with `TODO`) with
-> your project-specific information before starting development.
+> **CUSTOMIZE THIS FILE.** Replace all `TODO` sections with project-specific information.
 
 ---
 
 ## Project Overview
 
 **Name:** TODO: Project Name
-**Type:** TODO: e.g., REST API / Web App / CLI Tool / Library
+**Type:** TODO: REST API / Web App / CLI Tool / Library
 **Purpose:** TODO: One or two sentences describing what this project does and for whom.
 
-**Primary language(s):** TODO: e.g., TypeScript, Python, Go
-**Framework(s):** TODO: e.g., Next.js 14, FastAPI, Gin
-**Runtime:** TODO: e.g., Node.js 22, Python 3.12, Go 1.23
+**Primary language(s):** TODO: e.g., TypeScript / Python / Go
+**Framework(s):** TODO: e.g., Next.js / FastAPI / Gin
+**Runtime:** TODO: e.g., Node.js 22 / Python 3.12 / Go 1.23
 
 ---
 
 ## Essential Commands
 
-Replace these with the actual commands for this project.
-
 ```bash
 # Install dependencies
-TODO: e.g., bun install / pip install -e ".[dev]" / go mod tidy
+TODO: e.g., bun install
 
-# Run development server / REPL
-TODO: e.g., bun dev / uvicorn main:app --reload / go run ./cmd/server
+# Run development server
+TODO: e.g., bun dev
 
 # Run tests
-TODO: e.g., bun test / pytest / go test ./...
+TODO: e.g., bun test
 
 # Run tests with coverage
-TODO: e.g., bun test --coverage / pytest --cov / go test -cover ./...
+TODO: e.g., bun test --coverage
 
 # Lint
-TODO: e.g., bun lint / ruff check . / golangci-lint run
+TODO: e.g., bun lint
 
 # Format
-TODO: e.g., bun format / ruff format . / gofmt -w .
+TODO: e.g., bun format
 
 # Type check
-TODO: e.g., bun typecheck / mypy . / (Go is statically typed)
+TODO: e.g., bun typecheck
 
 # Build
-TODO: e.g., bun build / python -m build / go build ./...
+TODO: e.g., bun build
 
 # Database migrations
-TODO: e.g., bun db:migrate / alembic upgrade head / goose up
+TODO: e.g., bun db:migrate
 ```
 
 ---
@@ -55,64 +52,26 @@ TODO: e.g., bun db:migrate / alembic upgrade head / goose up
 ## Repository Layout
 
 ```
-TODO: Add the key directories and files with one-line descriptions.
-Example:
-
-src/
-├── api/          # HTTP route handlers
-├── domain/       # Core business logic (no framework dependencies)
-├── infra/        # Database, cache, external service clients
-└── main.ts       # Entry point
-
-tests/
-├── unit/         # Pure function tests
-├── integration/  # Tests with real DB/services
-└── e2e/          # End-to-end tests
+TODO: List key directories and files with one-line descriptions.
 ```
 
 ---
 
 ## Architecture
 
-TODO: Describe the high-level architecture in 3–5 bullet points.
+TODO: Describe the high-level architecture (3–5 bullet points).
 
-- **Pattern:** e.g., Hexagonal / Clean / MVC / CQRS
-- **Database:** e.g., PostgreSQL with Drizzle ORM
-- **Auth:** e.g., JWT via Auth0
-- **External services:** e.g., Stripe for payments, SendGrid for email
-- **Deployment:** e.g., Docker → AWS ECS via GitHub Actions
+- **Pattern:** TODO
+- **Database:** TODO
+- **Auth:** TODO
+- **External services:** TODO
+- **Deployment:** TODO
 
 See `docs/architecture/overview.md` for the full architecture document.
 
-### Architectural Constraints (apply to all code changes)
+### Architectural Constraints
 
-**Prefer Hexagonal Architecture (Ports & Adapters) wherever applicable.**
-
-- The **domain layer** contains pure business logic — no framework dependencies, no I/O, no imports from infra or interface layers.
-- The **application layer** (use cases / services) orchestrates domain objects. It depends only on domain interfaces (ports), never on concrete infrastructure.
-- The **infrastructure layer** implements the ports defined by the domain — databases, HTTP clients, queues, file systems.
-- The **interface layer** (controllers, CLI handlers) depends only on the application layer.
-- Dependencies always point inward. Outer layers know about inner layers, never the reverse.
-
-**External integrations must use the Adapter pattern.**
-
-Wrap every external system (third-party APIs, payment gateways, email services, message brokers, etc.) behind an interface defined in the domain or application layer. The concrete implementation lives in the infrastructure layer and is injected at runtime. The domain never imports from a third-party SDK directly.
-
-**Apply suitable design patterns throughout.**
-
-Choose patterns that fit the problem:
-
-| Situation | Preferred pattern(s) |
-|-----------|---------------------|
-| External system integration | Adapter, Gateway |
-| Multiple interchangeable implementations | Strategy |
-| Object construction complexity | Factory, Builder |
-| Decoupled side effects / events | Observer, Event Bus |
-| Repeated cross-cutting logic | Decorator, Middleware |
-| Expensive resource access | Repository, Proxy |
-| Complex conditional flows | Chain of Responsibility, State |
-
-Use patterns where they reduce coupling or clarify intent — never force a pattern onto simple code.
+Prefer **Hexagonal Architecture** (Ports & Adapters). Use the **Adapter pattern** for all external integrations — never call vendor SDKs from domain or application code directly. Apply design patterns to reduce coupling. Full rules: `.cursor/rules/02-architecture.mdc`.
 
 ---
 
@@ -127,16 +86,12 @@ Use patterns where they reduce coupling or clarify intent — never force a patt
 ### Naming
 - TODO: e.g., camelCase for variables/functions, PascalCase for types/classes
 - TODO: e.g., kebab-case for file names
-- TODO: e.g., SCREAMING_SNAKE_CASE for constants
 
 ### Imports / Modules
-- TODO: e.g., Use absolute imports via `@/` alias
-- TODO: e.g., Group imports: stdlib → third-party → internal
+- TODO: e.g., absolute imports via `@/` alias; group: stdlib → third-party → internal
 
 ### Error Handling
-- TODO: e.g., Never swallow errors silently
-- TODO: e.g., Use typed error classes for domain errors
-- TODO: e.g., Return `Result<T, E>` rather than throwing in library code
+- TODO: e.g., never swallow errors silently; use typed error classes for domain errors
 
 ### Comments
 - Write comments to explain *why*, not *what*
@@ -152,7 +107,7 @@ Use patterns where they reduce coupling or clarify intent — never force a patt
 - Test file naming: TODO: e.g., `*.test.ts` co-located / `tests/test_*.py`
 - Use descriptive test names: `it('returns 404 when user does not exist')`
 - Tests must not depend on execution order
-- Mock external I/O (DB, HTTP, file system) in unit tests; use real dependencies in integration tests
+- Mock external I/O in unit tests; use real dependencies in integration tests
 
 ---
 
@@ -200,10 +155,6 @@ See `.github/PULL_REQUEST_TEMPLATE.md` for the PR checklist.
 ## Domain Glossary
 
 TODO: Define key domain terms so AI understands your business context.
-
-| Term | Meaning |
-|------|---------|
-| TODO | TODO |
 
 Full glossary: `docs/context/domain-glossary.md`
 
