@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-**Name:** TODO: Project Name
+**Name:** Initium
 **Type:** TODO: REST API / Web App / CLI Tool / Library
 **Purpose:** TODO: What this project does and for whom.
 

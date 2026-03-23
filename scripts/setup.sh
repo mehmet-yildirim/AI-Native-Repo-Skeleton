@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # =============================================================================
-# AI-Native Repo Skeleton — Project Setup Script
+# Initium — Project Setup Script
 # =============================================================================
 # Run this once after cloning the skeleton to initialize your project.
 # =============================================================================
@@ -40,7 +40,7 @@ fi
 # ---------------------------------------------------------------------------
 if git remote get-url origin &>/dev/null 2>&1; then
   REMOTE=$(git remote get-url origin)
-  if [[ "$REMOTE" == *"AI-Native-Repo-Skeleton"* ]]; then
+  if [[ "$REMOTE" == *"Initium"* ]]; then
     warn "Removing skeleton remote origin: $REMOTE"
     git remote remove origin
     success "Removed skeleton remote. Add your own with: git remote add origin <url>"

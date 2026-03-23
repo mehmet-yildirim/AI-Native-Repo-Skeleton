@@ -1,4 +1,4 @@
-# AI-Native Geliştirme İskeleti — Geliştirici Kılavuzu
+# Initium — Geliştirici Kılavuzu
 
 İnteraktif insan destekli geliştirmeden, JIRA backlog'undan iş alıp Pull Request teslim eden **tam otonom ajan moduna** kadar çalışan, AI-native yazılım geliştirme için üreteme hazır bir iskelet.
 

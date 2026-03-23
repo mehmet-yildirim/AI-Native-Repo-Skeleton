@@ -1,6 +1,6 @@
 @echo off
 :: =============================================================================
-:: AI-Native Repo Skeleton -- Project Setup Script (Windows Batch)
+:: Initium -- Project Setup Script (Windows Batch)
 :: =============================================================================
 :: Run this once after cloning the skeleton to initialize your project.
 :: No special permissions required -- runs on any Windows system.
@@ -37,7 +37,7 @@ if not exist ".git\" (
 :: ---------------------------------------------------------------------------
 for /f "delims=" %%R in ('git remote get-url origin 2^>nul') do set "REMOTE_URL=%%R"
 if defined REMOTE_URL (
-    echo !REMOTE_URL! | findstr /c:"AI-Native-Repo-Skeleton" >nul 2>&1
+    echo !REMOTE_URL! | findstr /c:"Initium" >nul 2>&1
     if not errorlevel 1 (
         echo [WARN] Removing skeleton remote origin: !REMOTE_URL!
         git remote remove origin

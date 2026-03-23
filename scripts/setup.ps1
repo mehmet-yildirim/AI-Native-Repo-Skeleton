@@ -1,5 +1,5 @@
 # =============================================================================
-# AI-Native Repo Skeleton — Project Setup Script (Windows / PowerShell)
+# Initium — Project Setup Script (Windows / PowerShell)
 # =============================================================================
 # Run this once after cloning the skeleton to initialize your project.
 # Requires PowerShell 5.1+ (built-in on Windows 10/11) or PowerShell 7+.
@@ -39,7 +39,7 @@ if (-not (Test-Path ".git")) {
 # 2. Remove skeleton remote origin (if inherited from clone)
 # ---------------------------------------------------------------------------
 $remoteOutput = git remote get-url origin 2>$null
-if ($LASTEXITCODE -eq 0 -and $remoteOutput -match "AI-Native-Repo-Skeleton") {
+if ($LASTEXITCODE -eq 0 -and $remoteOutput -match "Initium") {
     Write-Warn "Removing skeleton remote origin: $remoteOutput"
     git remote remove origin
     Write-Ok "Removed skeleton remote. Add your own with: git remote add origin <url>"

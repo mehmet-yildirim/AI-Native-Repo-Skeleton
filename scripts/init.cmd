@@ -1,6 +1,6 @@
 @echo off
 :: =============================================================================
-:: AI-Native Repo Skeleton -- Interactive Project Initialization Wizard
+:: Initium -- Interactive Project Initialization Wizard
 :: (Windows Batch)
 :: =============================================================================
 :: Run this after setup.cmd to configure your project's mechanical settings.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# AI-Native Repo Skeleton — Interactive Project Initialization Wizard
+# Initium — Interactive Project Initialization Wizard
 # =============================================================================
 # Run this after setup.sh to configure your project's mechanical settings.
 # This script handles structured inputs (name, tracker keys, stack choice).

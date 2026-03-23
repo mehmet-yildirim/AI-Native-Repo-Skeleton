@@ -1,4 +1,4 @@
-# AI-Native Repository Skeleton
+# Initium
 
 A production-ready skeleton for **AI-Native agentic development** — from interactive human-guided coding all the way to a fully autonomous agent that pulls work from JIRA, validates domain relevance, and delivers Pull Requests without manual intervention.
 

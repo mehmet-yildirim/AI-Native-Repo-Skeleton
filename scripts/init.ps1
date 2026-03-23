@@ -1,5 +1,5 @@
 # =============================================================================
-# AI-Native Repo Skeleton — Interactive Project Initialization Wizard
+# Initium — Interactive Project Initialization Wizard
 # (Windows / PowerShell)
 # =============================================================================
 # Run this after setup.ps1 to configure your project's mechanical settings.
