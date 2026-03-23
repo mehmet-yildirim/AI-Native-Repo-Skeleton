@@ -46,6 +46,7 @@ function Check-Exists {
 
 # Core AI tool configs
 Check-Exists "CLAUDE.md"
+Check-Exists "SECURITY.md"
 Check-Exists ".cursor/rules/00-project-overview.mdc"
 Check-Exists ".cursor/rules/01-coding-standards.mdc"
 Check-Exists ".cursor/rules/02-architecture.mdc"
@@ -185,6 +186,7 @@ function Check-Customized {
 }
 
 Check-Customized "CLAUDE.md"
+Check-Customized "SECURITY.md"
 Check-Customized ".cursor/rules/00-project-overview.mdc"
 Check-Customized "docs/context/project-brief.md"
 Check-Customized "docs/context/tech-stack.md"

@@ -43,6 +43,7 @@ check_exists() {
 }
 
 check_exists "CLAUDE.md"
+check_exists "SECURITY.md"
 check_exists ".cursor/rules/00-project-overview.mdc"
 check_exists ".cursor/rules/01-coding-standards.mdc"
 check_exists ".cursor/rules/02-architecture.mdc"
@@ -203,6 +204,7 @@ check_customized() {
 }
 
 check_customized "CLAUDE.md"
+check_customized "SECURITY.md"
 check_customized ".initium/initium.json"
 check_customized ".cursor/rules/00-project-overview.mdc"
 check_customized "docs/context/project-brief.md"

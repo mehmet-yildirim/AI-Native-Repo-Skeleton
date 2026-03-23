@@ -167,7 +167,8 @@
       ".gitignore",
       ".editorconfig",
       "docs/guides/onboarding.md",
-      "docs/guides/ai-workflow.md"
+      "docs/guides/ai-workflow.md",
+      "SECURITY.md"
     ]
   }
 }
