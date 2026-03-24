@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 160" width="800" height="160">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="12%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="160" fill="url(#bg)"/>
+  <!-- Left glow halo -->
+  <rect width="800" height="160" fill="url(#glow)"/>
+
+  <!-- Ghost |> decoration (right side) -->
+  <rect x="618" y="24" width="15" height="112"
+        fill="white" opacity="0.035" rx="3"/>
+  <path d="M656 24 L738 80 L656 136"
+        stroke="white" stroke-width="15"
+        stroke-linecap="round" stroke-linejoin="round"
+        fill="none" opacity="0.035"/>
+
+  <!-- Logo mark — 56×56, scaled from 200×200 source -->
+  <g transform="translate(32, 52) scale(0.28)">
+    <rect width="200" height="200" rx="40" fill="#161B22"/>
+    <circle cx="100" cy="100" r="78" fill="#3B82F6" opacity="0.07"/>
+    <!-- | pipe bar -->
+    <rect x="64" y="60" width="12" height="80" fill="url(#grad)" rx="3"/>
+    <!-- > chevron -->
+    <path d="M90 60 L136 100 L90 140"
+          stroke="url(#grad)" stroke-width="13"
+          stroke-linecap="round" stroke-linejoin="round"
+          fill="none"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="108" y="90"
+        font-family="'SF Pro Display','Segoe UI',system-ui,-apple-system,sans-serif"
+        font-size="46" font-weight="700" letter-spacing="-1"
+        fill="#F0F6FF">Initium</text>
+
+  <!-- Tagline -->
+  <text x="111" y="114"
+        font-family="'SF Mono','Fira Code','Consolas',monospace"
+        font-size="13" letter-spacing="0.6"
+        fill="#3B82F6">From zero to agentic.</text>
+
+  <!-- Bottom accent line -->
+  <rect y="156" width="800" height="4" fill="url(#accent)"/>
+</svg>

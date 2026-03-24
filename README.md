@@ -1,4 +1,6 @@
-# Initium
+<p align="center">
+  <img src="assets/logo-header.svg" alt="Initium — AI-Native Development Skeleton" width="1200"/>
+</p>
 
 A production-ready starter for **AI-Native agentic development** — from interactive human-guided coding all the way to a fully autonomous agent that pulls work from JIRA, validates domain relevance, and delivers Pull Requests without manual intervention.
 
