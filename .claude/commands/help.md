@@ -70,6 +70,7 @@ DOCUMENTATION
   /docs             Generate API docs, architecture docs, or user guides.
   /doc-api          Produce a full OpenAPI 3.x spec.
   /doc-schema       Document the database schema with ER diagrams.
+  /doc-diagrams     Generate Mermaid sequence diagrams for API and business flows.
   /doc-site         Scaffold or regenerate the documentation website.
   /doc-changelog    Generate or update CHANGELOG.md from git history.
 
@@ -136,6 +137,7 @@ Topic → command mapping:
 | security, vulnerability, OWASP | `/security-audit` |
 | database, migration, schema | `/migrate` or `/db` |
 | docs, documentation, API spec | `/docs`, `/doc-api`, `/doc-schema` |
+| sequence diagram, flow diagram, API flow, business flow | `/doc-diagrams` |
 | deploy, release, production | `/deploy` |
 | infra, terraform, kubernetes, CI | `/infra` |
 | bug, error, broken, crash | `/debug` |

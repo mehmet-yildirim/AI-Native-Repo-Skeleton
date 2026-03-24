@@ -2,7 +2,7 @@
   "_comment": "This file tracks which version of Initium this project is based on. Update it after running .initium/scripts/sync.sh.",
   "skeleton": {
     "repository": "https://github.com/mehmet-yildirim/Initium",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "commit": "TODO: set by .initium/scripts/sync.sh",
     "syncedAt": "TODO: set by .initium/scripts/sync.sh",
     "releaseNotesUrl": "https://github.com/mehmet-yildirim/Initium/blob/main/.initium/docs/UPDATES.md"
@@ -16,6 +16,7 @@
       ".claude/commands/deploy.md",
       ".claude/commands/doc-api.md",
       ".claude/commands/doc-changelog.md",
+      ".claude/commands/doc-diagrams.md",
       ".claude/commands/doc-schema.md",
       ".claude/commands/doc-site.md",
       ".claude/commands/docs.md",

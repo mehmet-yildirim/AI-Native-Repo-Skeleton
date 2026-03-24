@@ -19,6 +19,36 @@ See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guid
 
 ---
 
+## v1.0.21 — Add /doc-diagrams command for sequence diagram generation
+
+**Date:** 2026-03-24
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+- `.claude/commands/doc-diagrams.md` — `/doc-diagrams` command. Reads source code and
+  traces execution paths to generate Mermaid `sequenceDiagram` blocks for API call flows
+  and business process flows. Accepts a specific endpoint (`POST /orders`), a named flow
+  (`checkout`, `auth`), or `all` to auto-discover. Outputs to `docs/diagrams/` with one
+  `.md` file per flow and an auto-maintained `docs/diagrams/README.md` index. Optional
+  `--plantuml` flag generates `.puml` files alongside Mermaid.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/help.md` — Added `/doc-diagrams` to the DOCUMENTATION section of the
+  command reference and added `sequence diagram, flow diagram, API flow, business flow` to
+  the topic-to-command mapping table.
+
+### Updated Files (project-owned — update manually)
+- `README.md` — Added `/doc-diagrams` to the Documentation Generation table and repo tree;
+  updated command count from 27 to 28.
+- `README.tr.md` — Same updates in Turkish.
+
+### Migration
+No action needed. Run `bash .initium/scripts/sync.sh` to pull the new command file.
+The command is immediately available as `/doc-diagrams` in Claude Code and Cursor.
+
+---
+
 ## v1.0.20 — sync-initium.cmd no longer requires bash or WSL
 
 **Date:** 2026-03-23

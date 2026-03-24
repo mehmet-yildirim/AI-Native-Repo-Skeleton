@@ -12,7 +12,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 
 | Layer | Config | Purpose |
 |-------|--------|---------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 27 slash commands, event hooks |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 28 slash commands, event hooks |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 base rules + 22 skill rules (auto-activate by file type) + shared slash commands |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `docs/guides/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
@@ -89,7 +89,7 @@ After setup, code with the AI loop:
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
-│   ├── commands/                       # 27 slash commands (type / in Claude Code)
+│   ├── commands/                       # 28 slash commands (type / in Claude Code)
 │   │   ├── help.md                     # /help — guide to commands and workflows
 │   │   ├── init.md                     # /init — project setup wizard
 │   │   ├── requirements.md             # /requirements
@@ -108,6 +108,7 @@ After setup, code with the AI loop:
 │   │   ├── sprint.md                   # /sprint
 │   │   ├── docs.md                     # /docs
 │   │   ├── doc-api.md                  # /doc-api — OpenAPI spec generation
+│   │   ├── doc-diagrams.md             # /doc-diagrams — sequence diagrams for API & business flows
 │   │   ├── doc-site.md                 # /doc-site — documentation website
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG from git history
 │   │   ├── doc-schema.md               # /doc-schema — database ERD + table reference
@@ -260,6 +261,7 @@ After setup, code with the AI loop:
 | Command | Purpose | Output |
 |---------|---------|--------|
 | `/doc-api` | Generate OpenAPI 3.x spec + validate + ReDoc HTML | `openapi.json` + `docs/api/` |
+| `/doc-diagrams` | Generate Mermaid sequence diagrams for API calls and business flows | `docs/diagrams/` |
 | `/doc-site` | Scaffold or rebuild docs website (Docusaurus / MkDocs) | Deployable static site |
 | `/doc-changelog` | Generate `CHANGELOG.md` from git history (git-cliff) | `CHANGELOG.md` + stakeholder summary |
 | `/doc-schema` | Database ERD + table reference + index analysis | `docs/database/` |

@@ -12,7 +12,7 @@
 
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 27 slash komutu, olay hook'ları |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 28 slash komutu, olay hook'ları |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + paylaşılan slash komutları |
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `docs/guides/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
@@ -89,11 +89,12 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
-│   ├── commands/                       # 27 slash komutu (Claude Code'da / yazarak erişilir)
+│   ├── commands/                       # 28 slash komutu (Claude Code'da / yazarak erişilir)
 │   │   ├── help.md                     # /help — komutlara ve iş akışlarına rehberlik
 │   │   ├── init.md                     # /init — proje kurulum sihirbazı
 │   │   ├── requirements.md … docs.md   # İnsan destekli komutlar (16 adet)
 │   │   ├── doc-api.md                  # /doc-api — OpenAPI spec üretimi
+│   │   ├── doc-diagrams.md             # /doc-diagrams — API ve iş akışları için sıralı diyagramlar
 │   │   ├── doc-site.md                 # /doc-site — belgelendirme sitesi
 │   │   ├── doc-changelog.md            # /doc-changelog — CHANGELOG üretimi
 │   │   ├── doc-schema.md               # /doc-schema — veritabanı ERD + tablo referansı
@@ -194,6 +195,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 | Komut | Amaç | Çıktı |
 |-------|------|-------|
 | `/doc-api` | OpenAPI 3.x spec üret + doğrula + ReDoc HTML | `openapi.json` + `docs/api/` |
+| `/doc-diagrams` | API çağrıları ve iş akışları için Mermaid sıralı diyagramlar üret | `docs/diagrams/` |
 | `/doc-site` | Belgelendirme sitesi kur veya yeniden oluştur (Docusaurus / MkDocs) | Dağıtılabilir statik site |
 | `/doc-changelog` | Git geçmişinden `CHANGELOG.md` üret (git-cliff) | `CHANGELOG.md` + paydaş özeti |
 | `/doc-schema` | Veritabanı ERD + tablo referansı + indeks analizi | `docs/database/` |
