@@ -508,6 +508,7 @@ data/                     # Local DB data directories
 # DOCKER
 # =============================================================================
 .docker/
+.initium/docker/.env          # Secret env file — use .initium/docker/.env.example instead
 docker-compose.override.yml   # Local overrides — usually not committed
 
 # =============================================================================

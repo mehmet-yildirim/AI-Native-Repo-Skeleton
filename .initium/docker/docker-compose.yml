@@ -1,0 +1,183 @@
+# =============================================================================
+# Initium Agent — Docker Compose
+# =============================================================================
+# Two complementary services — use one or both:
+#
+#   agent   — always runs cron polling on GROOM_CRON schedule
+#   webhook — event-driven if JIRA_WEBHOOK_SECRET is set; falls back to cron if not
+#
+# Each service is self-contained: it clones the repo and overlays Initium tooling
+# independently. Running both together is safe and recommended — webhook handles
+# real-time events while agent acts as a catch-up sweep.
+#
+# Quick start (polling only):
+#   cp .initium/docker/.env.example .initium/docker/.env   # fill in your keys
+#   docker compose -f .initium/docker/docker-compose.yml up -d agent
+#
+# With webhook receiver (event-driven + cron catch-up):
+#   # also set JIRA_WEBHOOK_SECRET in .initium/docker/.env, then:
+#   docker compose -f .initium/docker/docker-compose.yml up -d
+#   # point your Jira Server webhook at http://<host>:3001/jira-webhook
+# =============================================================================
+
+services:
+  agent:
+    build:
+      context: ../..
+      dockerfile: .initium/docker/Dockerfile
+    image: initium-agent:latest
+    container_name: initium-agent
+    restart: unless-stopped
+
+    environment:
+      # ── AI CLI — which CLI executes the agent workflows ───────────────────
+      # claude  (default) — Claude Code, uses .claude/commands/ slash commands
+      # cursor             — Cursor CLI, reads command file as a raw prompt
+      AGENT_CLI: ${AGENT_CLI:-claude}
+
+      # ── Target repository ──────────────────────────────────────────────────
+      GIT_REPO_URL:    ${GIT_REPO_URL}
+      GIT_BRANCH:      ${GIT_BRANCH:-main}
+      GIT_CLONE_DEPTH: ${GIT_CLONE_DEPTH:-50}
+      GIT_AUTHOR_NAME:  ${GIT_AUTHOR_NAME:-Initium Agent}
+      GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-agent@noreply.local}
+
+      # ── AI provider — set ONE of the sections below ───────────────────────
+
+      # Option A: Anthropic (direct)
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+
+      # Option B: AWS Bedrock
+      CLAUDE_CODE_USE_BEDROCK: ${CLAUDE_CODE_USE_BEDROCK:-}
+      AWS_ACCESS_KEY_ID:       ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY:   ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_REGION:              ${AWS_REGION:-}
+
+      # Option C: Google Vertex AI
+      CLAUDE_CODE_USE_VERTEX:      ${CLAUDE_CODE_USE_VERTEX:-}
+      CLOUD_ML_REGION:             ${CLOUD_ML_REGION:-}
+      ANTHROPIC_VERTEX_PROJECT_ID: ${ANTHROPIC_VERTEX_PROJECT_ID:-}
+      # Mount your service account key via volumes below if using Vertex
+
+      # ── JIRA ──────────────────────────────────────────────────────────────
+      JIRA_URL:       ${JIRA_URL:-}
+      JIRA_EMAIL:     ${JIRA_EMAIL:-}
+      JIRA_API_TOKEN: ${JIRA_API_TOKEN:-}
+
+      # ── GitHub / GitLab (for PR creation and git auth) ────────────────────
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITLAB_TOKEN: ${GITLAB_TOKEN:-}
+
+      # ── Linear (alternative to JIRA) ──────────────────────────────────────
+      LINEAR_API_KEY: ${LINEAR_API_KEY:-}
+
+      # ── Cursor (passthrough for workspace tooling that uses Cursor BYOK) ────
+      # The agent runtime itself uses Claude Code CLI — not Cursor.
+      CURSOR_API_KEY: ${CURSOR_API_KEY:-}
+
+      # ── Slack (escalation notifications) ─────────────────────────────────
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN:-}
+      SLACK_TEAM_ID:   ${SLACK_TEAM_ID:-}
+
+      # ── Schedule ──────────────────────────────────────────────────────────
+      # Standard cron syntax. Defaults to every 15 minutes.
+      # Examples:
+      #   "*/30 * * * *"   — every 30 minutes
+      #   "0 9-17 * * 1-5" — hourly during business hours, weekdays only
+      #   "0 8 * * 1"      — once a week, Monday at 08:00
+      GROOM_CRON: ${GROOM_CRON:-*/15 * * * *}
+
+    volumes:
+      # Cloned repository persisted across restarts
+      - workspace:/workspace
+      # Agent audit logs, task state, outputs
+      - agent-state:/initium/.agent
+      # Uncomment to mount a Google service account key for Vertex AI:
+      # - ${GOOGLE_APPLICATION_CREDENTIALS_PATH}:/run/secrets/gcp-key.json:ro
+
+    # Resource limits — adjust to match your API tier / VM size
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "1G"
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # webhook — event-driven trigger (Jira Server push)
+  # ---------------------------------------------------------------------------
+  # Starts the webhook receiver so Jira Server can push issue events directly
+  # instead of waiting for the next cron tick. Shares /workspace with the
+  # agent service so both operate on the same cloned repository.
+  #
+  # Disable this service if you only want polling mode:
+  #   docker compose -f .initium/docker/docker-compose.yml up -d agent
+  # ---------------------------------------------------------------------------
+  webhook:
+    build:
+      context: ../..
+      dockerfile: .initium/docker/Dockerfile
+    image: initium-agent:latest
+    container_name: initium-webhook
+    restart: unless-stopped
+    entrypoint: ["/webhook-entrypoint.sh"]
+
+    environment:
+      # ── Webhook authentication ─────────────────────────────────────────────
+      JIRA_WEBHOOK_SECRET: ${JIRA_WEBHOOK_SECRET}
+
+      # ── Webhook server config ──────────────────────────────────────────────
+      WEBHOOK_PORT: ${WEBHOOK_PORT:-3001}
+      WEBHOOK_PATH: ${WEBHOOK_PATH:-/jira-webhook}
+
+      # ── Optional: restrict to Jira Server IP(s) ───────────────────────────
+      # Comma-separated. Leave unset to allow all IPs (rely on secret only).
+      JIRA_SERVER_IP: ${JIRA_SERVER_IP:-}
+
+      # ── AI CLI (same as agent service) ────────────────────────────────────
+      AGENT_CLI: ${AGENT_CLI:-claude}
+
+      # ── AI provider (same as agent service) ───────────────────────────────
+      ANTHROPIC_API_KEY:       ${ANTHROPIC_API_KEY:-}
+      CLAUDE_CODE_USE_BEDROCK: ${CLAUDE_CODE_USE_BEDROCK:-}
+      AWS_ACCESS_KEY_ID:       ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY:   ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_REGION:              ${AWS_REGION:-}
+      CLAUDE_CODE_USE_VERTEX:      ${CLAUDE_CODE_USE_VERTEX:-}
+      CLOUD_ML_REGION:             ${CLOUD_ML_REGION:-}
+      ANTHROPIC_VERTEX_PROJECT_ID: ${ANTHROPIC_VERTEX_PROJECT_ID:-}
+
+      # ── JIRA + git (same as agent service) ────────────────────────────────
+      JIRA_URL:       ${JIRA_URL:-}
+      JIRA_EMAIL:     ${JIRA_EMAIL:-}
+      JIRA_API_TOKEN: ${JIRA_API_TOKEN:-}
+      GITHUB_TOKEN:   ${GITHUB_TOKEN:-}
+      GITLAB_TOKEN:   ${GITLAB_TOKEN:-}
+      GIT_BRANCH:     ${GIT_BRANCH:-main}
+
+    ports:
+      # Expose webhook receiver to Jira Server.
+      # For production, put a reverse proxy (nginx/Caddy) in front with TLS.
+      - "${WEBHOOK_PORT:-3001}:${WEBHOOK_PORT:-3001}"
+
+    volumes:
+      # Share workspace with the agent service — both operate on the same repo
+      - workspace:/workspace
+      - agent-state:/initium/.agent
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+volumes:
+  workspace:
+    driver: local
+  agent-state:
+    driver: local

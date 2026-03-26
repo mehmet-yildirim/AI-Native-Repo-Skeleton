@@ -188,7 +188,7 @@ Ayrıca güncelleyin:
 ## Otonom Ajan İş Akışı
 
 Ajan her adım için manuel müdahale olmaksızın tam döngüyü yönetir.
-Tam durum makinesi için `docs/guides/agent/autonomous-workflow.md` dosyasına bakın.
+Tam durum makinesi için `.initium/docs/agent/autonomous-workflow.md` dosyasına bakın.
 
 ### Ajanı başlatma
 

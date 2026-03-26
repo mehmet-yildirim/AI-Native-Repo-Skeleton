@@ -225,7 +225,7 @@ issue_tracker:
     project_key: "PROJE_ANAHTARIN"
 ```
 
-Şirket içi Jira Server için: `docs/guides/agent/jira-server-setup.md` dosyasına bak.
+Şirket içi Jira Server için: `.initium/docs/agent/jira-server-setup.md` dosyasına bak.
 
 ### 2. Proje domain'ini tanımla
 
@@ -258,7 +258,7 @@ curl -H "Authorization: Bearer $JIRA_API_TOKEN" \
 /loop PROJE-1
 ```
 
-Tam belgeler: `docs/guides/agent/autonomous-workflow.md`
+Tam belgeler: `.initium/docs/agent/autonomous-workflow.md`
 
 ---
 
@@ -346,7 +346,7 @@ Cursor'da sohbette `/help` yazıp ardından sorunuzu ekleyin — `.claude/comman
 | Ne yapacağını bilmiyorum | Claude Code veya Cursor'da `/help` |
 | Proje soruları | Slack / Teams'de `#<kanal>` |
 | AI iş akışı rehberliği | [`docs/guides/ai-workflow.tr.md`](ai-workflow.tr.md) |
-| Otonom ajan sorunları | [`docs/guides/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
+| Otonom ajan sorunları | [`.initium/docs/agent/escalation-protocol.md`](agent/escalation-protocol.md) |
 | Initium hatası veya iyileştirme | Initium deposunda issue aç |
 
 ---

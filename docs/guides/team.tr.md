@@ -41,7 +41,7 @@ Kıdemli-acemi mühendis oranı değişir: **kıdemli veya orta seviye mühendis
 **AI-native sorumluluklar:**
 - Otonom ajan mimari kararları artırdığında JIRA/GitHub'da `AGENT_APPROVE_DESIGN` ayarlar
 - Katman sınırlarını ihlal eden veya uygunsuz desenler içeren AI tarafından üretilen kod birleştirmelerini engeller
-- Ajanın `docs/guides/agent/` yapılandırmasını ve ayarlamalarını inceler
+- Ajanın `.initium/docs/agent/` yapılandırmasını ve ayarlamalarını inceler
 
 **TODO: Atanan kişi:** `<isim>`
 
@@ -207,6 +207,6 @@ Yeni mühendislerin hızla verimli hale gelmesi için:
 | `docs/guides/ai-workflow.tr.md` | Tam AI-native geliştirme iş akışı referansı |
 | `docs/guides/onboarding.tr.md` | Yeni geliştiriciler için adım adım kurulum |
 | `docs/context/domain-boundaries.md` | Otonom ajanın üzerinde çalışacağı ve çalışmayacağı şeyler |
-| `docs/guides/agent/autonomous-workflow.md` | Ajan durum makinesi, artırma kapıları, devam etme mantığı |
-| `docs/guides/agent/escalation-protocol.md` | Artırma önem seviyeleri ve insan yanıt prosedürleri |
+| `.initium/docs/agent/autonomous-workflow.md` | Ajan durum makinesi, artırma kapıları, devam etme mantığı |
+| `.initium/docs/agent/escalation-protocol.md` | Artırma önem seviyeleri ve insan yanıt prosedürleri |
 | `agent.config.yaml` | Otonom ajan yapılandırması — mod, eşikler, tracker anahtarları |
