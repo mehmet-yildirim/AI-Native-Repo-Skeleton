@@ -17,7 +17,7 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 28 slash commands, event hooks |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 base rules + 22 skill rules (auto-activate by file type) + shared slash commands |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
-| **Autonomous Agent** | `agent.config.yaml`, `docs/guides/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
+| **Autonomous Agent** | `agent.config.yaml`, `.initium/docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow template |
 | **Initium sync** | `.initium/initium.json`, `.initium/scripts/sync.{sh,ps1,cmd}` | Pull improvements from upstream Initium without overwriting customizations |
 
@@ -204,9 +204,24 @@ After setup, code with the AI loop:
     │   ├── init.{sh,cmd,ps1}        # Step 2 — interactive configuration wizard
     │   ├── validate.{sh,cmd,ps1}    # 128-point configuration validator
     │   └── sync.{sh,ps1,cmd}        # Pull upstream Initium improvements
+
+    │   ├── Dockerfile               # Image: Node 22 + Claude Code CLI + git + cron
+    │   ├── docker-compose.yml       # Service definition with all env vars
+    │   ├── entrypoint.sh            # Startup: clone repo, overlay tooling, start cron
+    │   ├── groom-runner.sh          # Cron payload: git pull → /groom → git push
+    │   ├── webhook-entrypoint.sh    # Webhook mode (falls back to cron if secret unset)
+    │   └── .env.example             # All supported variables documented
     └── docs/
         ├── sync-guide.md            # Sync guide and merge strategies
-        └── UPDATES.md               # Migration notes for each Initium version
+        ├── UPDATES.md               # Migration notes for each Initium version
+        └── agent/                   # Autonomous agent documentation
+            ├── autonomous-workflow.md   # State machine, phases, gates
+            ├── docker-agent.md          # Containerized agent setup guide
+            ├── escalation-protocol.md   # Triggers, severity levels, human responses
+            ├── jira-server-setup.md     # On-premise Jira Server operator guide
+            ├── security-evaluator.md    # Security integration in the agent loop
+            ├── documentation-agent.md   # Documentation generation architecture
+            └── decision-log-template.md # Audit trail schema
 ```
 
 ---
@@ -325,6 +340,51 @@ JIRA / Linear / GitHub Issues
 
 ---
 
+## Containerized Agent (Docker)
+
+Run the autonomous agent as a long-lived container — no developer machine required. The image contains the full Initium runtime; your project source is never bundled into the image and is cloned at startup.
+
+Two trigger modes — use one or both:
+
+```bash
+# Polling only (cron-based /groom)
+cp .initium/docker/.env.example .initium/docker/.env   # fill in keys
+docker compose -f .initium/docker/docker-compose.yml up -d agent
+docker logs -f initium-agent
+
+# + Webhook receiver (Jira Server event-driven, instant triage)
+# also set JIRA_WEBHOOK_SECRET in .initium/docker/.env, then:
+docker compose -f .initium/docker/docker-compose.yml up -d
+# point Jira Server → http://<host>:3001/jira-webhook
+```
+
+**Tooling overlay** — on first startup the container clones your repo into `/workspace/`. If the repo was not already initialized with Initium, the following directories are automatically overlaid from the baked image before the first cron run:
+
+| Directory | Contents |
+|-----------|----------|
+| `.claude/` | Slash commands, hooks, settings |
+| `.cursor/` | Rules, MCP config |
+| `.continue/` | Multi-model config, skill rules |
+| `agent.config.yaml` | Agent runtime config |
+
+Directories already present in your repo are never overwritten — your customizations take precedence.
+
+**Supported AI providers** — set one group of env vars:
+
+| Provider | Required variables |
+|----------|--------------------|
+| Anthropic (direct) | `ANTHROPIC_API_KEY` |
+| AWS Bedrock | `CLAUDE_CODE_USE_BEDROCK=1` · `AWS_ACCESS_KEY_ID` · `AWS_SECRET_ACCESS_KEY` · `AWS_REGION` |
+| Google Vertex AI | `CLAUDE_CODE_USE_VERTEX=1` · `CLOUD_ML_REGION` · `ANTHROPIC_VERTEX_PROJECT_ID` |
+
+**Schedule** — controlled by `GROOM_CRON` (standard cron syntax). Defaults to `*/15 * * * *` (every 15 minutes, matching `agent.config.yaml → poll_interval_minutes`).
+
+**Kill switch** — create `.agent/STOP` in the workspace to halt the agent immediately without stopping the container.
+
+See [.initium/docs/agent/docker-agent.md](.initium/docs/agent/docker-agent.md) for the full setup guide.
+
+---
+
 ## Language & Framework Skills
 
 Skills provide deep, idiomatic guidance. Cursor auto-activates by file glob; Continue requires uncommenting in `.continue/config.yaml`.
@@ -413,9 +473,10 @@ See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guid
 | [docs/guides/onboarding.md](docs/guides/onboarding.md) | New developer setup guide |
 | [docs/guides/onboarding.tr.md](docs/guides/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) | How to apply Initium updates to your project |
-| [docs/guides/agent/autonomous-workflow.md](docs/guides/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
-| [docs/guides/agent/jira-server-setup.md](docs/guides/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
-| [docs/guides/agent/security-evaluator.md](docs/guides/agent/security-evaluator.md) | Security evaluation architecture |
-| [docs/guides/agent/documentation-agent.md](docs/guides/agent/documentation-agent.md) | Documentation generation tools and pipeline |
+| [.initium/docs/agent/autonomous-workflow.md](.initium/docs/agent/autonomous-workflow.md) | Agent state machine, phases, gates |
+| [.initium/docs/agent/docker-agent.md](.initium/docs/agent/docker-agent.md) | Containerized agent setup, env vars, troubleshooting |
+| [.initium/docs/agent/jira-server-setup.md](.initium/docs/agent/jira-server-setup.md) | On-premise Jira Server operator guide |
+| [.initium/docs/agent/security-evaluator.md](.initium/docs/agent/security-evaluator.md) | Security evaluation architecture |
+| [.initium/docs/agent/documentation-agent.md](.initium/docs/agent/documentation-agent.md) | Documentation generation tools and pipeline |
 | [skills/README.md](skills/README.md) | Complete skills index and activation guide |
 | [.initium/docs/UPDATES.md](.initium/docs/UPDATES.md) | Changelog for Initium versions |

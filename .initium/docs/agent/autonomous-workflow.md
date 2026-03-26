@@ -259,3 +259,38 @@ touch .agent/STOP
 ```
 The agent checks for this file before each phase transition and exits cleanly if found.
 Remove the file to re-enable the agent.
+
+---
+
+## Containerized Deployment
+
+The agent can run as a long-lived Docker container with a built-in cron scheduler, requiring no developer machine or manual invocation.
+
+```
+┌─────────────────────────────────────────────────────┐
+│              initium-agent container                 │
+│                                                      │
+│  /initium/          ← Initium runtime (baked in)    │
+│    .claude/         ← slash commands, hooks          │
+│    .cursor/         ← rules, MCP config              │
+│    .continue/       ← multi-model config             │
+│    agent.config.yaml                                 │
+│                                                      │
+│  /workspace/        ← your project (cloned at start) │
+│    .claude/  ─────────────── overlay if absent ──▶  │
+│    .cursor/  ─────────────── overlay if absent ──▶  │
+│    .continue/ ─────────────── overlay if absent ──▶ │
+│    src/ ...                                          │
+│                                                      │
+│  cron: GROOM_CRON → /groom-runner.sh                 │
+│    git pull → claude -p "/groom" → git push          │
+└─────────────────────────────────────────────────────┘
+```
+
+**Tooling overlay rule:** If a directory (`.claude/`, `.cursor/`, `.continue/`) or `agent.config.yaml` is already present in the cloned repo, it is used as-is. The image copy is only applied when absent. This means projects initialized with `/init` use their own customized copies automatically.
+
+**Scheduling:** The `GROOM_CRON` environment variable controls the schedule (standard cron syntax). It defaults to `*/15 * * * *`, matching `agent.config.yaml → poll_interval_minutes: 15`.
+
+**Kill switch in container:** Create `.agent/STOP` in the workspace — the runner script checks for it before each `/groom` invocation without requiring a container restart.
+
+See [docker-agent.md](docker-agent.md) for the full setup guide, all environment variables, and troubleshooting steps.

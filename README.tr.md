@@ -15,7 +15,7 @@
 | **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 28 slash komutu, olay hook'ları |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + paylaşılan slash komutları |
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
-| **Otonom Ajan** | `agent.config.yaml`, `docs/guides/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
+| **Otonom Ajan** | `agent.config.yaml`, `.initium/docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
 | **Initium senkronizasyonu** | `.initium/initium.json`, `.initium/scripts/sync.{sh,ps1,cmd}` | Özelleştirmelerin üzerine yazmadan Initium güncellemelerini projelerinize aktarma |
 
@@ -85,7 +85,22 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── .initium/
 │   ├── initium.json                   # Bu projenin hangi Initium sürümünü baz aldığını takip eder
 │   ├── scripts/                       # Initium yaşam döngüsü betikleri (setup, sync, validate)
-│   └── docs/                          # Initium belgeleri (sync kılavuzu, güncelleme notları)
+│   ├── docker/                        # Konteynerleştirilmiş ajan çalışma ortamı
+│   │   ├── Dockerfile                 # Node 22 + Claude Code/Cursor CLI + git + cron
+│   │   ├── docker-compose.yml         # Tüm ortam değişkenleriyle servis tanımı
+│   │   ├── entrypoint.sh              # Başlangıç: repo klon, araç katmanı, cron
+│   │   ├── groom-runner.sh            # Cron yükü: git pull → /groom → git push
+│   │   ├── webhook-entrypoint.sh      # Webhook modu (secret yoksa cron'a geçer)
+│   │   └── .env.example               # Tüm desteklenen değişkenler belgelenmiş
+│   └── docs/                          # Initium belgeleri
+│       ├── sync-guide.md              # Senkronizasyon rehberi
+│       ├── UPDATES.md                 # Güncelleme notları
+│       └── agent/                     # Otonom ajan belgeleri
+│           ├── autonomous-workflow.md # Durum makinesi, fazlar, kapılar
+│           ├── docker-agent.md        # Konteynerleştirilmiş ajan kurulum kılavuzu
+│           ├── escalation-protocol.md # Eskalasyon tetikleyicileri ve yanıt protokolü
+│           ├── jira-server-setup.md   # Şirket içi Jira Server operatör kılavuzu
+│           └── security-evaluator.md  # Ajan döngüsünde güvenlik değerlendirmesi
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
@@ -122,8 +137,6 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │   │   ├── ai-workflow.md / .tr.md    # AI iş akışı rehberi (İngilizce / Türkçe)
 │   │   ├── onboarding.md              # Yeni geliştirici kılavuzu
 │   │   ├── team.md                    # Ekip rolleri ve AI-native optimizasyon
-│   │   ├── agent/                     # Otonom ajan belgeleri (iş akışı, eskalasyon, güvenlik…)
-│   │   │   └── schemas/               # JSON şemaları: görev durumu, QA raporu, güvenlik raporu…
 │   │   └── workflows/                 # 7 iş akışı kılavuzu (gereksinimler → dağıtım)
 │   ├── context/                       # ← TÜMÜNÜ DÜZENLE (AI bağlamı + ajan kapsamı)
 │   ├── architecture/                  # ← DÜZENLE + ADR'ler
@@ -137,9 +150,20 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
     │   ├── init.{sh,cmd,ps1}          # Adım 2 — yapılandırma sihirbazı
     │   ├── validate.{sh,cmd,ps1}      # 128 noktalı yapılandırma doğrulayıcı
     │   └── sync.{sh,ps1,cmd}          # Initium güncellemelerini uygula
+    ├── docker/                        # Konteynerleştirilmiş ajan çalışma ortamı
+    │   ├── Dockerfile
+    │   ├── docker-compose.yml
+    │   ├── entrypoint.sh / groom-runner.sh / webhook-entrypoint.sh
+    │   └── .env.example
     └── docs/
         ├── sync-guide.md              # Senkronizasyon rehberi ve birleştirme stratejileri
-        └── UPDATES.md                 # Her Initium sürümü için güncelleme notları
+        ├── UPDATES.md                 # Her Initium sürümü için güncelleme notları
+        └── agent/                     # Otonom ajan belgeleri
+            ├── autonomous-workflow.md
+            ├── docker-agent.md
+            ├── escalation-protocol.md
+            ├── jira-server-setup.md
+            └── security-evaluator.md
 ```
 
 ---
@@ -257,6 +281,54 @@ JIRA / Linear / GitHub İssue'ları
 
 ---
 
+## Konteynerleştirilmiş Ajan (Docker)
+
+Otonom ajanı uzun ömürlü bir Docker konteyneri olarak çalıştırın — geliştirici makinesi gerekmez. İmaj, Initium çalışma ortamını (slash komutları, hook'lar, kurallar) içerir; proje kaynak kodu hiçbir zaman imaja dahil edilmez ve konteyner başlangıcında `GIT_REPO_URL` adresinden klonlanır.
+
+İki tetikleme modu — biri veya ikisi birden kullanılabilir:
+
+| Mod | Servis | Nasıl çalışır |
+|-----|--------|---------------|
+| **Yoklama** | `agent` | Cron, `GROOM_CRON` zamanlamasına göre `/groom` çalıştırır |
+| **Olay tabanlı** | `webhook` | `JIRA_WEBHOOK_SECRET` tanımlıysa Jira webhook alıcısı başlar; tanımlı değilse **otomatik olarak cron'a geçer** |
+
+```bash
+# Yalnızca yoklama (cron tabanlı /groom)
+cp .initium/docker/.env.example .initium/docker/.env   # anahtarları doldur
+docker compose -f .initium/docker/docker-compose.yml up -d agent
+docker logs -f initium-agent
+
+# + Webhook alıcısı (anlık triage + cron tarama)
+# docker/.env dosyasına JIRA_WEBHOOK_SECRET ekle, ardından:
+docker compose -f .initium/docker/docker-compose.yml up -d
+# Jira Server'ı şu adrese yönlendir: http://<host>:3001/jira-webhook
+```
+
+**Araç katmanı** — konteyner, `GIT_REPO_URL` adresindeki repoyu `/workspace` dizinine klonlar. Repoda `.claude/`, `.cursor/`, `.continue/` veya `agent.config.yaml` yoksa imajdan otomatik olarak kopyalanır. `/init` ile başlatılmış projelerde repodaki özelleştirilmiş kopyalar önceliklidir.
+
+**Desteklenen AI CLI'ları** — `AGENT_CLI` ortam değişkeniyle seçilir (varsayılan: `claude`):
+
+| Değer | CLI | Çalıştırma biçimi | Kural kaynağı |
+|-------|-----|-------------------|---------------|
+| `claude` | Claude Code | `/groom` slash komutu | `.claude/commands/` |
+| `cursor` | Cursor CLI | `groom.md` içeriği prompt olarak iletilir | `.cursor/rules/` |
+
+**Desteklenen AI sağlayıcıları** — ortam değişkenlerinden biri seçilir:
+
+| Sağlayıcı | Gerekli değişkenler |
+|-----------|---------------------|
+| Anthropic (doğrudan) | `ANTHROPIC_API_KEY` |
+| AWS Bedrock | `CLAUDE_CODE_USE_BEDROCK=1` · `AWS_ACCESS_KEY_ID` · `AWS_SECRET_ACCESS_KEY` · `AWS_REGION` |
+| Google Vertex AI | `CLAUDE_CODE_USE_VERTEX=1` · `CLOUD_ML_REGION` · `ANTHROPIC_VERTEX_PROJECT_ID` |
+
+**Zamanlama** — `GROOM_CRON` ortam değişkeniyle kontrol edilir (standart cron sözdizimi). Varsayılan: `*/15 * * * *` (`agent.config.yaml → poll_interval_minutes` değeriyle eşleşir).
+
+**Kill switch** — ajanı durdurmak için workspace içinde `.agent/STOP` dosyası oluşturun; konteyneri yeniden başlatmaya gerek yoktur.
+
+Tam kurulum kılavuzu: [.initium/docs/agent/docker-agent.md](.initium/docs/agent/docker-agent.md)
+
+---
+
 ## Dil ve Framework Becerileri
 
 Cursor, beceri kurallarını dosya uzantısına göre otomatik etkinleştirir. Continue için `.continue/config.yaml` dosyasında yorumdan çıkarman gerekir.
@@ -344,9 +416,10 @@ Tam rehber ve her dosya türü için birleştirme stratejileri: [.initium/docs/s
 | [docs/guides/onboarding.md](docs/guides/onboarding.md) | Yeni geliştirici kurulum kılavuzu (İngilizce) |
 | [docs/guides/onboarding.tr.md](docs/guides/onboarding.tr.md) | Yeni geliştirici kurulum kılavuzu (Türkçe) |
 | [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) | Initium güncellemelerini projeye aktarma |
-| [docs/guides/agent/autonomous-workflow.md](docs/guides/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
-| [docs/guides/agent/jira-server-setup.md](docs/guides/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
-| [docs/guides/agent/security-evaluator.md](docs/guides/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
-| [docs/guides/agent/documentation-agent.md](docs/guides/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
+| [.initium/docs/agent/autonomous-workflow.md](.initium/docs/agent/autonomous-workflow.md) | Ajan durum makinesi, fazlar, kapılar |
+| [.initium/docs/agent/docker-agent.md](.initium/docs/agent/docker-agent.md) | Konteynerleştirilmiş ajan kurulumu, ortam değişkenleri, sorun giderme |
+| [.initium/docs/agent/jira-server-setup.md](.initium/docs/agent/jira-server-setup.md) | Şirket içi Jira Server operatör kılavuzu |
+| [.initium/docs/agent/security-evaluator.md](.initium/docs/agent/security-evaluator.md) | Güvenlik değerlendirme mimarisi |
+| [.initium/docs/agent/documentation-agent.md](.initium/docs/agent/documentation-agent.md) | Belgelendirme üretim araçları ve pipeline |
 | [skills/README.md](skills/README.md) | Tam beceri indeksi ve aktivasyon kılavuzu |
 | [.initium/docs/UPDATES.md](.initium/docs/UPDATES.md) | Initium sürümleri için değişiklik kaydı |

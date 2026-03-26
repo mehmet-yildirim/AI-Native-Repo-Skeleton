@@ -19,6 +19,59 @@ See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guid
 
 ---
 
+## v1.0.22 — Containerized agent runtime with Docker Compose
+
+**Date:** 2026-03-26
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+
+**Docker runtime** (`.initium/docker/`)
+- `Dockerfile` — Agent runtime image: Node 22, Claude Code CLI, Cursor CLI, git, cron.
+  Bakes in `.claude/`, `.cursor/`, `.continue/`, `.agent-templates/`, and `agent.config.yaml`.
+- `docker-compose.yml` — Two services: `agent` (cron polling) and `webhook` (event-driven,
+  falls back to cron if `JIRA_WEBHOOK_SECRET` is not set). Both are self-contained.
+- `entrypoint.sh` — Clones/pulls `GIT_REPO_URL`, overlays Initium tooling if absent, starts cron.
+- `groom-runner.sh` — Cron payload: `git pull` → dispatches `/groom` via `AGENT_CLI` → `git push`.
+  Supports `AGENT_CLI=claude` (slash command) and `AGENT_CLI=cursor` (raw prompt from groom.md).
+- `webhook-entrypoint.sh` — Starts Jira Server webhook receiver if `JIRA_WEBHOOK_SECRET` is set;
+  falls back to cron polling otherwise.
+- `.env.example` — All supported environment variables with documentation.
+
+**Agent docs** (`.initium/docs/agent/`)
+- `docker-agent.md` — Full setup guide: quick start, all env vars, webhook architecture,
+  polling vs. webhook comparison, operations, and troubleshooting.
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.initium/docs/agent/autonomous-workflow.md` — Added "Containerized Deployment" section.
+- `.initium/docs/UPDATES.md` — This entry.
+- `.initium/initium.json` — Version bump; new docker files added to `skeleton_owned`.
+- `.initium/scripts/validate.sh` / `validate.ps1` — Updated agent doc paths.
+- `.initium/docs/sync-guide.md` — Updated agent doc path reference.
+
+### Updated Files (project-owned — review manually)
+- `README.md` / `README.tr.md` — New "Containerized Agent" section; updated repo tree and
+  Further Reading. Apply if your project uses the autonomous agent.
+
+### Migration Notes
+**Agent doc paths moved** — `docs/guides/agent/` → `.initium/docs/agent/`
+
+If your project references agent docs directly (e.g., in onboarding guides or team docs),
+update the paths:
+
+```bash
+# Preview
+grep -r "docs/guides/agent/" docs/ .claude/ .cursor/
+
+# Apply
+find docs/ .claude/ .cursor/ -type f \
+  \( -name "*.md" -o -name "*.mdc" \) \
+  -exec sed -i 's|docs/guides/agent/|.initium/docs/agent/|g' {} +
+```
+
+---
+
 ## v1.0.21 — Add /doc-diagrams command for sequence diagram generation
 
 **Date:** 2026-03-24

@@ -35,7 +35,7 @@ Examples:
 - All `.claude/commands/*.md` — slash command definitions
 - All `.cursor/rules/skills/*.mdc` — language/framework skill rules
 - All `.continue/rules/skills/*.md` — Continue skill rules
-- `docs/guides/agent/` — autonomous agent documentation and schemas
+- `.initium/docs/agent/` — autonomous agent documentation and schemas
 - `.initium/scripts/validate.sh` — configuration validator
 - `.agent-templates/` — runtime templates
 
