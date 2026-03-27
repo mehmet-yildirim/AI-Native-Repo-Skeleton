@@ -19,6 +19,32 @@ See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guid
 
 ---
 
+## v1.0.23 — Fix Cursor glob pattern format
+
+**Date:** 2026-03-27
+**Commit:** (set by release)
+**Severity:** PATCH
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.cursor/rules/03-testing.mdc` and all 23 `.cursor/rules/skills/*.mdc` files — Glob patterns
+  converted from JSON array format (`["a", "b"]`) to Cursor's required comma-separated format
+  (`a,b`). The array format was silently treated as invalid by Cursor, causing skill rules to
+  never auto-activate on matching files.
+
+### Migration Notes
+If your project has customized any `.cursor/rules/skills/*.mdc` frontmatter, update the `globs`
+field format:
+
+```yaml
+# before (invalid)
+globs: ["**/*.ts", "**/*.tsx"]
+
+# after (correct)
+globs: **/*.ts,**/*.tsx
+```
+
+---
+
 ## v1.0.22 — Containerized agent runtime with Docker Compose
 
 **Date:** 2026-03-26
