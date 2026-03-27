@@ -1,6 +1,6 @@
 ---
 description: Flutter / Dart development standards — cross-platform iOS & Android, Riverpod, GoRouter, testing.
-globs: ["**/*.dart", "**/pubspec.yaml", "**/pubspec.lock", "**/analysis_options.yaml", "**/flutter/**"]
+globs: **/*.dart,**/pubspec.yaml,**/pubspec.lock,**/analysis_options.yaml,**/flutter/**
 alwaysApply: false
 ---
 

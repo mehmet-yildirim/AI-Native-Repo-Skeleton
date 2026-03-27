@@ -1,6 +1,6 @@
 ---
 description: GCP deployment standards — Cloud Run, GKE, Cloud SQL, Artifact Registry, Secret Manager, IAM Workload Identity, Terraform, Cloud Build, Cloud Deploy.
-globs: ["**/terraform/**/*.tf", "**/*.tf", "**/*.tfvars", "**/cloudbuild.yaml", "**/cloud-run*.yaml", "**/cloud-deploy*.yaml", "**/.github/workflows/cd-gcp*.yml", "**/.github/workflows/*gcp*.yml", "**/service.yaml"]
+globs: **/terraform/**/*.tf,**/*.tf,**/*.tfvars,**/cloudbuild.yaml,**/cloud-run*.yaml,**/cloud-deploy*.yaml,**/.github/workflows/cd-gcp*.yml,**/.github/workflows/*gcp*.yml,**/service.yaml
 alwaysApply: false
 ---
 

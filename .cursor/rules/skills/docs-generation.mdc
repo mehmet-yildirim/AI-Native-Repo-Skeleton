@@ -1,6 +1,6 @@
 ---
 description: Documentation generation standards — code-level docs per language, OpenAPI patterns, architecture diagrams, documentation-as-code principles.
-globs: ["**/*.ts", "**/*.js", "**/*.py", "**/*.java", "**/*.kt", "**/*.cs", "**/*.go", "**/*.swift", "**/*.dart", "openapi*.json", "openapi*.yaml", "**/docs/**/*.md"]
+globs: **/*.ts,**/*.js,**/*.py,**/*.java,**/*.kt,**/*.cs,**/*.go,**/*.swift,**/*.dart,openapi*.json,openapi*.yaml,**/docs/**/*.md
 alwaysApply: false
 ---
 

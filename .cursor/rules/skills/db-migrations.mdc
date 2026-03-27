@@ -1,6 +1,6 @@
 ---
 description: Database change management — DDL/DML migrations, schema versioning, seed data, drift detection. Covers Flyway, Liquibase, Alembic, Prisma Migrate, Drizzle, EF Core, Goose, golang-migrate, Atlas, Room, SQLDelight, drift.
-globs: ["**/migrations/**", "**/db/migrations/**", "**/alembic/**", "**/*.sql", "**/flyway/**", "**/liquibase/**", "**/schema.prisma", "**/drizzle.config.*", "**/*.migration.ts", "**/*_migration*.go", "**/*.sqm", "**/V[0-9]*__*.sql", "**/R__*.sql", "**/*Migration*.cs", "**/*Migrations*.cs"]
+globs: **/migrations/**,**/db/migrations/**,**/alembic/**,**/*.sql,**/flyway/**,**/liquibase/**,**/schema.prisma,**/drizzle.config.*,**/*.migration.ts,**/*_migration*.go,**/*.sqm,**/V[0-9]*__*.sql,**/R__*.sql,**/*Migration*.cs,**/*Migrations*.cs
 alwaysApply: false
 ---
 

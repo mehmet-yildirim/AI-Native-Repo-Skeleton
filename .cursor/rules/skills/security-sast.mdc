@@ -1,6 +1,6 @@
 ---
 description: Security SAST patterns — language-specific vulnerability detection, OWASP Top 10, CVE scanning, secret detection. Apply when writing security-sensitive code or reviewing changes.
-globs: ["**/*.ts", "**/*.js", "**/*.py", "**/*.java", "**/*.kt", "**/*.cs", "**/*.go", "**/*.swift", "**/*.dart", "**/*.rb", "**/*.php"]
+globs: **/*.ts,**/*.js,**/*.py,**/*.java,**/*.kt,**/*.cs,**/*.go,**/*.swift,**/*.dart,**/*.rb,**/*.php
 alwaysApply: false
 ---
 

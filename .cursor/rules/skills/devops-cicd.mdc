@@ -1,6 +1,6 @@
 ---
 description: CI/CD pipeline standards — GitHub Actions, quality gates, deployment strategies, release process.
-globs: ["**/.github/workflows/**", "**/Jenkinsfile", "**/.gitlab-ci.yml", "**/azure-pipelines.yml", "**/Makefile"]
+globs: **/.github/workflows/**,**/Jenkinsfile,**/.gitlab-ci.yml,**/azure-pipelines.yml,**/Makefile
 alwaysApply: false
 ---
 

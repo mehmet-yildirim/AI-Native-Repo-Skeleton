@@ -1,6 +1,6 @@
 ---
 description: Microservices architecture patterns — service design, communication, resilience, observability.
-globs: ["**/docker-compose*.yml", "**/k8s/**", "**/helm/**", "**/proto/**", "**/*.proto"]
+globs: **/docker-compose*.yml,**/k8s/**,**/helm/**,**/proto/**,**/*.proto
 alwaysApply: false
 ---
 

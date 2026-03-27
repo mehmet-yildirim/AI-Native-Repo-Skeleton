@@ -1,6 +1,6 @@
 ---
 description: AWS deployment standards — ECS Fargate, EKS, Lambda, RDS, S3/CloudFront, ECR, ALB, VPC, IAM/OIDC, Secrets Manager, CloudWatch, Terraform, CDK.
-globs: ["**/terraform/**/*.tf", "**/*.tf", "**/*.tfvars", "**/cdk/**/*.ts", "**/cdk/**/*.py", "**/*-task-definition*.json", "**/ecs*.json", "**/appspec.yml", "**/buildspec.yml", "**/.github/workflows/cd-aws*.yml", "**/.github/workflows/*aws*.yml"]
+globs: **/terraform/**/*.tf,**/*.tf,**/*.tfvars,**/cdk/**/*.ts,**/cdk/**/*.py,**/*-task-definition*.json,**/ecs*.json,**/appspec.yml,**/buildspec.yml,**/.github/workflows/cd-aws*.yml,**/.github/workflows/*aws*.yml
 alwaysApply: false
 ---
 

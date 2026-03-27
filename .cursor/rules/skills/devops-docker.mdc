@@ -1,6 +1,6 @@
 ---
 description: Docker and container standards — Dockerfile best practices, compose, security, optimization.
-globs: ["**/Dockerfile*", "**/docker-compose*.yml", "**/.dockerignore", "**/containerfile*"]
+globs: **/Dockerfile*,**/docker-compose*.yml,**/.dockerignore,**/containerfile*
 alwaysApply: false
 ---
 

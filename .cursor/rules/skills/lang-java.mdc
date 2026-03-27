@@ -1,6 +1,6 @@
 ---
 description: Java development standards — Spring Boot, Maven/Gradle, JUnit, clean code patterns.
-globs: ["**/*.java", "**/pom.xml", "**/build.gradle", "**/build.gradle.kts", "**/*.gradle"]
+globs: **/*.java,**/pom.xml,**/build.gradle,**/build.gradle.kts,**/*.gradle
 alwaysApply: false
 ---
 

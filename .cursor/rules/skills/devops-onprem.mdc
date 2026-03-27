@@ -1,6 +1,6 @@
 ---
 description: On-premise deployment standards — Kubernetes (kubeadm/k3s), Docker Swarm, Ansible, HashiCorp Vault, Nginx/HAProxy, Harbor, Prometheus/Grafana, TLS automation.
-globs: ["**/k8s/**/*.yaml", "**/kubernetes/**/*.yaml", "**/helm/**", "**/ansible/**", "**/playbooks/**", "**/Vagrantfile", "**/roles/**/*.yml", "**/inventory/**", "**/docker-compose*.yml", "**/nginx/**", "**/haproxy/**"]
+globs: **/k8s/**/*.yaml,**/kubernetes/**/*.yaml,**/helm/**,**/ansible/**,**/playbooks/**,**/Vagrantfile,**/roles/**/*.yml,**/inventory/**,**/docker-compose*.yml,**/nginx/**,**/haproxy/**
 alwaysApply: false
 ---
 

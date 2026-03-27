@@ -1,6 +1,6 @@
 ---
 description: Angular development standards — standalone components, signals, RxJS, NgRx, best practices.
-globs: ["**/*.component.ts", "**/*.service.ts", "**/*.module.ts", "**/*.component.html", "**/angular.json"]
+globs: **/*.component.ts,**/*.service.ts,**/*.module.ts,**/*.component.html,**/angular.json
 alwaysApply: false
 ---
 

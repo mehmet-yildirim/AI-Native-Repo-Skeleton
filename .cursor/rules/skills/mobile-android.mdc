@@ -1,6 +1,6 @@
 ---
 description: Android development standards — Kotlin, Jetpack Compose, Clean Architecture, Hilt, Coroutines, Material 3.
-globs: ["**/*.kt", "**/*.kts", "**/AndroidManifest.xml", "**/build.gradle.kts", "**/build.gradle", "**/res/**", "**/proguard-rules.pro"]
+globs: **/*.kt,**/*.kts,**/AndroidManifest.xml,**/build.gradle.kts,**/build.gradle,**/res/**,**/proguard-rules.pro
 alwaysApply: false
 ---
 

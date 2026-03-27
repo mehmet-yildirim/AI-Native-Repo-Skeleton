@@ -1,6 +1,6 @@
 ---
 description: .NET / C# development standards — ASP.NET Core, EF Core, xUnit, clean architecture.
-globs: ["**/*.cs", "**/*.csproj", "**/*.sln", "**/*.razor", "**/appsettings*.json"]
+globs: **/*.cs,**/*.csproj,**/*.sln,**/*.razor,**/appsettings*.json
 alwaysApply: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: iOS development standards — Swift 5.9+, SwiftUI, MVVM, async/await, XCTest, App Store guidelines.
-globs: ["**/*.swift", "**/*.xib", "**/*.storyboard", "**/Info.plist", "**/*.xcodeproj/**", "**/*.xcworkspace/**", "**/Package.swift", "**/*.xcconfig"]
+globs: **/*.swift,**/*.xib,**/*.storyboard,**/Info.plist,**/*.xcodeproj/**,**/*.xcworkspace/**,**/Package.swift,**/*.xcconfig
 alwaysApply: false
 ---
 

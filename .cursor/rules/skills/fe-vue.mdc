@@ -1,6 +1,6 @@
 ---
 description: Vue 3 development standards — Composition API, TypeScript, Pinia, Nuxt compatibility.
-globs: ["**/*.vue", "**/src/components/**/*.ts", "**/src/composables/**", "**/src/stores/**"]
+globs: **/*.vue,**/src/components/**/*.ts,**/src/composables/**,**/src/stores/**
 alwaysApply: false
 ---
 

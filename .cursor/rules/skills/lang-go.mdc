@@ -1,6 +1,6 @@
 ---
 description: Go development standards — idiomatic Go, standard library, testing, concurrency patterns.
-globs: ["**/*.go", "**/go.mod", "**/go.sum", "**/Makefile"]
+globs: **/*.go,**/go.mod,**/go.sum,**/Makefile
 alwaysApply: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: Testing standards, structure, and patterns. Apply when writing tests or being asked about test coverage.
-globs: ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/__tests__/**"]
+globs: **/*.test.*,**/*.spec.*,**/tests/**,**/__tests__/**
 alwaysApply: false
 ---
 

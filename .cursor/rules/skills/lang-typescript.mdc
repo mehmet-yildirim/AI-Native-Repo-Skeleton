@@ -1,6 +1,6 @@
 ---
 description: TypeScript/JavaScript advanced standards — strict mode, patterns, runtime tooling.
-globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs", "**/tsconfig*.json", "**/package.json"]
+globs: **/*.ts,**/*.tsx,**/*.js,**/*.mjs,**/tsconfig*.json,**/package.json
 alwaysApply: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: React development standards — hooks, components, state management, performance, testing.
-globs: ["**/*.tsx", "**/*.jsx", "**/src/components/**", "**/src/hooks/**", "**/src/pages/**"]
+globs: **/*.tsx,**/*.jsx,**/src/components/**,**/src/hooks/**,**/src/pages/**
 alwaysApply: false
 ---
 

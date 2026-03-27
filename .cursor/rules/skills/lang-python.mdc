@@ -1,6 +1,6 @@
 ---
 description: Python development standards — FastAPI/Django, type hints, pytest, modern Python patterns.
-globs: ["**/*.py", "**/pyproject.toml", "**/requirements*.txt", "**/Pipfile", "**/setup.py"]
+globs: **/*.py,**/pyproject.toml,**/requirements*.txt,**/Pipfile,**/setup.py
 alwaysApply: false
 ---
 

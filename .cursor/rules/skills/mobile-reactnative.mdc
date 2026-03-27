@@ -1,6 +1,6 @@
 ---
 description: React Native development standards — TypeScript, Expo, React Navigation, Zustand, EAS Build, cross-platform iOS & Android.
-globs: ["**/metro.config.*", "**/app.json", "**/eas.json", "**/babel.config.*", "**/react-native.config.*", "**/ios/**/*.swift", "**/android/**/*.kt"]
+globs: **/metro.config.*,**/app.json,**/eas.json,**/babel.config.*,**/react-native.config.*,**/ios/**/*.swift,**/android/**/*.kt
 alwaysApply: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: Kotlin Multiplatform (KMP) standards — shared business logic targeting Android, iOS, Desktop, and Web. Ktor, kotlinx.serialization, SQLDelight, Koin, Compose Multiplatform.
-globs: ["**/commonMain/**/*.kt", "**/commonTest/**/*.kt", "**/iosMain/**/*.kt", "**/androidMain/**/*.kt", "**/desktopMain/**/*.kt", "**/wasmJsMain/**/*.kt", "**/shared/**/*.kt", "**/shared/build.gradle.kts", "**/composeApp/**/*.kt", "**/composeApp/build.gradle.kts"]
+globs: **/commonMain/**/*.kt,**/commonTest/**/*.kt,**/iosMain/**/*.kt,**/androidMain/**/*.kt,**/desktopMain/**/*.kt,**/wasmJsMain/**/*.kt,**/shared/**/*.kt,**/shared/build.gradle.kts,**/composeApp/**/*.kt,**/composeApp/build.gradle.kts
 alwaysApply: false
 ---
 

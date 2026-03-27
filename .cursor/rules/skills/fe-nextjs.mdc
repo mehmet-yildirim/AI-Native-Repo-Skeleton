@@ -1,6 +1,6 @@
 ---
 description: Next.js App Router standards — server/client components, data fetching, routing, deployment.
-globs: ["**/app/**", "**/src/app/**", "next.config.*", "**/middleware.ts", "**/layout.tsx", "**/page.tsx"]
+globs: **/app/**,**/src/app/**,next.config.*,**/middleware.ts,**/layout.tsx,**/page.tsx
 alwaysApply: false
 ---
 
