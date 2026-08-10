@@ -274,6 +274,8 @@ The agent can run as a long-lived Docker container with a built-in cron schedule
 │    .claude/         ← slash commands, hooks          │
 │    .cursor/         ← rules, MCP config              │
 │    .continue/       ← multi-model config             │
+│    .opencode/       ← OpenCode slash commands      │
+│    opencode.json    ← OpenCode instructions          │
 │    agent.config.yaml                                 │
 │                                                      │
 │  /workspace/        ← your project (cloned at start) │

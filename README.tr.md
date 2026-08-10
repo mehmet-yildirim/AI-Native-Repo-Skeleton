@@ -2,7 +2,7 @@
 
 İnteraktif insan destekli geliştirmeden, JIRA backlog'undan iş alıp Pull Request teslim eden **tam otonom ajan moduna** kadar çalışan, AI-native yazılım geliştirme için üreteme hazır bir proje şablonu.
 
-[Cursor](https://cursor.sh), [Continue](https://continue.dev) ve [Claude Code](https://claude.ai/code) araçlarını kutudan çıkar çıkmaz destekler.
+[Cursor](https://cursor.sh), [Continue](https://continue.dev), [Claude Code](https://claude.ai/code) ve [OpenCode](https://opencode.ai) araçlarını kutudan çıkar çıkmaz destekler.
 
 > **English:** [README.md](README.md) · **AI İş Akışı:** [docs/guides/ai-workflow.tr.md](docs/guides/ai-workflow.tr.md)
 
@@ -12,8 +12,9 @@
 
 | Katman | Yapılandırma | Amaç |
 |--------|-------------|------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 28 slash komutu, olay hook'ları |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Proje talimatları, 29 slash komutu, olay hook'ları |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 temel kural + 22 beceri kuralı (dosya türüne göre otomatik) + paylaşılan slash komutları |
+| **OpenCode** | `opencode.json`, `.opencode/commands/` | Claude/Cursor ile aynı slash komutları; `.claude/commands/` ile senkron |
 | **Continue** | `.continue/` | Çok-model yapılandırması, 22 beceri kuralı, kalıcı yönergeler |
 | **Otonom Ajan** | `agent.config.yaml`, `.initium/docs/agent/` | JIRA taraması, domain doğrulama, tam geliştirme döngüsü, eskalasyon |
 | **GitHub** | `.github/` | PR şablonu, issue şablonları, CI iş akışı |
@@ -104,8 +105,9 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 │
 ├── .claude/
 │   ├── settings.json                   # Araç izinleri + olay hook'ları
-│   ├── commands/                       # 28 slash komutu (Claude Code'da / yazarak erişilir)
+│   ├── commands/                       # 29 slash komutu (Claude Code'da / yazarak erişilir)
 │   │   ├── help.md                     # /help — komutlara ve iş akışlarına rehberlik
+│   │   ├── goal.md                     # /goal — ana hedef tamamlanana kadar durmadan çalış
 │   │   ├── init.md                     # /init — proje kurulum sihirbazı
 │   │   ├── requirements.md … docs.md   # İnsan destekli komutlar (16 adet)
 │   │   ├── doc-api.md                  # /doc-api — OpenAPI spec üretimi
@@ -131,6 +133,9 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 ├── .continue/
 │   ├── config.yaml                    # ← API ANAHTARLARI EKLE + becerileri etkinleştir
 │   └── rules/                         # Temel kurallar + 22 beceri dosyası
+│
+├── .opencode/commands/                # 29 slash komutu (.claude/commands/ ile aynı)
+├── opencode.json                      # OpenCode yönergeleri
 │
 ├── docs/
 │   ├── guides/                        # Initium rehber belgeleri — serbestçe düzenleyin
@@ -201,6 +206,7 @@ Kurulumun ardından AI döngüsüyle kodlamaya başla:
 | `/task done <id>` | Görevi tamamlandı olarak işaretle, bağımlıları aç | Her commit sonrası |
 | `/task list` | Tüm görevleri ve durumlarını göster | Her zaman |
 | `/implement` | Alt-üst yapılandırılmış uygulama + öz-inceleme | Kodlama sırasında |
+| `/goal <hedef>` | Ana hedef tamamlanana kadar durmadan çalış (Definition of Done) | Uçtan uca teslim |
 | `/qa` | Lint + tip + testler + kapsam + güvenlik | PR açmadan önce |
 | `/security-audit [hedef]` | OWASP Top 10 + CVE + gizli bilgi taraması | Her PR'dan önce |
 | `/review` | Standartlara ve OWASP'a göre kod incelemesi | Uygulamadan sonra |

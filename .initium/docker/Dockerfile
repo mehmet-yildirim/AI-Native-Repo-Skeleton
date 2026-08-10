@@ -7,8 +7,9 @@
 # never bundled — it is cloned at container startup from GIT_REPO_URL.
 #
 # Supported AI CLIs (select via AGENT_CLI env var, default: claude):
-#   claude  — Claude Code CLI  (uses .claude/commands/ slash commands)
-#   cursor  — Cursor CLI       (reads command file content as prompt)
+#   claude   — Claude Code CLI  (uses .claude/commands/ slash commands)
+#   cursor   — Cursor CLI       (reads command file content as prompt)
+#   opencode — OpenCode CLI     (uses .opencode/commands/ slash commands)
 #
 # Supported AI providers (set ONE group of env vars):
 #   - Anthropic direct:  ANTHROPIC_API_KEY
@@ -50,6 +51,8 @@ WORKDIR /initium
 COPY .claude/            .claude/
 COPY .cursor/            .cursor/
 COPY .continue/          .continue/
+COPY .opencode/          .opencode/
+COPY opencode.json       ./
 COPY .agent-templates/   .agent-templates/
 COPY agent.config.yaml   ./
 

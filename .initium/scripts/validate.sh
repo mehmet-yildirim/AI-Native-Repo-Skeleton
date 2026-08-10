@@ -76,6 +76,21 @@ check_exists ".claude/commands/triage.md"
 check_exists ".claude/commands/groom.md"
 check_exists ".claude/commands/loop.md"
 check_exists ".claude/commands/escalate.md"
+check_exists ".claude/commands/goal.md"
+check_exists ".claude/commands/help.md"
+
+# --- OpenCode (mirrored slash commands) ---
+check_exists "opencode.json"
+check_exists ".opencode/README.md"
+if [ -x ".initium/scripts/sync-opencode-commands.sh" ]; then
+  if bash .initium/scripts/sync-opencode-commands.sh --check >/dev/null 2>&1; then
+    pass "OpenCode commands in sync with .claude/commands/"
+  else
+    fail "OpenCode commands out of sync — run: bash .initium/scripts/sync-opencode-commands.sh"
+  fi
+else
+  warn "Missing .initium/scripts/sync-opencode-commands.sh — cannot verify OpenCode sync"
+fi
 
 # --- Autonomous agent config & docs ---
 check_exists "agent.config.yaml"

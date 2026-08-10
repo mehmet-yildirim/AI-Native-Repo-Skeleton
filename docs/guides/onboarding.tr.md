@@ -13,7 +13,7 @@ Başlamadan önce:
 - [ ] TODO: Gerekli araçları listele (ör. Node.js 22+, Docker, Git, vb.)
 - [ ] TODO: Gerekli servislere erişim (ör. AWS hesabı, veritabanı, gizli anahtarlar)
 - [ ] Git'i iş e-postanla yapılandır: `git config --global user.email "sen@sirket.com"`
-- [ ] Bir AI kodlama aracı: [Cursor](https://cursor.sh), [VS Code + Continue](https://continue.dev) veya [Claude Code](https://claude.ai/code)
+- [ ] Bir AI kodlama aracı: [Cursor](https://cursor.sh), [VS Code + Continue](https://continue.dev), [Claude Code](https://claude.ai/code) veya [OpenCode](https://opencode.ai)
 
 ---
 
@@ -177,6 +177,18 @@ claude
 3. `models:` bölümüne `ANTHROPIC_API_KEY` ekle
 4. Teknoloji yığınına uyan beceri kurallarını yorum satırından çıkar (Java, Python, React, iOS, vb.)
 5. Slash komutları Continue sohbet panelinde kullanılabilir
+
+### OpenCode
+
+1. [OpenCode](https://opencode.ai/docs/) kur ve bu repoyu proje dizini olarak aç
+2. Kökteki `opencode.json`, `CLAUDE.md` ve `.cursor/rules/` yönergelerini yükler
+3. Tüm Initium slash komutları `.opencode/commands/` içinde (`.claude/commands/` ile aynı)
+4. TUI'de `/help`, `/goal`, `/implement` vb. — Claude Code ve Cursor ile aynı isimler
+5. `.claude/commands/` düzenledikten sonra:
+
+```bash
+bash .initium/scripts/sync-opencode-commands.sh
+```
 
 ---
 

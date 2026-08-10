@@ -59,6 +59,7 @@ DEVELOPMENT
   /task list        List all tasks and their statuses.
   /task status      Dashboard view of feature progress.
   /loop             Autonomous dev loop — implement the full task list hands-free.
+  /goal             Pursue one primary objective until Definition of Done — no stopping mid-way.
 
 QUALITY & REVIEW
   /test             Generate comprehensive tests for a module or function.
@@ -145,6 +146,7 @@ Topic → command mapping:
 | Initium, updates, sync | `/sync-initium` |
 | stuck, blocked, escalate | `/escalate` |
 | sprint, planning, backlog | `/sprint` or `/groom` |
+| finish everything, don't stop, end-to-end goal | `/goal` |
 
 ---
 

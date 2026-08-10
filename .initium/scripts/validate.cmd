@@ -60,6 +60,17 @@ call :chk ".claude\commands\triage.md"
 call :chk ".claude\commands\groom.md"
 call :chk ".claude\commands\loop.md"
 call :chk ".claude\commands\escalate.md"
+call :chk ".claude\commands\goal.md"
+call :chk "opencode.json"
+call :chk ".opencode\README.md"
+bash .initium/scripts/sync-opencode-commands.sh --check >nul 2>&1
+if errorlevel 1 (
+  echo   FAIL OpenCode commands out of sync — run: bash .initium/scripts/sync-opencode-commands.sh
+  set /a FAIL+=1
+) else (
+  echo   PASS OpenCode commands in sync with .claude/commands/
+  set /a PASS+=1
+)
 
 :: Autonomous agent config & docs
 call :chk "agent.config.yaml"

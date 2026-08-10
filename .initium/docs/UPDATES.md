@@ -19,6 +19,33 @@ See [.initium/docs/sync-guide.md](.initium/docs/sync-guide.md) for the full guid
 
 ---
 
+## v1.0.24 — OpenCode support and /goal command
+
+**Date:** 2026-08-10
+**Commit:** (set by release)
+**Severity:** MINOR
+
+### New Files (skeleton-owned — auto-applied)
+- `.claude/commands/goal.md` — `/goal`: pursue one primary objective until Definition of Done without stopping mid-way
+- `.opencode/commands/*.md` — full mirror of Initium slash commands for [OpenCode](https://opencode.ai/)
+- `.opencode/README.md` — OpenCode usage and sync instructions
+- `opencode.json` — project instructions (`CLAUDE.md` + `.cursor/rules/`)
+- `.initium/scripts/sync-opencode-commands.sh` — copy `.claude/commands/` → `.opencode/commands/`
+
+### Updated Files (skeleton-owned — auto-applied)
+- `.claude/commands/help.md` — documents `/goal`
+- `.initium/docker/groom-runner.sh` — `AGENT_CLI=opencode` dispatches `/groom`
+- `.initium/docker/Dockerfile` / `entrypoint.sh` — bake and overlay `.opencode/` + `opencode.json`
+- `.initium/scripts/validate.{sh,ps1,cmd}` — OpenCode sync check
+- `README.md` / `README.tr.md`, `docs/guides/onboarding.md`, `.cursor/prompts/README.md`
+
+### Migration Notes
+- Install OpenCode locally; open the repo — slash commands match Claude/Cursor (`/help` for the list).
+- Container agents: set `AGENT_CLI=opencode` only if the `opencode` CLI is installed in the image (not bundled by default).
+- After customizing `.claude/commands/*.md`, run `bash .initium/scripts/sync-opencode-commands.sh`.
+
+---
+
 ## v1.0.23 — Fix Cursor glob pattern format
 
 **Date:** 2026-03-27

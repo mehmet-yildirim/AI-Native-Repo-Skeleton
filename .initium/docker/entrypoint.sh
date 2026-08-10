@@ -84,6 +84,12 @@ overlay() {
 overlay ".claude"
 overlay ".cursor"
 overlay ".continue"
+overlay ".opencode"
+
+if [ ! -f "/workspace/opencode.json" ]; then
+  info "Overlaying opencode.json from Initium defaults …"
+  cp -n /initium/opencode.json /workspace/opencode.json 2>/dev/null || true
+fi
 
 if [ ! -f "/workspace/agent.config.yaml" ]; then
   info "Overlaying agent.config.yaml from Initium defaults …"

@@ -4,7 +4,7 @@
 
 A production-ready starter for **AI-Native agentic development** — from interactive human-guided coding all the way to a fully autonomous agent that pulls work from JIRA, validates domain relevance, and delivers Pull Requests without manual intervention.
 
-Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Claude Code](https://claude.ai/code) out of the box.
+Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), [Claude Code](https://claude.ai/code), and [OpenCode](https://opencode.ai) out of the box.
 
 > **Turkish / Türkçe:** [README.tr.md](README.tr.md) · **AI Workflow:** [docs/guides/ai-workflow.md](docs/guides/ai-workflow.md)
 
@@ -14,8 +14,9 @@ Supports [Cursor](https://cursor.sh), [Continue](https://continue.dev), and [Cla
 
 | Layer | Config | Purpose |
 |-------|--------|---------|
-| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 28 slash commands, event hooks |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | Project instructions, 29 slash commands, event hooks |
 | **Cursor** | `.cursor/rules/`, `.claude/commands/` | 6 base rules + 22 skill rules (auto-activate by file type) + shared slash commands |
+| **OpenCode** | `opencode.json`, `.opencode/commands/` | Same slash commands as Claude/Cursor; synced from `.claude/commands/` |
 | **Continue** | `.continue/` | Multi-model setup, 22 skill rules, persistent guidelines |
 | **Autonomous Agent** | `agent.config.yaml`, `.initium/docs/agent/` | JIRA polling, domain triage, full dev loop, escalation system |
 | **GitHub** | `.github/` | PR template, issue templates, CI workflow template |
@@ -91,8 +92,9 @@ After setup, code with the AI loop:
 │
 ├── .claude/
 │   ├── settings.json                   # Tool permissions + event hooks
-│   ├── commands/                       # 28 slash commands (type / in Claude Code)
+│   ├── commands/                       # 29 slash commands (type / in Claude Code)
 │   │   ├── help.md                     # /help — guide to commands and workflows
+│   │   ├── goal.md                     # /goal — pursue one objective until done
 │   │   ├── init.md                     # /init — project setup wizard
 │   │   ├── requirements.md             # /requirements
 │   │   ├── architect.md                # /architect
@@ -150,6 +152,10 @@ After setup, code with the AI loop:
 │   └── rules/
 │       ├── 01-coding-standards.md … 04-security.md
 │       └── skills/                    # 22 files — mirror of .cursor/rules/skills/
+│
+├── .opencode/
+│   └── commands/                      # 29 slash commands (mirrors .claude/commands/)
+├── opencode.json                      # OpenCode instructions (CLAUDE.md + rules)
 │
 ├── .github/
 │   ├── PULL_REQUEST_TEMPLATE.md
@@ -260,6 +266,7 @@ After setup, code with the AI loop:
 | `/task list` | Show all tasks and their status | Anytime |
 | `/task status` | Progress dashboard with percentage and critical path | Anytime |
 | `/implement` | Bottom-up implementation with self-review | During coding |
+| `/goal <objective>` | Pursue one primary goal until Definition of Done — no stopping mid-way | End-to-end delivery |
 | `/qa` | Lint + types + tests + coverage + security | Before opening PR |
 | `/security-audit [target]` | OWASP Top 10 + CVE + secret scan | Before every PR |
 | `/review` | Code review against standards and OWASP | After implementation |

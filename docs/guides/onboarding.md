@@ -13,7 +13,7 @@ Before you start:
 - [ ] TODO: List required tools (e.g., Node.js 22+, Docker, Git, etc.)
 - [ ] TODO: Access to required services (e.g., AWS account, database, secrets)
 - [ ] Git configured with your work email: `git config --global user.email "you@company.com"`
-- [ ] An AI coding tool: [Cursor](https://cursor.sh), [VS Code + Continue](https://continue.dev), or [Claude Code](https://claude.ai/code)
+- [ ] An AI coding tool: [Cursor](https://cursor.sh), [VS Code + Continue](https://continue.dev), [Claude Code](https://claude.ai/code), or [OpenCode](https://opencode.ai)
 
 ---
 
@@ -178,6 +178,18 @@ All 27 custom commands (type `/` to see them):
 3. Add your `ANTHROPIC_API_KEY` under the `models:` section
 4. Uncomment the skill rules matching your stack (Java, Python, React, iOS, etc.)
 5. Slash commands are available in the Continue chat panel
+
+### OpenCode
+
+1. Install [OpenCode](https://opencode.ai/docs/) and open this repo as the project directory
+2. `opencode.json` at the repo root loads `CLAUDE.md` and `.cursor/rules/` as instructions
+3. All Initium slash commands live in `.opencode/commands/` (mirrors `.claude/commands/`)
+4. In the TUI, run `/help`, `/goal`, `/implement`, etc. — same names as Claude Code and Cursor
+5. After editing commands in `.claude/commands/`, refresh mirrors:
+
+```bash
+bash .initium/scripts/sync-opencode-commands.sh
+```
 
 ---
 

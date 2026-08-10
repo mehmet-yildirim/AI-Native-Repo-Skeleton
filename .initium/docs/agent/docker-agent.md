@@ -34,7 +34,7 @@ Container startup
                    └─ git push (if agent created commits)
 ```
 
-**Tooling overlay** — if `.claude/`, `.cursor/`, `.continue/`, or `agent.config.yaml` already exist in the cloned repo (i.e., the project was initialized with `/init`), they are used as-is. The image copy is applied only when the directory or file is absent.
+**Tooling overlay** — if `.claude/`, `.cursor/`, `.continue/`, `.opencode/`, `opencode.json`, or `agent.config.yaml` already exist in the cloned repo (i.e., the project was initialized with `/init`), they are used as-is. The image copy is applied only when the directory or file is absent.
 
 ---
 
@@ -86,8 +86,9 @@ docker logs -f initium-webhook  # webhook receiver
 |-------|-----|-----------------------|-----------------|
 | `claude` | Claude Code | `claude --dangerously-skip-permissions -p "/groom"` | `.claude/commands/` |
 | `cursor` | Cursor CLI | `cursor --print --force "$(cat .claude/commands/groom.md)"` | `.cursor/rules/` |
+| `opencode` | OpenCode CLI | `opencode run "/groom"` | `.opencode/commands/` + `opencode.json` |
 
-> Both CLIs are installed in the image. Switch between them with `AGENT_CLI` — no rebuild required.
+> Claude Code and Cursor CLI are installed in the default image. OpenCode is supported when the `opencode` binary is available (custom image or host install). Switch with `AGENT_CLI` — no rebuild required for claude/cursor.
 
 ### AI Provider — choose one
 

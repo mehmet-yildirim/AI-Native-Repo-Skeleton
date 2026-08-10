@@ -9,6 +9,7 @@
 #   claude — Claude Code: invokes the /groom slash command directly
 #   cursor — Cursor CLI:  reads .claude/commands/groom.md and passes it as a
 #            prompt (Cursor does not understand .claude/ slash commands)
+#   opencode — OpenCode CLI: uses .opencode/commands/ (mirrored from .claude/)
 # =============================================================================
 set -euo pipefail
 
@@ -75,8 +76,17 @@ case "${AGENT_CLI}" in
       2>&1
     ;;
 
+  opencode)
+    if ! command -v opencode >/dev/null 2>&1; then
+      echo "${LOG_PREFIX} ERROR: opencode CLI not found. Install OpenCode or set AGENT_CLI=claude."
+      exit 1
+    fi
+    # OpenCode loads project commands from .opencode/commands/ and opencode.json.
+    opencode run "/groom" 2>&1
+    ;;
+
   *)
-    echo "${LOG_PREFIX} ERROR: Unknown AGENT_CLI '${AGENT_CLI}'. Supported: claude, cursor"
+    echo "${LOG_PREFIX} ERROR: Unknown AGENT_CLI '${AGENT_CLI}'. Supported: claude, cursor, opencode"
     exit 1
     ;;
 

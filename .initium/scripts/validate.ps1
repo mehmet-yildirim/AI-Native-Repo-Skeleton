@@ -80,6 +80,18 @@ Check-Exists ".claude/commands/triage.md"
 Check-Exists ".claude/commands/groom.md"
 Check-Exists ".claude/commands/loop.md"
 Check-Exists ".claude/commands/escalate.md"
+Check-Exists ".claude/commands/goal.md"
+Check-Exists ".claude/commands/help.md"
+Check-Exists "opencode.json"
+Check-Exists ".opencode/README.md"
+if (Test-Path ".initium/scripts/sync-opencode-commands.sh") {
+    $syncCheck = bash .initium/scripts/sync-opencode-commands.sh --check 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Pass "OpenCode commands in sync with .claude/commands/"
+    } else {
+        Write-Fail "OpenCode commands out of sync — run: bash .initium/scripts/sync-opencode-commands.sh"
+    }
+}
 
 # Autonomous agent config & docs
 Check-Exists "agent.config.yaml"
